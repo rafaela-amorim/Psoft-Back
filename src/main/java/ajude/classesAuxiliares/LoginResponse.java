@@ -1,9 +1,10 @@
 package ajude.classesAuxiliares;
 
-public class Token {
-	private String token;
+public class LoginResponse {
+
+	public String token;
 	
-	public Token(String token) {
+	public LoginResponse(String token) {
 		this.token = token;
 	}
 
@@ -15,5 +16,5 @@ public class Token {
 		this.token = token;
 	}
 	
-	
 }
+
