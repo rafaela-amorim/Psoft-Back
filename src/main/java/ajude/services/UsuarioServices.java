@@ -1,5 +1,6 @@
 package ajude.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class UsuarioServices {
 		return usuariosRepo.findById(email).get();
 	}
 	
+	public List<Usuario> getUsuarios() {
+		return usuariosRepo.findAll();
+	}
+	
 	// verifica se o usuario existe no controller
 	public Usuario mudarSenha(String email, String novaSenha) {
 		Usuario u = recuperaUsuario(email);
@@ -39,7 +44,7 @@ public class UsuarioServices {
 	
 	// ----------------------
 	
-	public boolean UsuarioExiste(String email) {
+	public boolean usuarioExiste(String email) {
 		return usuariosRepo.findById(email).isPresent();
 	}
 }
