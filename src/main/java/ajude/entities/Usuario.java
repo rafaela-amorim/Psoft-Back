@@ -13,6 +13,10 @@ public class Usuario {
 	private String cartaoDeCredito;
 	private String senha;
 	
+	public Usuario() {
+		super();
+	}
+	
 	public Usuario(String nome, String ultimoNome, String email, String cartaoDeCredito, String senha) {
 		super();
 		this.nome = nome;

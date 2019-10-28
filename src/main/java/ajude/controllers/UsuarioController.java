@@ -24,9 +24,14 @@ public class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
 	
+	
+	// ajeitar o retorno do erro
 	@PostMapping("usuarios")
 	public ResponseEntity<Usuario> adicionaUsuario(@RequestBody Usuario usuario) {
-		return new ResponseEntity<Usuario>(usuarioService.addUsuario(usuario), HttpStatus.OK);
+		if(!usuarioService.usuarioExiste(usuario.getEmail()))
+			return new ResponseEntity<Usuario>(usuarioService.addUsuario(usuario), HttpStatus.OK);
+		else
+			return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("usuarios")
