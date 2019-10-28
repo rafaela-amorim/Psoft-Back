@@ -41,6 +41,14 @@ public class UsuarioServices {
 		return u;
 	}
 	
+	public boolean senhaIgual(String email, String senha) {
+		if(usuarioExiste(email)) {
+			return recuperaUsuario(email).verificaSenha(senha);
+		}
+		else
+			return false;
+	}
+	
 	
 	// ----------------------
 	
