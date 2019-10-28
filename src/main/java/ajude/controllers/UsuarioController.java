@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ajude.classesAuxiliares.Token;
 import ajude.entities.Usuario;
 import ajude.services.JwtServices;
 import ajude.services.UsuarioServices;
@@ -20,12 +19,10 @@ import ajude.services.UsuarioServices;
 public class UsuarioController {
 
 	private UsuarioServices usuarioService;
-	private JwtServices jwtServices;
 	
 	public UsuarioController(UsuarioServices usuarioService,JwtServices jwtServices) {
 		super();
 		this.usuarioService = usuarioService;
-		this.jwtServices = jwtServices;
 	}
 	
 	
@@ -53,15 +50,6 @@ public class UsuarioController {
 	@PutMapping("usuarios/{email}")
 	public ResponseEntity<Usuario> mudarSenha(@RequestBody String senha, @PathVariable String email) {
 		return new ResponseEntity<Usuario>(usuarioService.mudarSenha(email, senha), HttpStatus.OK);
-	}
-	
-	//verificar os retornos http
-	@PostMapping("auth/usuarios")
-	public ResponseEntity<Token> autentica(@RequestBody Usuario usu){
-		if(usuarioService.senhaIgual(usu.getEmail(), usu.getSenha())) {
-			return new ResponseEntity<Token>(jwtServices.geraToken(usu.getEmail()),HttpStatus.OK);
-		}
-		return new ResponseEntity<Token>(HttpStatus.BAD_REQUEST);
 	}
 	
 }

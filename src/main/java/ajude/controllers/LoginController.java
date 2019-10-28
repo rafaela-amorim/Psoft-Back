@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.classesAuxiliares.LoginResponse;
@@ -25,8 +26,8 @@ public class LoginController {
 	}
 	
 	
-	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> authenticate(Usuario user) {
+	@PostMapping("auth/usuarios")
+	public ResponseEntity<LoginResponse> authenticate(@RequestBody Usuario user) {
 		if (!usuarioService.usuarioExiste(user.getEmail())) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
