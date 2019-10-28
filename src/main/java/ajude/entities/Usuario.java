@@ -1,7 +1,9 @@
 package ajude.entities;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
+@Entity
 public class Usuario {
 	
 	private String nome;
@@ -21,6 +23,10 @@ public class Usuario {
 	}
 
 
+	public boolean verificaSenha(String pass) {
+		return this.senha.equals(pass);
+	}
+	
 
 	public String getNome() {
 		return nome;
