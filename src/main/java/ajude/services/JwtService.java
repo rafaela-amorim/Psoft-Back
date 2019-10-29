@@ -12,15 +12,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class JwtServices {
+public class JwtService {
 	
 	private final String TOKEN = "omae wa mou shindeiru.";
 	private final int TOKEN_INDEX = 7;
 	
-	private UsuarioServices usuarioService;
+	private UsuarioService usuarioService;
 	
 	
-	public JwtServices(UsuarioServices usuarioService) {
+	public JwtService(UsuarioService usuarioService) {
 		super();
 		this.usuarioService = usuarioService;
 	}

@@ -9,11 +9,11 @@ import ajude.DAOs.UsuarioRepository;
 import ajude.entities.Usuario;
 
 @Service
-public class UsuarioServices {
+public class UsuarioService {
 	
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	
-	public UsuarioServices(UsuarioRepository<Usuario, String> usuariosRepo) {
+	public UsuarioService(UsuarioRepository<Usuario, String> usuariosRepo) {
 		super();
 		this.usuariosRepo = usuariosRepo;
 	}

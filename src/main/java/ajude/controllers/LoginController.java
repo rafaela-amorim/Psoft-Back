@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ajude.classesAuxiliares.LoginResponse;
 import ajude.entities.Usuario;
-import ajude.services.JwtServices;
-import ajude.services.UsuarioServices;
+import ajude.services.JwtService;
+import ajude.services.UsuarioService;
 
 @RestController
 public class LoginController {
 
-	private UsuarioServices usuarioService;
-	private JwtServices jwtService;
+	private UsuarioService usuarioService;
+	private JwtService jwtService;
 	
-	public LoginController(UsuarioServices usuarioService, JwtServices jwtService) {
+	public LoginController(UsuarioService usuarioService, JwtService jwtService) {
 		super();
 		this.usuarioService = usuarioService;
 		this.jwtService = jwtService;

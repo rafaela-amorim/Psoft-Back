@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.entities.Usuario;
-import ajude.services.JwtServices;
-import ajude.services.UsuarioServices;
+import ajude.services.JwtService;
+import ajude.services.UsuarioService;
 
 @RestController
 public class UsuarioController {
 
-	private UsuarioServices usuarioService;
+	private UsuarioService usuarioService;
 	
-	public UsuarioController(UsuarioServices usuarioService,JwtServices jwtServices) {
+	public UsuarioController(UsuarioService usuarioService,JwtService jwtServices) {
 		super();
 		this.usuarioService = usuarioService;
 	}
