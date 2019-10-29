@@ -37,4 +37,5 @@ public class FormataURL {
     	s = s.replaceAll(" +", "-");
     	return s;
     }
+    
 }
