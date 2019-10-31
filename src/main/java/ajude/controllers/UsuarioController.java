@@ -44,7 +44,7 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> getUsuario(@PathVariable String email) {
 		if (!usuarioService.usuarioExiste(email))
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<Usuario>(usuarioService.recuperaUsuario(email), HttpStatus.OK);
+		return new ResponseEntity<Usuario>(usuarioService.getUsuario(email), HttpStatus.OK);
 	} 
 	
 	@PutMapping("usuarios/{email}")

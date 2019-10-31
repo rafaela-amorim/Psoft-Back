@@ -3,18 +3,19 @@ package ajude.entities;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import ajude.classesAuxiliares.StatusCampanha;
 
 @Entity
 public class Campanha {
-	/*
+
 	@Id
 	@GeneratedValue
-	private long id;*/
+	private long id;
 	private String nome;
-	@Id
+//	@Id
 	private String url;
 	private String descricao;
 	private Date data;
@@ -40,6 +41,8 @@ public class Campanha {
 		this.usuario = usuario;
 		this.likes = likes;
 	}
+	
+	// ----------------------------
 
 	public String getNome() {
 		return nome;

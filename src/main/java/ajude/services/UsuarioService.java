@@ -25,7 +25,7 @@ public class UsuarioService {
 		return usuariosRepo.save(usuario);
 	}
 	
-	public Usuario recuperaUsuario(String email) {
+	public Usuario getUsuario(String email) {
 		return usuariosRepo.findById(email).get();
 	}
 	
@@ -35,7 +35,7 @@ public class UsuarioService {
 	
 	// verifica se o usuario existe no controller
 	public Usuario mudarSenha(String email, String novaSenha) {
-		Usuario u = recuperaUsuario(email);
+		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
 		addUsuario(u);
 		return u;
@@ -43,12 +43,17 @@ public class UsuarioService {
 	
 	public boolean senhaIgual(String email, String senha) {
 		if(usuarioExiste(email)) {
-			return recuperaUsuario(email).verificaSenha(senha);
+			return getUsuario(email).verificaSenha(senha);
 		}
 		else
 			return false;
 	}
 	
+	public Usuario removeUsuario(String email) {
+		Usuario u = getUsuario(email);
+		usuariosRepo.delete(u);
+		return u;
+	}
 	
 	// ----------------------
 	

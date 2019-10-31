@@ -31,7 +31,7 @@ public class JwtService {
 	}
 	
 	public LoginResponse authenticate(Usuario usuario) throws ServletException {
-		Usuario authUser = usuarioService.recuperaUsuario(usuario.getEmail());
+		Usuario authUser = usuarioService.getUsuario(usuario.getEmail());
 		
 		if (authUser.verificaSenha(usuario.getSenha())) {
 			return this.geraToken(authUser.getEmail());
