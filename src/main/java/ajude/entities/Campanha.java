@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import ajude.classesAuxiliares.StatusCampanha;
 
@@ -15,11 +18,11 @@ public class Campanha {
 	@GeneratedValue
 	private long id;
 	private String nome;
-//	@Id
-	private String url;
 	private String descricao;
 	private Date data;
 	private StatusCampanha status;
+	@OneToOne(mappedBy="url")
+	private URLCampanha url;
 	private double meta;
 	private double doacoes;
 	private Usuario usuario;
@@ -28,11 +31,10 @@ public class Campanha {
 	
 	public Campanha() {}
 	
-	public Campanha(String nome, String url, String descricao, Date data, StatusCampanha status, double meta, double doacoes,
+	public Campanha(String nome, String descricao, Date data, StatusCampanha status, double meta, double doacoes,
 			Usuario usuario, int likes) {
 		super();
 		this.nome = nome;
-		this.url = url;
 		this.descricao = descricao;
 		this.data = data;
 		this.status = status;
@@ -50,14 +52,6 @@ public class Campanha {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public String getDescricao() {
