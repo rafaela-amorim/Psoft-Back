@@ -3,6 +3,7 @@ package ajude.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -18,7 +19,7 @@ public class Usuario {
 	private String cartaoDeCredito;
 	private String senha;
 	
-	@OneToMany(mappedBy = "dono")
+	@OneToMany(mappedBy = "dono", cascade = CascadeType.REMOVE)
 	private List<Campanha> campanhas;
 	
 	public Usuario() {
@@ -51,58 +52,49 @@ public class Usuario {
 		return nome;
 	}
 
-
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-
 
 	public String getUltimoNome() {
 		return ultimoNome;
 	}
 
-
-
 	public void setUltimoNome(String ultimoNome) {
 		this.ultimoNome = ultimoNome;
 	}
-
-
 
 	public String getEmail() {
 		return email;
 	}
 
-
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
 
 	public String getCartaoDeCredito() {
 		return cartaoDeCredito;
 	}
 
-
-
 	public void setCartaoDeCredito(String cartaoDeCredito) {
 		this.cartaoDeCredito = cartaoDeCredito;
 	}
-
-
 
 	public String getSenha() {
 		return senha;
 	}
 
-
-
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 
+	public List<Campanha> getCampanhas() {
+		return campanhas;
+	}
+
+	public void setCampanhas(List<Campanha> campanhas) {
+		this.campanhas = campanhas;
+	}
+	
+ 
 }

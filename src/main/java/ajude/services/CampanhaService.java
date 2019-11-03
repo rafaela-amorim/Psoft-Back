@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ajude.DAOs.CampanhaRepository;
 import ajude.DAOs.URLCampanhaRepository;
 import ajude.DAOs.UsuarioRepository;
+import ajude.classesAuxiliares.FormataURL;
 import ajude.classesAuxiliares.StatusCampanha;
 import ajude.entities.Campanha;
 import ajude.entities.URLCampanha;
@@ -32,15 +33,23 @@ public class CampanhaService {
 	// ------------------------------
 	
 	public Campanha addCampanha(Campanha campanha) {
-		URLRepo.save(campanha.getURLCampanha());
 		Usuario u = campanha.getDono();
 		
 		if (usuariosRepo.existsById(u.getEmail())) {
+			URLCampanha url = new URLCampanha();
+			url.setUrl(FormataURL.formataURL(campanha.getNome()));
+			url.setCampanha(campanha);
+			
+			URLRepo.save(url);
+			
+			campanha.setURLCampanha(url);
+			
 			u.adicionaCampanha(campanha);
+			usuariosRepo.save(u);
 			return campanhaRepo.save(campanha);
 		}
 		
-		return null;
+		return new Campanha();
 	}
 	
 	public Campanha getCampanha(long id) {

@@ -2,14 +2,15 @@ package ajude.entities;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import ajude.classesAuxiliares.FormataURL;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ajude.classesAuxiliares.StatusCampanha;
 
 @Entity
@@ -23,17 +24,24 @@ public class Campanha {
 	private Date dataLimite;
 	private StatusCampanha status;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.REMOVE)
 	private URLCampanha url;
 	private double meta;
 	private double doacoes;
-	@ManyToOne
+	
+	@ManyToOne(cascade=CascadeType.DETACH)
+	@JsonIgnore
 	private Usuario dono;
 	//private Comentario comentarios;
-	//private List<Usuario> likes;
+	//private List<String> likes;
 	
 	
-	public Campanha() {}
+	public Campanha() {
+		super();
+		this.doacoes = 0;
+		this.dataLimite = new Date();
+		this.status = StatusCampanha.ATIVA;
+	}
 	
 	public Campanha(String nome, String descricao, double meta, Usuario dono) {
 		super();
@@ -45,8 +53,6 @@ public class Campanha {
 		this.doacoes = 0;
 		this.dataLimite = new Date();
 		this.status = StatusCampanha.ATIVA;
-		this.url = new URLCampanha();
-		this.url.setUrl(FormataURL.formataURL(nome));
 	}
 	
 	// ----------------------------
