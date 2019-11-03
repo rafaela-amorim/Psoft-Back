@@ -32,6 +32,7 @@ public class Campanha {
 	@ManyToOne(cascade=CascadeType.DETACH)
 	@JsonIgnore
 	private Usuario dono;
+	private String emailDono;
 	//private Comentario comentarios;
 	//private List<String> likes;
 	
@@ -43,12 +44,13 @@ public class Campanha {
 		this.status = StatusCampanha.ATIVA;
 	}
 	
-	public Campanha(String nome, String descricao, double meta, Usuario dono) {
+	public Campanha(String nome, String descricao, double meta, String emailDono) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
 		this.meta = meta;
-		this.dono = dono;
+		this.emailDono = emailDono;
+		this.dono = null;
 	
 		this.doacoes = 0;
 		this.dataLimite = new Date();
@@ -120,6 +122,22 @@ public class Campanha {
 
 	public void setDono(Usuario dono) {
 		this.dono = dono;
+	}
+
+	public URLCampanha getUrl() {
+		return url;
+	}
+
+	public void setUrl(URLCampanha url) {
+		this.url = url;
+	}
+
+	public String getEmailDono() {
+		return emailDono;
+	}
+
+	public void setEmailDono(String emailDono) {
+		this.emailDono = emailDono;
 	}
 
 }

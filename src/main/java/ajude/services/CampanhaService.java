@@ -33,6 +33,9 @@ public class CampanhaService {
 	// ------------------------------
 	
 	public Campanha addCampanha(Campanha campanha) {
+		campanha.setDono(usuariosRepo.findById(campanha.getEmailDono()).get());
+		System.out.println(campanha.getEmailDono());
+		System.out.println(campanha.getDono());
 		Usuario u = campanha.getDono();
 		
 		if (usuariosRepo.existsById(u.getEmail())) {
