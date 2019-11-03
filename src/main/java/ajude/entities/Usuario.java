@@ -1,7 +1,12 @@
 package ajude.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class Usuario {
@@ -13,8 +18,12 @@ public class Usuario {
 	private String cartaoDeCredito;
 	private String senha;
 	
+	@OneToMany(mappedBy = "dono")
+	private List<Campanha> campanhas;
+	
 	public Usuario() {
 		super();
+		campanhas = new ArrayList<>();
 	}
 	
 	public Usuario(String nome, String ultimoNome, String email, String cartaoDeCredito, String senha) {
@@ -24,8 +33,14 @@ public class Usuario {
 		this.email = email;
 		this.cartaoDeCredito = cartaoDeCredito;
 		this.senha = senha;
+		
+		campanhas = new ArrayList<>();
 	}
 
+	
+	public void adicionaCampanha(Campanha c) {
+		campanhas.add(c);
+	}
 
 	public boolean verificaSenha(String pass) {
 		return this.senha.equals(pass);

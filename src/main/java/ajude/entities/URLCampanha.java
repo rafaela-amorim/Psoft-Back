@@ -9,7 +9,7 @@ public class URLCampanha {
 	
 	@Id
 	private String url;
-	@OneToOne(mappedBy="id")
+	@OneToOne()
 	private Campanha campanha;
 	
 	public URLCampanha() {

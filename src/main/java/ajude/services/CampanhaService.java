@@ -1,5 +1,6 @@
 package ajude.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,48 +8,85 @@ import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
 import ajude.DAOs.URLCampanhaRepository;
+import ajude.DAOs.UsuarioRepository;
+import ajude.classesAuxiliares.StatusCampanha;
 import ajude.entities.Campanha;
 import ajude.entities.URLCampanha;
+import ajude.entities.Usuario;
 
 @Service
 public class CampanhaService {
 
-	private CampanhaRepository<Campanha, Long> campanhaDAO;
-	private URLCampanhaRepository<URLCampanha,String> URLDAO;
+	private UsuarioRepository<Usuario, String> usuariosRepo;
+	private CampanhaRepository<Campanha, Long> campanhaRepo;
+	private URLCampanhaRepository<URLCampanha,String> URLRepo;
 	
 	
-	public CampanhaService(CampanhaRepository<Campanha, Long> campanhaDAO,URLCampanhaRepository<URLCampanha,String> urldao) {
+	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo, URLCampanhaRepository<URLCampanha,String> URLRepo) {
 		super();
-		this.campanhaDAO = campanhaDAO;
-		this.URLDAO = urldao;
+		this.campanhaRepo = campanhaRepo;
+		this.URLRepo = URLRepo;
+		this.usuariosRepo = usuariosRepo;
 	}
 	
 	// ------------------------------
 	
-	public Campanha addCampanha(Campanha campanha, URLCampanha camp) {
-		URLDAO.save(camp);
-		return campanhaDAO.save(campanha);
+	public Campanha addCampanha(Campanha campanha) {
+		URLRepo.save(campanha.getURLCampanha());
+		Usuario u = campanha.getDono();
+		
+		if (usuariosRepo.existsById(u.getEmail())) {
+			u.adicionaCampanha(campanha);
+			return campanhaRepo.save(campanha);
+		}
+		
+		return null;
 	}
 	
 	public Campanha getCampanha(long id) {
-		return campanhaDAO.findById(id).get();
+		return campanhaRepo.findById(id).get();
 	}
 	
 	public Campanha getCampanha(String url) {
-		return URLDAO.findById(url).get().getCampanha();
+		return URLRepo.findById(url).get().getCampanha();
 	}
 	
 	public boolean campanhaExiste(long id) {
-		return campanhaDAO.findById(id).isPresent();
+		return campanhaRepo.findById(id).isPresent();
 	}
 	
 	public List<Campanha> getCampanhas() {
-		return campanhaDAO.findAll();
+		return campanhaRepo.findAll();
+	}
+	
+	public Campanha encerraCampanha(long id, Usuario dono) {
+		// fazer autenticação para verificar se o Usuario passado é o dono mesmo
+		Campanha c = getCampanha(id);
+		c.setStatus(StatusCampanha.ENCERRADA);
+		campanhaRepo.save(c);
+		return c;
+	}
+	
+	public Campanha verificaStatus(long id) {
+		Campanha c = getCampanha(id);
+		Date d = new Date();
+		
+		if (c.getDataLimite().after(d)) {
+			if (c.getMeta() > c.getDoacoes()) {
+				c.setStatus(StatusCampanha.VENCIDA);
+			} else {
+				c.setStatus(StatusCampanha.CONCLUIDA);
+			}
+			
+			campanhaRepo.save(c);
+		}
+		
+		return c;
 	}
 	
 	public Campanha removeCampanha(long id) {
 		Campanha c = getCampanha(id);
-		campanhaDAO.delete(c);
+		campanhaRepo.delete(c);
 		return c;
 	}
 	

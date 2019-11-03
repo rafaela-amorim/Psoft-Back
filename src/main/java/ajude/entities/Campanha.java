@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import ajude.classesAuxiliares.FormataURL;
 import ajude.classesAuxiliares.StatusCampanha;
 
 @Entity
@@ -19,33 +20,46 @@ public class Campanha {
 	private long id;
 	private String nome;
 	private String descricao;
-	private Date data;
+	private Date dataLimite;
 	private StatusCampanha status;
-	@OneToOne(mappedBy="url")
+	
+	@OneToOne
 	private URLCampanha url;
 	private double meta;
 	private double doacoes;
-	private Usuario usuario;
+	@ManyToOne
+	private Usuario dono;
 	//private Comentario comentarios;
-	private int likes;
+	//private List<Usuario> likes;
+	
 	
 	public Campanha() {}
 	
-	public Campanha(String nome, String descricao, Date data, StatusCampanha status, double meta, double doacoes,
-			Usuario usuario, int likes) {
+	public Campanha(String nome, String descricao, double meta, Usuario dono) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
-		this.data = data;
-		this.status = status;
 		this.meta = meta;
-		this.doacoes = doacoes;
-		this.usuario = usuario;
-		this.likes = likes;
+		this.dono = dono;
+	
+		this.doacoes = 0;
+		this.dataLimite = new Date();
+		this.status = StatusCampanha.ATIVA;
+		this.url = new URLCampanha();
+		this.url.setUrl(FormataURL.formataURL(nome));
 	}
 	
 	// ----------------------------
 
+
+	public URLCampanha getURLCampanha() {
+		return url;
+	}
+
+	public void setURLCampanha(URLCampanha u) {
+		this.url = u;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -62,12 +76,12 @@ public class Campanha {
 		this.descricao = descricao;
 	}
 
-	public Date getData() {
-		return data;
+	public Date getDataLimite() {
+		return dataLimite;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public void setDataLimite(Date data) {
+		this.dataLimite = data;
 	}
 
 	public StatusCampanha getStatus() {
@@ -75,7 +89,7 @@ public class Campanha {
 	}
 
 	public void setStatus(StatusCampanha status) {
-		this.status = StatusCampanha.ATIVA;
+		this.status = status;
 	}
 
 	public double getMeta() {
@@ -94,19 +108,12 @@ public class Campanha {
 		this.doacoes = doacoes;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Usuario getDono() {
+		return dono;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setDono(Usuario dono) {
+		this.dono = dono;
 	}
 
-	public int getLikes() {
-		return likes;
-	}
-
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
 }
