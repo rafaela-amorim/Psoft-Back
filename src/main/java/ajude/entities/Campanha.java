@@ -4,12 +4,11 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ajude.classesAuxiliares.StatusCampanha;
 
@@ -24,13 +23,12 @@ public class Campanha {
 	private Date dataLimite;
 	private StatusCampanha status;
 	
-	@OneToOne(cascade=CascadeType.REMOVE)
+	@OneToOne(cascade=CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private URLCampanha url;
 	private double meta;
 	private double doacoes;
 	
 	@ManyToOne(cascade=CascadeType.DETACH)
-	@JsonIgnore
 	private Usuario dono;
 	private String emailDono;
 	//private Comentario comentarios;

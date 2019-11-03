@@ -1,15 +1,19 @@
 package ajude.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class URLCampanha {
 	
 	@Id
 	private String url;
-	@OneToOne()
+	@OneToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Campanha campanha;
 	
 	public URLCampanha() {
