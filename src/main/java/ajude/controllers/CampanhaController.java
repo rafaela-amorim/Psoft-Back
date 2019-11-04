@@ -35,7 +35,7 @@ public class CampanhaController {
 		if (c != null) {
 			return new ResponseEntity<Campanha>(c, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Campanha>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	

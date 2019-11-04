@@ -23,14 +23,13 @@ public class Campanha {
 	private Date dataLimite;
 	private StatusCampanha status;
 	
-	@OneToOne(cascade=CascadeType.REMOVE, fetch = FetchType.LAZY)
+	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
 	private URLCampanha url;
 	private double meta;
 	private double doacoes;
 	
 	@ManyToOne(cascade=CascadeType.DETACH)
 	private Usuario dono;
-	private String emailDono;
 	//private Comentario comentarios;
 	//private List<String> likes;
 	
@@ -42,12 +41,11 @@ public class Campanha {
 		this.status = StatusCampanha.ATIVA;
 	}
 	
-	public Campanha(String nome, String descricao, double meta, String emailDono) {
+	public Campanha(String nome, String descricao, double meta) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
 		this.meta = meta;
-		this.emailDono = emailDono;
 		this.dono = null;
 	
 		this.doacoes = 0;
@@ -56,15 +54,6 @@ public class Campanha {
 	}
 	
 	// ----------------------------
-
-
-	public URLCampanha getURLCampanha() {
-		return url;
-	}
-
-	public void setURLCampanha(URLCampanha u) {
-		this.url = u;
-	}
 	
 	public String getNome() {
 		return nome;
@@ -128,14 +117,6 @@ public class Campanha {
 
 	public void setUrl(URLCampanha url) {
 		this.url = url;
-	}
-
-	public String getEmailDono() {
-		return emailDono;
-	}
-
-	public void setEmailDono(String emailDono) {
-		this.emailDono = emailDono;
 	}
 
 }

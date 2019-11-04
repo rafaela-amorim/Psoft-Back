@@ -12,7 +12,7 @@ public class URLCampanha {
 	
 	@Id
 	private String url;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JsonIgnore
 	private Campanha campanha;
 	

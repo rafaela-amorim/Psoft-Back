@@ -33,7 +33,6 @@ public class CampanhaService {
 	// ------------------------------
 	
 	public Campanha addCampanha(Campanha campanha) {
-		campanha.setDono(usuariosRepo.findById(campanha.getEmailDono()).get());
 		Usuario u = campanha.getDono();
 		
 		if (usuariosRepo.existsById(u.getEmail())) {
@@ -41,12 +40,14 @@ public class CampanhaService {
 			url.setUrl(FormataURL.formataURL(campanha.getNome()));
 			url.setCampanha(campanha);
 			
-			URLRepo.save(url);
 			
-			campanha.setURLCampanha(url);
+			
+			campanha.setUrl(url);
 			
 			u.adicionaCampanha(campanha);
 			usuariosRepo.save(u);
+			
+//			URLRepo.save(url);
 			return campanhaRepo.save(campanha);
 		}
 		
