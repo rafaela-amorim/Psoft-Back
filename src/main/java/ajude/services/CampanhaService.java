@@ -40,14 +40,11 @@ public class CampanhaService {
 			url.setUrl(FormataURL.formataURL(campanha.getNome()));
 			url.setCampanha(campanha);
 			
-			
-			
 			campanha.setUrl(url);
 			
 			u.adicionaCampanha(campanha);
 			usuariosRepo.save(u);
 			
-//			URLRepo.save(url);
 			return campanhaRepo.save(campanha);
 		}
 		
