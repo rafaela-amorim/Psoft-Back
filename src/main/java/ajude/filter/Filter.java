@@ -20,6 +20,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 
 public class Filter  extends GenericFilterBean{
 	private final int TOKEN_INDEX = 7;
+	private final String TOKEN = "omae wa mou shindeiru.";
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -35,7 +36,7 @@ public class Filter  extends GenericFilterBean{
 		
 		
 		try {
-			Jwts.parser().setSigningKey("sturingu japonese luelue").parseClaimsJws(token).getBody();
+			Jwts.parser().setSigningKey(TOKEN).parseClaimsJws(token).getBody();
 		}catch(SignatureException | ExpiredJwtException | MalformedJwtException | PrematureJwtException | UnsupportedJwtException | IllegalArgumentException e){
 			((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
 			return;

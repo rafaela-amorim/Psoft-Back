@@ -17,19 +17,23 @@ import ajude.entities.Campanha;
 import ajude.entities.URLCampanha;
 import ajude.entities.Usuario;
 import ajude.services.CampanhaService;
+import ajude.services.JwtService;
 
 @RestController
 public class CampanhaController {
 
-	private CampanhaService campanhaService;	
+	private CampanhaService campanhaService;
+	private JwtService jwtService;
 	
-	public CampanhaController(CampanhaService campanhaService) {
+	public CampanhaController(CampanhaService campanhaService,JwtService jwt) {
 		super();
 		this.campanhaService = campanhaService;
+		this.jwtService = jwt;
 	}
 	
 	@PostMapping("/campanha")
-	public ResponseEntity<Campanha> adicionaCampanha(@RequestBody Campanha camp){
+	public ResponseEntity<Campanha> adicionaCampanha(@RequestBody Campanha camp,@RequestHeader("Authorization") String token){
+		camp.setDono(jwtService.getUsuario(token));
 		Campanha c = campanhaService.addCampanha(camp);
 		
 		if (c != null) {

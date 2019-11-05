@@ -1,6 +1,7 @@
 package ajude.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 
@@ -38,6 +39,15 @@ public class JwtService {
 		} else {
 			throw new ServletException("Senha invalida!");
 		}
+	}
+	
+	public String getEmailToken(String token) {
+		String Token = token.substring(TOKEN_INDEX);
+		return Jwts.parser().setSigningKey(TOKEN).parseClaimsJws(Token).getBody().getSubject();
+	}
+	
+	public Usuario getUsuario(String Token){
+		return usuarioService.getUsuario(getEmailToken(Token));
 	}
 }
 
