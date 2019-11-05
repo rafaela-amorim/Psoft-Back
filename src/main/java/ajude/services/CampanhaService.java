@@ -1,5 +1,6 @@
 package ajude.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +58,11 @@ public class CampanhaService {
 	
 	public Campanha getCampanha(String url) {
 		return URLRepo.findById(url).get().getCampanha();
+	}
+	
+	public List<Campanha> findBySubstring(String substring) {
+		substring = substring.toLowerCase();
+		return campanhaRepo.findBySubstring(substring);
 	}
 	
 	public boolean campanhaExiste(long id) {

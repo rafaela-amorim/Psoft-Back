@@ -1,5 +1,7 @@
 package ajude.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ public class CampanhaController {
 	private CampanhaService campanhaService;
 	private JwtService jwtService;
 	
-	public CampanhaController(CampanhaService campanhaService,JwtService jwt) {
+	public CampanhaController(CampanhaService campanhaService, JwtService jwt) {
 		super();
 		this.campanhaService = campanhaService;
 		this.jwtService = jwt;
@@ -46,6 +48,11 @@ public class CampanhaController {
 	@GetMapping("/campanha/{url}")
 	public ResponseEntity<Campanha> pegaCampanha(@PathVariable String url){
 		return new ResponseEntity<Campanha>(campanhaService.getCampanha(url),HttpStatus.OK);
+	}
+	
+	@GetMapping("/campanha/find/{substring}")
+	public ResponseEntity<List<Campanha>> findByString(@PathVariable String substring) {
+		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
 	}
 	
 	/*
