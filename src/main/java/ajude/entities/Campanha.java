@@ -4,15 +4,18 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import ajude.classesAuxiliares.StatusCampanha;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = "url", name = "url")}
+)
 public class Campanha {
 
 	@Id
@@ -22,39 +25,35 @@ public class Campanha {
 	private String descricao;
 	private Date dataLimite;
 	private StatusCampanha status;
-	
-	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-	private URLCampanha url;
+	private String url;
 	private double meta;
 	private double doacoes;
-	
-	@ManyToOne(cascade=CascadeType.DETACH)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	private Usuario dono;
-	//private Comentario comentarios;
-	//private List<String> likes;
-	
-	
+	// private Comentario comentarios;
+	// private List<String> likes;
+
 	public Campanha() {
 		super();
 		this.doacoes = 0;
 		this.dataLimite = new Date();
 		this.status = StatusCampanha.ATIVA;
 	}
-	
+
 	public Campanha(String nome, String descricao, double meta) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
 		this.meta = meta;
 		this.dono = null;
-	
+
 		this.doacoes = 0;
 		this.dataLimite = new Date();
 		this.status = StatusCampanha.ATIVA;
 	}
-	
+
 	// ----------------------------
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -111,12 +110,11 @@ public class Campanha {
 		this.dono = dono;
 	}
 
-	public URLCampanha getUrl() {
+	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(URLCampanha url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
-
 }

@@ -1,19 +1,15 @@
 package ajude.services;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
-import ajude.DAOs.URLCampanhaRepository;
 import ajude.DAOs.UsuarioRepository;
 import ajude.classesAuxiliares.FormataURL;
 import ajude.classesAuxiliares.StatusCampanha;
 import ajude.entities.Campanha;
-import ajude.entities.URLCampanha;
 import ajude.entities.Usuario;
 
 @Service
@@ -21,13 +17,11 @@ public class CampanhaService {
 
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
-	private URLCampanhaRepository<URLCampanha,String> URLRepo;
 	
 	
-	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo, URLCampanhaRepository<URLCampanha,String> URLRepo) {
+	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo) {
 		super();
 		this.campanhaRepo = campanhaRepo;
-		this.URLRepo = URLRepo;
 		this.usuariosRepo = usuariosRepo;
 	}
 	
@@ -37,11 +31,7 @@ public class CampanhaService {
 		Usuario u = campanha.getDono();
 		
 		if (usuariosRepo.existsById(u.getEmail())) {
-			URLCampanha url = new URLCampanha();
-			url.setUrl(FormataURL.formataURL(campanha.getNome()));
-			url.setCampanha(campanha);
-			
-			campanha.setUrl(url);
+			campanha.setUrl(FormataURL.formataURL(campanha.getNome()));
 			
 			u.adicionaCampanha(campanha);
 			usuariosRepo.save(u);
@@ -57,7 +47,7 @@ public class CampanhaService {
 	}
 	
 	public Campanha getCampanha(String url) {
-		return URLRepo.findById(url).get().getCampanha();
+		return campanhaRepo.findByUrl(url);
 	}
 	
 	public List<Campanha> findBySubstring(String substring) {
