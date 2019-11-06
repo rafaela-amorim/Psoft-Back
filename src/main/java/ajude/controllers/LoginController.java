@@ -26,7 +26,7 @@ public class LoginController {
 	}
 	
 	
-	@PostMapping("auth/usuarios")
+	@PostMapping("login/usuarios")
 	public ResponseEntity<LoginResponse> authenticate(@RequestBody Usuario user) {
 		if (!usuarioService.usuarioExiste(user.getEmail())) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

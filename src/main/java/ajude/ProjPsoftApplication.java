@@ -17,7 +17,7 @@ public class ProjPsoftApplication {
 	public FilterRegistrationBean<Filter> filter(){
 		FilterRegistrationBean<Filter> fil = new FilterRegistrationBean<Filter>();
 		fil.setFilter(new Filter());
-		fil.addUrlPatterns("/campanha"); //rotas que precisam ser autenticadas
+		fil.addUrlPatterns("/auth/*"); //rotas que precisam ser autenticadas
 		return fil;
 	}
 

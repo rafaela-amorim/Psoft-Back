@@ -40,7 +40,8 @@ public class Campanha {
 		this.status = StatusCampanha.ATIVA;
 	}
 
-	public Campanha(String nome, String descricao, double meta) {
+	@SuppressWarnings("deprecation")
+	public Campanha(String nome, String descricao, double meta, String data) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
@@ -48,12 +49,16 @@ public class Campanha {
 		this.dono = null;
 
 		this.doacoes = 0;
-		this.dataLimite = new Date();
+		this.dataLimite = new Date(data);
 		this.status = StatusCampanha.ATIVA;
 	}
 
 	// ----------------------------
 
+	public boolean estaAtiva() {
+		return this.status == StatusCampanha.ATIVA;
+	}
+	
 	public String getNome() {
 		return nome;
 	}

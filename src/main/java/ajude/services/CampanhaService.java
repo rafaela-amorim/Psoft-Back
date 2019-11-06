@@ -46,8 +46,8 @@ public class CampanhaService {
 		return campanhaRepo.findById(id).get();
 	}
 	
-	public Campanha getCampanha(String url) {
-		return campanhaRepo.findByUrl(url);
+	public Campanha getCampanha(String url) throws Exception {
+		return campanhaRepo.findByUrl(url).get();
 	}
 	
 	public List<Campanha> findBySubstring(String substring) {
@@ -63,16 +63,20 @@ public class CampanhaService {
 		return campanhaRepo.findAll();
 	}
 	
-	public Campanha encerraCampanha(long id, Usuario dono) {
-		// fazer autenticação para verificar se o Usuario passado é o dono mesmo
-		Campanha c = getCampanha(id);
-		c.setStatus(StatusCampanha.ENCERRADA);
-		campanhaRepo.save(c);
+	public Campanha encerraCampanha(String url, String email) throws Exception {
+		// tem que autenticar o usuario
+		Campanha c = getCampanha(url);
+		
+		if (verificaDono(url, email)) {
+			c.setStatus(StatusCampanha.ENCERRADA);
+			campanhaRepo.save(c);
+		}
+		
 		return c;
 	}
 	
-	public Campanha verificaStatus(long id) {
-		Campanha c = getCampanha(id);
+	public Campanha verificaStatus(String url) throws Exception {
+		Campanha c = getCampanha(url);
 		Date d = new Date();
 		
 		if (c.getDataLimite().after(d)) {
@@ -88,11 +92,42 @@ public class CampanhaService {
 		return c;
 	}
 	
+	public Campanha alterarDeadline(String url, String userEmail, String novaData) throws Exception {
+		Campanha c = getCampanha(url);
+		
+		if ( verificaDono(url, userEmail) && c.getDataLimite().before(new Date(novaData)) ) {
+			c.setDataLimite(new Date(novaData));
+			campanhaRepo.save(c);
+		}
+		
+		return c;
+	}
+	
+	public Campanha alterarMeta(String url, String email, double novaMeta) throws Exception {
+		Campanha c = getCampanha(url);
+		
+		if (c.estaAtiva() && verificaDono(url, email)) {
+			c.setMeta(novaMeta);
+			campanhaRepo.save(c);
+		}
+		
+		return c;
+	}
+	
 	public Campanha removeCampanha(long id) {
 		Campanha c = getCampanha(id);
 		campanhaRepo.delete(c);
 		return c;
 	}
 	
+	public boolean verificaDono(String url, String userEmail) throws Exception {
+		Usuario user = usuariosRepo.findById(userEmail).get();
+		Campanha camp = getCampanha(url);
+		
+		return user.equals(camp.getDono());
+	}
 	
+	public boolean existeCampanha(String url) {
+		return campanhaRepo.findByUrl(url).isPresent();
+	}
 }
