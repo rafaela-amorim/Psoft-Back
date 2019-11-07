@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.classesAuxiliares.Data;
+import ajude.classesAuxiliares.Meta;
 import ajude.entities.Campanha;
 import ajude.services.CampanhaService;
 import ajude.services.JwtService;
@@ -75,19 +76,19 @@ public class CampanhaController {
 	public ResponseEntity<Campanha> alterarDeadline(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Data novaData) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		
-//		try {
-			return new ResponseEntity<Campanha>(campanhaService.alterarDeadline(url, email, novaData), HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
+		try {
+			return new ResponseEntity<Campanha>(campanhaService.alterarDeadline(url, email, novaData.getData()), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PutMapping("auth/campanha/meta/{url}")
-	public ResponseEntity<Campanha> alterarMeta(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody double novaMeta) {
+	public ResponseEntity<Campanha> alterarMeta(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Meta novaMeta) {
 		String email = jwtService.getEmailToken(token);
 		
 		try {
-			return new ResponseEntity<Campanha>(campanhaService.alterarMeta(url, email, novaMeta), HttpStatus.OK);
+			return new ResponseEntity<Campanha>(campanhaService.alterarMeta(url, email, novaMeta.getMeta()), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

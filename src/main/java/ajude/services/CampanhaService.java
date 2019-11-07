@@ -92,11 +92,11 @@ public class CampanhaService {
 		return c;
 	}
 	
-	public Campanha alterarDeadline(String url, String userEmail, String novaData) throws Exception {
+	public Campanha alterarDeadline(String url, String userEmail, Date novaData) throws Exception {
 		Campanha c = getCampanha(url);
-		
-		if ( verificaDono(url, userEmail) && c.getDataLimite().before(new Date(novaData)) ) {
-			c.setDataLimite(new Date(novaData));
+		Date data = new Date();
+		if ( verificaDono(url, userEmail) && data.before(novaData) ) {
+			c.setDataLimite(novaData);
 			campanhaRepo.save(c);
 		}
 		

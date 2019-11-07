@@ -5,6 +5,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Data {
+	
 	@JsonFormat(pattern="yyyy-MM-dd")
 	Date data;
 	
