@@ -2,8 +2,6 @@ package ajude.controllers;
 
 import java.util.List;
 
-import javax.servlet.ServletException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,23 +16,23 @@ import ajude.classesAuxiliares.Data;
 import ajude.classesAuxiliares.Meta;
 import ajude.entities.Campanha;
 import ajude.services.CampanhaService;
-import ajude.services.JwtService;
+import ajude.services.JWTService;
 
 @RestController
 public class CampanhaController {
 
 	private CampanhaService campanhaService;
-	private JwtService jwtService;
+	private JWTService jwtService;
 	
-	public CampanhaController(CampanhaService campanhaService, JwtService jwt) {
+	public CampanhaController(CampanhaService campanhaService, JWTService jwtService) {
 		super();
 		this.campanhaService = campanhaService;
-		this.jwtService = jwt;
+		this.jwtService = jwtService;
 	}
 	
 	@PostMapping("auth/campanha")
-	public ResponseEntity<Campanha> adicionaCampanha(@RequestBody Campanha camp, @RequestHeader("Authorization") String token) {
-		Campanha c = campanhaService.addCampanha(camp, jwtService.getUsuario(token));
+	public ResponseEntity<Campanha> addCampanha(@RequestBody Campanha campanha, @RequestHeader("Authorization") String token) {
+		Campanha c = campanhaService.addCampanha(campanha, jwtService.getUsuario(token));
 		return new ResponseEntity<Campanha>(c, HttpStatus.CREATED);
 	}
 	
@@ -86,32 +84,5 @@ public class CampanhaController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-	}
-	
+	}	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

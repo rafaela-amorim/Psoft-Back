@@ -17,8 +17,7 @@ public class CampanhaService {
 
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
-	
-	
+		
 	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo) {
 		super();
 		this.campanhaRepo = campanhaRepo;
@@ -27,8 +26,7 @@ public class CampanhaService {
 	
 	// ------------------------------
 	
-	public Campanha addCampanha(Campanha campanha,Usuario user) {
-
+	public Campanha addCampanha(Campanha campanha, Usuario user) {
 		campanha.setDono(user);
 		campanha.setUrl(FormataURL.formataURL(campanha.getNome()));
 		
@@ -37,7 +35,6 @@ public class CampanhaService {
 		
 		return campanhaRepo.save(campanha);
 	}
-	
 	
 	public Campanha getCampanha(long id) {
 		return campanhaRepo.findById(id).get();
@@ -48,8 +45,7 @@ public class CampanhaService {
 	}
 	
 	public List<Campanha> findBySubstring(String substring) {
-		substring = substring.toLowerCase();
-		return campanhaRepo.findBySubstring(substring);
+		return campanhaRepo.findBySubstring(substring.toLowerCase());
 	}
 	
 	public boolean campanhaExiste(long id) {
@@ -61,7 +57,6 @@ public class CampanhaService {
 	}
 	
 	public Campanha encerraCampanha(String url, String email) throws Exception {
-		
 		Campanha c = getCampanha(url);
 		
 		if (verificaDono(url, email)) {
@@ -77,11 +72,10 @@ public class CampanhaService {
 		Date d = new Date();
 		
 		if (c.getDataLimite().after(d)) {
-			if (c.getMeta() > c.getDoacoes()) {
+			if (c.getMeta() > c.getDoacoes())
 				c.setStatus(StatusCampanha.VENCIDA);
-			} else {
+			else
 				c.setStatus(StatusCampanha.CONCLUIDA);
-			}
 			
 			campanhaRepo.save(c);
 		}
@@ -92,7 +86,8 @@ public class CampanhaService {
 	public Campanha alterarDeadline(String url, String userEmail, Date novaData) throws Exception {
 		Campanha c = getCampanha(url);
 		Date data = new Date();
-		if ( verificaDono(url, userEmail) && data.before(novaData) ) {
+		
+		if (verificaDono(url, userEmail) && data.before(novaData)) {
 			c.setDataLimite(novaData);
 			campanhaRepo.save(c);
 		}

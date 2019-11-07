@@ -9,7 +9,5 @@ public class Meta {
 
 	public void setMeta(double meta) {
 		this.meta = meta;
-	}
-	
-	
+	}	
 }

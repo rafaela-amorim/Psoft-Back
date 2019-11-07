@@ -47,7 +47,6 @@ public class Campanha {
 		this.descricao = descricao;
 		this.meta = meta;
 		this.dono = null;
-
 		this.doacoes = 0;
 		this.dataLimite = new Date(data);
 		this.status = StatusCampanha.ATIVA;

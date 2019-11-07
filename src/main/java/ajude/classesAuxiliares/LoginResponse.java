@@ -14,7 +14,5 @@ public class LoginResponse {
 
 	public void setToken(String token) {
 		this.token = token;
-	}
-	
+	}	
 }
-

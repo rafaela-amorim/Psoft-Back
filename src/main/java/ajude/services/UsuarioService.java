@@ -1,7 +1,6 @@
 package ajude.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -42,11 +41,9 @@ public class UsuarioService {
 	}
 	
 	public boolean senhaIgual(String email, String senha) {
-		if(usuarioExiste(email)) {
+		if(usuarioExiste(email))
 			return getUsuario(email).verificaSenha(senha);
-		}
-		else
-			return false;
+		return false;
 	}
 	
 	public Usuario removeUsuario(String email) {

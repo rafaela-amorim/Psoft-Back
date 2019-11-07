@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import ajude.entities.Campanha;
 
-
-public interface CampanhaRepository<T, ID extends Serializable> extends JpaRepository<Campanha, Long>  {
+public interface CampanhaRepository<T, ID extends Serializable> extends JpaRepository<Campanha, Long> {
 
 	@Query("select c from Campanha as c where lower(nome) like %?1% ")
 	List<Campanha> findBySubstring(String substring);

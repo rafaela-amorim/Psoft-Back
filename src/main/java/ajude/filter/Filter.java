@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.GenericFilterBean;
 
-import ajude.services.UsuarioService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -19,10 +18,10 @@ import io.jsonwebtoken.PrematureJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
-public class Filter  extends GenericFilterBean{
+public class Filter extends GenericFilterBean {
+
 	private final int TOKEN_INDEX = 7;
 	private final String TOKEN = "omae wa mou shindeiru.";
-	
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -30,21 +29,18 @@ public class Filter  extends GenericFilterBean{
 		
 		String header = req.getHeader("Authorization");
 		
-		if(header == null || !header.startsWith("Bearer ")) {
+		if (header == null || !header.startsWith("Bearer "))
 			throw new ServletException("Token inexistente ou mal formatado!");
-		}
 		
 		String token = header.substring(TOKEN_INDEX);
 		
-		
 		try {
 			Jwts.parser().setSigningKey(TOKEN).parseClaimsJws(token).getBody();
-		}catch(SignatureException | ExpiredJwtException | MalformedJwtException | PrematureJwtException | UnsupportedJwtException | IllegalArgumentException e){
+		} catch(SignatureException | ExpiredJwtException | MalformedJwtException | PrematureJwtException | UnsupportedJwtException | IllegalArgumentException e) {
 			((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
 			return;
 		}
 		
 		chain.doFilter(request, response);
-		
 	}
 }

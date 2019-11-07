@@ -10,7 +10,6 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
 public class Usuario {
 	
@@ -19,8 +18,7 @@ public class Usuario {
 	@Id
 	private String email;
 	private String cartaoDeCredito;
-	private String senha;
-	
+	private String senha;	
 	@OneToMany(mappedBy = "dono", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private List<Campanha> campanhas;
@@ -37,7 +35,6 @@ public class Usuario {
 		this.email = email;
 		this.cartaoDeCredito = cartaoDeCredito;
 		this.senha = senha;
-		
 		campanhas = new ArrayList<>();
 	}
 
@@ -71,7 +68,6 @@ public class Usuario {
 		return this.senha.equals(pass);
 	}
 	
-
 	public String getNome() {
 		return nome;
 	}
@@ -119,6 +115,4 @@ public class Usuario {
 	public void setCampanhas(List<Campanha> campanhas) {
 		this.campanhas = campanhas;
 	}
-	
- 
 }

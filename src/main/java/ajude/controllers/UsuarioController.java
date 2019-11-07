@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.entities.Usuario;
-import ajude.services.JwtService;
+import ajude.services.JWTService;
 import ajude.services.UsuarioService;
 
 @RestController
@@ -20,19 +20,17 @@ public class UsuarioController {
 
 	private UsuarioService usuarioService;
 	
-	public UsuarioController(UsuarioService usuarioService,JwtService jwtServices) {
+	public UsuarioController(UsuarioService usuarioService, JWTService jwtService) {
 		super();
 		this.usuarioService = usuarioService;
 	}
 	
-	
 	// ajeitar o retorno do erro
 	@PostMapping("usuarios")
-	public ResponseEntity<Usuario> adicionaUsuario(@RequestBody Usuario usuario) {
-		if(!usuarioService.usuarioExiste(usuario.getEmail()))
+	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
+		if (!usuarioService.usuarioExiste(usuario.getEmail()))
 			return new ResponseEntity<Usuario>(usuarioService.addUsuario(usuario), HttpStatus.OK);
-		else
-			return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("usuarios")
