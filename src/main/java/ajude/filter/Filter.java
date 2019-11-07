@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.GenericFilterBean;
 
+import ajude.services.UsuarioService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -21,7 +22,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 public class Filter  extends GenericFilterBean{
 	private final int TOKEN_INDEX = 7;
 	private final String TOKEN = "omae wa mou shindeiru.";
-
+	
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;

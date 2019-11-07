@@ -49,6 +49,7 @@ public class JwtService {
 	public Usuario getUsuario(String Token){
 		return usuarioService.getUsuario(getEmailToken(Token));
 	}
+	
 }
 
 

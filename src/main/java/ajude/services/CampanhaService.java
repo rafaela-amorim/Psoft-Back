@@ -27,20 +27,17 @@ public class CampanhaService {
 	
 	// ------------------------------
 	
-	public Campanha addCampanha(Campanha campanha) {
-		Usuario u = campanha.getDono();
+	public Campanha addCampanha(Campanha campanha,Usuario user) {
+
+		campanha.setDono(user);
+		campanha.setUrl(FormataURL.formataURL(campanha.getNome()));
 		
-		if (usuariosRepo.existsById(u.getEmail())) {
-			campanha.setUrl(FormataURL.formataURL(campanha.getNome()));
-			
-			u.adicionaCampanha(campanha);
-			usuariosRepo.save(u);
-			
-			return campanhaRepo.save(campanha);
-		}
+		user.adicionaCampanha(campanha);
+		usuariosRepo.save(user);
 		
-		return new Campanha();
+		return campanhaRepo.save(campanha);
 	}
+	
 	
 	public Campanha getCampanha(long id) {
 		return campanhaRepo.findById(id).get();
@@ -64,7 +61,7 @@ public class CampanhaService {
 	}
 	
 	public Campanha encerraCampanha(String url, String email) throws Exception {
-		// tem que autenticar o usuario
+		
 		Campanha c = getCampanha(url);
 		
 		if (verificaDono(url, email)) {

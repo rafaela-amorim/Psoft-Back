@@ -34,14 +34,8 @@ public class CampanhaController {
 	
 	@PostMapping("auth/campanha")
 	public ResponseEntity<Campanha> adicionaCampanha(@RequestBody Campanha camp, @RequestHeader("Authorization") String token) {
-		camp.setDono(jwtService.getUsuario(token));
-		Campanha c = campanhaService.addCampanha(camp);
-		
-		if (c != null) {
-			return new ResponseEntity<Campanha>(c, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<Campanha>(HttpStatus.BAD_REQUEST);
-		}
+		Campanha c = campanhaService.addCampanha(camp, jwtService.getUsuario(token));
+		return new ResponseEntity<Campanha>(c, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("campanha/{url}")
