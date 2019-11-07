@@ -16,4 +16,7 @@ public interface CampanhaRepository<T, ID extends Serializable> extends JpaRepos
 	
 	@Query("select c from Campanha as c where c.url = ?1")
 	Optional<Campanha> findByUrl(String url);
+	
+	@Query("select c from Campanha as c")
+	List<Campanha> countAll();
 }

@@ -26,13 +26,15 @@ public class CampanhaService {
 	
 	// ------------------------------
 	
-	public Campanha addCampanha(Campanha campanha, Usuario user) {
+	public Campanha addCampanha(Campanha campanha, Usuario user){
 		campanha.setDono(user);
-		campanha.setUrl(FormataURL.formataURL(campanha.getNome()));
-		
+		String url = FormataURL.formataURL(campanha.getNome());
+		url += countAll();
+				
 		user.adicionaCampanha(campanha);
-		usuariosRepo.save(user);
+		campanha.setUrl(url);
 		
+		usuariosRepo.save(user);
 		return campanhaRepo.save(campanha);
 	}
 	
@@ -110,6 +112,10 @@ public class CampanhaService {
 		Campanha c = getCampanha(id);
 		campanhaRepo.delete(c);
 		return c;
+	}
+	
+	public int countAll() {
+		return campanhaRepo.countAll().size();
 	}
 	
 	public boolean verificaDono(String url, String userEmail) throws Exception {

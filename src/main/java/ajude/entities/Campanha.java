@@ -13,9 +13,10 @@ import javax.persistence.UniqueConstraint;
 import ajude.classesAuxiliares.StatusCampanha;
 
 @Entity
+/*
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = "url", name = "url")}
-)
+)*/
 public class Campanha {
 
 	@Id
