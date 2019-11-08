@@ -51,10 +51,7 @@ public class CampanhaController {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
 	}
 	
-	@PutMapping("campanha/comment/{id}")
-	public ResponseEntity<Comentario> addComentario(@RequestBody Comentario comentario, @PathVariable long id) throws Exception {
-		return new ResponseEntity<Comentario>(campanhaService.addComentario(comentario), HttpStatus.OK);
-	}
+	
 	
 	// -----------------------------------
 	

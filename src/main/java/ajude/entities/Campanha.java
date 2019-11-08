@@ -34,9 +34,9 @@ public class Campanha {
 	@ManyToOne(cascade = CascadeType.DETACH)
 	private Usuario dono;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "campanha_id", referencedColumnName = "id")
-	private List<Comentario> comentarios;
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//	@JoinColumn(name = "campanha_id", referencedColumnName = "id")
+//	private List<Comentario> comentarios;
 	// private List<String> likes;
 
 	public Campanha() {
@@ -128,15 +128,20 @@ public class Campanha {
 		this.url = url;
 	}
 
-	public List<Comentario> getComentarios() {
-		return comentarios;
+	public long getId() {
+		return id;
 	}
 
-	public void setComentarios(List<Comentario> comentarios) {
-		this.comentarios = comentarios;
-	}
-	
-	public void addComentario(Comentario comentario) {
-		this.comentarios.add(comentario);
-	}
+
+//	public List<Comentario> getComentarios() {
+//		return comentarios;
+//	}
+//
+//	public void setComentarios(List<Comentario> comentarios) {
+//		this.comentarios = comentarios;
+//	}
+//	
+//	public void addComentario(Comentario comentario) {
+//		this.comentarios.add(comentario);
+//	}
 }

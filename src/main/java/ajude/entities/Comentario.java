@@ -14,15 +14,15 @@ public class Comentario {
 	
 	@Id
 	@GeneratedValue
-	private int id;
+	private long id;
 	
 	@NotNull
 	@NotEmpty
 	private String comentario;
 	
-	@ManyToOne(cascade = CascadeType.DETACH)
-	@JoinColumn(name = "comment_owner", referencedColumnName = "email")
-	private Usuario commentOwner;
+//	@ManyToOne(cascade = CascadeType.DETACH)
+//	@JoinColumn(name = "comment_owner", referencedColumnName = "email")
+	private String commentOwner;
 	
 	private long idCampanha;
 	private long idComentario; //????
@@ -54,6 +54,7 @@ public class Comentario {
 	}
 
 	public void setIdCampanha(long idCampanha) {
+		this.idComentario = -1;
 		this.idCampanha = idCampanha;
 	}
 
@@ -62,6 +63,7 @@ public class Comentario {
 	}
 
 	public void setIdComentario(long idComentario) {
+		this.idCampanha = -1;
 		this.idComentario = idComentario;
 	}
 
@@ -73,11 +75,16 @@ public class Comentario {
 		this.apagada = apagada;
 	}
 
-	public Usuario getCommentOwner() {
+	public String getCommentOwner() {
 		return commentOwner;
 	}
 
-	public void setCommentOwner(Usuario commentOwner) {
+	public void setCommentOwner(String commentOwner) {
 		this.commentOwner = commentOwner;
 	}
+
+	public long getId() {
+		return id;
+	}
+
 }

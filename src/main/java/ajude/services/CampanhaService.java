@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
+import ajude.DAOs.ComentarioRepository;
 import ajude.DAOs.UsuarioRepository;
 import ajude.classesAuxiliares.FormataURL;
 import ajude.entities.Campanha;
@@ -20,14 +21,16 @@ public class CampanhaService {
 
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
+	private ComentarioRepository<Comentario,Long> comentarioRepo;
 	
 	@Autowired
 	ComentarioService comentarioService;
 		
-	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo) {
+	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo,ComentarioRepository<Comentario,Long> comentarioRepo) {
 		super();
 		this.campanhaRepo = campanhaRepo;
 		this.usuariosRepo = usuariosRepo;
+		this.comentarioRepo = comentarioRepo;
 	}
 	
 	// ------------------------------
@@ -48,17 +51,7 @@ public class CampanhaService {
 		return campanhaRepo.findBySubstring(substring.toLowerCase());
 	}
 	
-	public Comentario addComentario(Comentario comentario) throws Exception {
-		Optional<Campanha> c = campanhaRepo.findById(comentario.getIdCampanha());
-		if (!c.isPresent())
-			throw new Exception();
-		
-		comentarioService.salvarComentario(comentario);
-		c.get().addComentario(comentario);
-		campanhaRepo.save(c.get());
-		
-		return comentario;
-	}
+
 	
 	public Campanha encerraCampanha(String url, String email) throws Exception {
 		Campanha c = getCampanha(url);

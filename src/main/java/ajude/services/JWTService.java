@@ -45,4 +45,8 @@ public class JWTService {
 	public Usuario getUsuario(String token) {
 		return usuarioService.getUsuario(getEmailToken(token));
 	}
+	
+	public boolean usuarioExiste(String email) {
+		return usuarioService.usuarioExiste(email);
+	}
 }
