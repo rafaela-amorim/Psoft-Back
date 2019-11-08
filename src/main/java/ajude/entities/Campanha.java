@@ -1,16 +1,18 @@
 package ajude.entities;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.OneToMany;
 
-import ajude.classesAuxiliares.StatusCampanha;
+import ajude.enums.StatusCampanha;
 
 @Entity
 /*
@@ -31,7 +33,10 @@ public class Campanha {
 	private double doacoes;
 	@ManyToOne(cascade = CascadeType.DETACH)
 	private Usuario dono;
-	// private Comentario comentarios;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "campanha_id", referencedColumnName = "id")
+	private List<Comentario> comentarios;
 	// private List<String> likes;
 
 	public Campanha() {
@@ -121,5 +126,17 @@ public class Campanha {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+	
+	public void addComentario(Comentario comentario) {
+		this.comentarios.add(comentario);
 	}
 }

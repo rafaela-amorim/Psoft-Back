@@ -52,8 +52,6 @@ public class UsuarioService {
 		return u;
 	}
 	
-	// ----------------------
-	
 	public boolean usuarioExiste(String email) {
 		return usuariosRepo.findById(email).isPresent();
 	}

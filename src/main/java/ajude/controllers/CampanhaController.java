@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ajude.classesAuxiliares.Data;
 import ajude.classesAuxiliares.Meta;
 import ajude.entities.Campanha;
+import ajude.entities.Comentario;
 import ajude.services.CampanhaService;
 import ajude.services.JWTService;
 
@@ -46,10 +47,14 @@ public class CampanhaController {
 	}
 	
 	@GetMapping("campanha/find/{substring}")
-	public ResponseEntity<List<Campanha>> findByString(@PathVariable String substring) {
+	public ResponseEntity<List<Campanha>> findBySubstring(@PathVariable String substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
 	}
 	
+	@PutMapping("campanha/comment/{id}")
+	public ResponseEntity<Comentario> addComentario(@RequestBody Comentario comentario, @PathVariable long id) throws Exception {
+		return new ResponseEntity<Comentario>(campanhaService.addComentario(comentario), HttpStatus.OK);
+	}
 	
 	// -----------------------------------
 	
@@ -84,5 +89,6 @@ public class CampanhaController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-	}	
+	}
+	
 }

@@ -31,6 +31,8 @@ public class UsuarioController {
 		if (!usuarioService.usuarioExiste(usuario.getEmail()))
 			return new ResponseEntity<Usuario>(usuarioService.addUsuario(usuario), HttpStatus.OK);
 		return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
+	
+		//enviar email de boas vindas e url para o sistema
 	}
 	
 	@GetMapping("usuarios")
@@ -51,24 +53,3 @@ public class UsuarioController {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
