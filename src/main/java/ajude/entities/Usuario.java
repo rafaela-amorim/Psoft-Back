@@ -23,6 +23,10 @@ public class Usuario {
 	@JsonIgnore
 	private List<Campanha> campanhas;
 	
+	@OneToMany(mappedBy = "dono", cascade = CascadeType.REMOVE)
+	@JsonIgnore
+	private List<Comentario> comentarios;
+	
 	public Usuario() {
 		super();
 		campanhas = new ArrayList<>();
