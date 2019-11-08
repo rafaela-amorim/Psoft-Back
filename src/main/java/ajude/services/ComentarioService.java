@@ -1,29 +1,27 @@
 package ajude.services;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
 import ajude.DAOs.ComentarioRepository;
-import ajude.DAOs.UsuarioRepository;
 import ajude.entities.Campanha;
 import ajude.entities.Comentario;
-import ajude.entities.Usuario;
 
 @Service
 public class ComentarioService {
 	
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
 	private ComentarioRepository<Comentario,Long> comentarioRepo;
-	private JWTService jwt;
+	private JWTService jwtService;
 
-	public ComentarioService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo,ComentarioRepository<Comentario,Long> comentarioRepo,JWTService jwt) {
+	public ComentarioService(CampanhaRepository<Campanha, Long> campanhaRepo,ComentarioRepository<Comentario,Long> comentarioRepo,JWTService jwtService) {
 		super();
 		this.campanhaRepo = campanhaRepo;
 		this.comentarioRepo = comentarioRepo;
-		this.jwt = jwt;
+		this.jwtService = jwtService;
 	}
 	
 	public Comentario addComentario(Comentario comentario, String token) throws Exception {
@@ -40,8 +38,8 @@ public class ComentarioService {
 		if(!comentarioRepo.findById(idcomen).isPresent() && !campanhaRepo.findById(idcamp).isPresent())
 			throw new Exception("nao existe comentario ou campanha com esse id");
 		
-		String email = jwt.getEmailToken(token);
-		if(!jwt.usuarioExiste(email))
+		String email = jwtService.getEmailToken(token);
+		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
 		comentario.setCommentOwner(email);
@@ -50,10 +48,9 @@ public class ComentarioService {
 		
 		return comentario;
 	}
-	
 
-	public Comentario getComentario(Long id) {
-		return null;
+	public Optional<Comentario> getComentario(Long id) {
+		return comentarioRepo.findById(id);
 	}
 	
 	public List<Comentario> getComentariosResp(long id) {
@@ -65,15 +62,21 @@ public class ComentarioService {
 	}
 	
 	public List<Comentario> getComentariosDono(String token) throws Exception {
-		String email = jwt.getEmailToken(token);
-		if(!jwt.usuarioExiste(email))
+		String email = jwtService.getEmailToken(token);
+		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		return comentarioRepo.pegaComentDono(email);
 	}
 	
-	public Comentario deletarComentario(Long id) {
-		return null;
+	public Comentario deletarComentario(Long id, String token) {
+		String email = jwtService.getEmailToken(token);
+		Optional<Comentario> c = getComentario(id);
+		
+		if (c.isPresent() && c.get().getCommentOwner().equals(email))
+			c.get().setApagado(true);
+		
+		comentarioRepo.save(c.get());
+		
+		return c.get();
 	}
-
-	
 }

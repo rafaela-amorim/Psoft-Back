@@ -2,17 +2,13 @@ package ajude.services;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
-import ajude.DAOs.ComentarioRepository;
 import ajude.DAOs.UsuarioRepository;
 import ajude.classesAuxiliares.FormataURL;
 import ajude.entities.Campanha;
-import ajude.entities.Comentario;
 import ajude.entities.Usuario;
 import ajude.enums.StatusCampanha;
 
@@ -21,16 +17,11 @@ public class CampanhaService {
 
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
-	private ComentarioRepository<Comentario,Long> comentarioRepo;
 	
-	@Autowired
-	ComentarioService comentarioService;
-		
-	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo,ComentarioRepository<Comentario,Long> comentarioRepo) {
+	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo) {
 		super();
 		this.campanhaRepo = campanhaRepo;
 		this.usuariosRepo = usuariosRepo;
-		this.comentarioRepo = comentarioRepo;
 	}
 	
 	// ------------------------------
@@ -50,8 +41,6 @@ public class CampanhaService {
 	public List<Campanha> findBySubstring(String substring) {
 		return campanhaRepo.findBySubstring(substring.toLowerCase());
 	}
-	
-
 	
 	public Campanha encerraCampanha(String url, String email) throws Exception {
 		Campanha c = getCampanha(url);
@@ -84,13 +73,6 @@ public class CampanhaService {
 			campanhaRepo.save(c);
 		}
 		
-		return c;
-	}
-	
-	// pode remover campanhas? (n pode)
-	public Campanha removeCampanha(long id) {
-		Campanha c = getCampanha(id);
-		campanhaRepo.delete(c);
 		return c;
 	}
 	

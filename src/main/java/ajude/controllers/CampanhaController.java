@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ajude.classesAuxiliares.Data;
 import ajude.classesAuxiliares.Meta;
 import ajude.entities.Campanha;
-import ajude.entities.Comentario;
 import ajude.services.CampanhaService;
 import ajude.services.JWTService;
 
@@ -50,8 +49,6 @@ public class CampanhaController {
 	public ResponseEntity<List<Campanha>> findBySubstring(@PathVariable String substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
 	}
-	
-	
 	
 	// -----------------------------------
 	

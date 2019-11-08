@@ -1,11 +1,8 @@
 package ajude.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -25,20 +22,20 @@ public class Comentario {
 	private String commentOwner;
 	
 	private long idCampanha;
-	private long idComentario; //????
+	private long idComentario;
 	
-	private boolean apagada;
+	private boolean apagado;
 	
 	public Comentario() {
 		super();
-		this.apagada = false;
+		this.apagado = false;
 	}
 	
 	public Comentario(String comentario, long idCampanha, long idComentario) {
 		this.comentario = comentario;
 		this.idCampanha = idCampanha;
 		this.idComentario = idComentario;
-		this.apagada = false;
+		this.apagado = false;
 	}
 
 	public String getComentario() {
@@ -67,12 +64,12 @@ public class Comentario {
 		this.idComentario = idComentario;
 	}
 
-	public boolean isApagada() {
-		return apagada;
+	public boolean isApagado() {
+		return apagado;
 	}
 
-	public void setApagada(boolean apagada) {
-		this.apagada = apagada;
+	public void setApagado(boolean apagado) {
+		this.apagado = apagado;
 	}
 
 	public String getCommentOwner() {
@@ -86,5 +83,4 @@ public class Comentario {
 	public long getId() {
 		return id;
 	}
-
 }

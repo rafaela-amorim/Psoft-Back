@@ -10,7 +10,6 @@ import ajude.entities.Comentario;
 
 public interface ComentarioRepository<T, ID extends Serializable> extends JpaRepository<Comentario, Long> {
 
-	
 	@Query("select c from Comentario as c where c.idComentario = ?1")
 	public List<Comentario> pegaIdComen(long id);
 	
