@@ -19,12 +19,13 @@ import ajude.services.ComentarioService;
 @RestController
 public class ComentarioController {
 	
-	@Autowired
+//	@Autowired
 	private ComentarioService comentarioService;
 	
 	public ComentarioController(ComentarioService com) {
 		this.comentarioService = com;
 	}
+	
 	
 	@PostMapping("auth/comentario")
 	public ResponseEntity<Comentario> addComentario(@RequestBody Comentario comentario, @RequestHeader("Authorization") String token) throws Exception {
@@ -55,8 +56,12 @@ public class ComentarioController {
 		}
 	}
 	
-	@DeleteMapping("comentario/deletar/{id}")
+	@DeleteMapping("auth/comentario/deletar/{id}")
 	public ResponseEntity<Comentario> deletarComentario(@PathVariable Long id, @RequestHeader("Authorization") String token) {
-		return new ResponseEntity<Comentario>(comentarioService.deletarComentario(id, token), HttpStatus.OK);
+		try {
+			return new ResponseEntity<Comentario>(comentarioService.deletarComentario(id, token), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
 }
