@@ -18,4 +18,7 @@ public interface LikesRepository<T, ID extends Serializable> extends JpaReposito
 	
 	@Query("select l from Likes as l where l.email = ?1")
 	public List<Likes> getLikesUsuario(String email);
+	
+	@Query("select l from Likes as l where l.email = ?1 and l.idCampanha = ?2")
+	public List<Likes> usuarioLikedCampanha(String email, long id);
 }

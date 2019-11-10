@@ -35,8 +35,11 @@ public class LikesService {
 		if(!campSer.campanhaExiste(like.getIdCampanha()))
 			throw new Exception("campanha nao existe");
 		
-		return likesRepo.save(like);
-
+		if (!usuarioAlreadyLiked(email, like.getIdCampanha())) {
+			like.setEmail(email);
+			return likesRepo.save(like);
+		} else 
+			throw new Exception("usuario ja deu like");
 	}
 	
 	public Dislikes addDislike(Dislikes dislikes, String token) throws Exception {
@@ -47,7 +50,11 @@ public class LikesService {
 		if(!campSer.campanhaExiste(dislikes.getIdCampanha()))
 			throw new Exception("campanha nao existe");
 		
-		return dislikesRepo.save(dislikes);
+		if (!usuarioAlreadyDisliked(email, dislikes.getIdCampanha())) {
+			dislikes.setEmail(email);
+			return dislikesRepo.save(dislikes);
+		} else 
+			throw new Exception("usuario ja deu dislike");
 	}
 	
 	public List<Likes> getLikesCamp(long id) throws Exception{
@@ -76,5 +83,11 @@ public class LikesService {
 		return dislikesRepo.getDislikesUsuario(email);
 	}
 	
+	public boolean usuarioAlreadyLiked(String email, long id) {
+		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
+	}
 	
+	public boolean usuarioAlreadyDisliked(String email, long id) {
+		return dislikesRepo.usuarioDislikedCampanha(email, id).size() > 0;
+	}
 }

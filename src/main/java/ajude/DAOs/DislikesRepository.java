@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import ajude.entities.Dislikes;
+import ajude.entities.Likes;
 
 
 @Repository
@@ -19,4 +20,7 @@ public interface DislikesRepository<T, ID extends Serializable> extends JpaRepos
 	
 	@Query("select d from Dislikes as d where d.email = ?1")
 	public List<Dislikes> getDislikesUsuario(String email);
+	
+	@Query("select d from Dislikes as d where d.email = ?1 and d.idCampanha = ?2")
+	public List<Dislikes> usuarioDislikedCampanha(String email, long id);
 }

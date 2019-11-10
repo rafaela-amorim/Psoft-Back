@@ -1,0 +1,15 @@
+{
+	"nome": "madios kkkkkku",
+	"ultimoNome": "madios",
+	"email": "ksdf@gmail.com",
+	"cartaoDeCredito": "44556677888",
+	"senha":"12345"
+}
+
+{
+    "nome": "RAFAE",
+    "ultimoNome": "madios",
+    "email": "rafa@gmail.com",
+    "cartaoDeCredito": "4457888",
+    "senha": "12345"
+}
