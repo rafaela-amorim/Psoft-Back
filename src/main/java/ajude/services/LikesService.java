@@ -35,7 +35,7 @@ public class LikesService {
 			throw new Exception("usuario nao existe");
 		if(!campSer.campanhaExiste(like.getIdCampanha()))
 			throw new Exception("campanha nao existe");
-		if (!usuarioAlreadyLiked(email, like.getIdCampanha())) 
+		if (usuarioAlreadyLiked(email, like.getIdCampanha())) 
 			throw new Exception("usuario ja deu like");
 		
 		if (usuarioAlreadyDisliked(email, like.getIdCampanha()))
@@ -52,7 +52,7 @@ public class LikesService {
 			throw new Exception("usuario nao existe");
 		if(!campSer.campanhaExiste(dislikes.getIdCampanha()))
 			throw new Exception("campanha nao existe");
-		if (!usuarioAlreadyDisliked(email, dislikes.getIdCampanha())) 
+		if (usuarioAlreadyDisliked(email, dislikes.getIdCampanha())) 
 			throw new Exception("usuario ja deu dislike");
 		
 		if (usuarioAlreadyLiked(email, dislikes.getIdCampanha())) 

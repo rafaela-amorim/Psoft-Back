@@ -35,9 +35,10 @@ public class LikesController {
 		try {
 			return new ResponseEntity<Likes>(likesService.addLike(like, token), HttpStatus.CREATED);
 		} catch (Exception e) {
-			if (e.getMessage().equals("usuario ja deu like"))
+			if (e.getMessage().equals("usuario ja deu like")) {
+				System.out.println(e.getMessage());
 				return new ResponseEntity<>(HttpStatus.CONFLICT);
-			
+			}
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}		
 	}
@@ -47,9 +48,10 @@ public class LikesController {
 		try {
 			return new ResponseEntity<Dislikes>(likesService.addDislike(dislikes, token), HttpStatus.CREATED);
 		} catch (Exception e) {
-			if (e.getMessage().equals("usuario ja deu dislike"))
+			if (e.getMessage().equals("usuario ja deu dislike")) {
+				System.out.println(e.getMessage());
 				return new ResponseEntity<>(HttpStatus.CONFLICT);
-			
+			}
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}		
 	}
@@ -96,7 +98,6 @@ public class LikesController {
 		try {
 			return new ResponseEntity<Likes>(likesService.deleteLike(id, token), HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
