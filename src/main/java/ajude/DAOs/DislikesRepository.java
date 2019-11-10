@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import ajude.entities.Dislikes;
-import ajude.entities.Likes;
 
 
 @Repository
@@ -23,4 +24,9 @@ public interface DislikesRepository<T, ID extends Serializable> extends JpaRepos
 	
 	@Query("select d from Dislikes as d where d.email = ?1 and d.idCampanha = ?2")
 	public List<Dislikes> usuarioDislikedCampanha(String email, long id);
+	
+	@Transactional
+	@Modifying
+	@Query("delete from Dislikes as d where d.email = ?1 and d.idCampanha = ?2")
+	public void deleteDislike(String email, long id);
 }

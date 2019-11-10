@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,6 +77,7 @@ public class LikesController {
 		try {
 			return new ResponseEntity<List<Likes>>(likesService.getLikesUsu(token), HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
@@ -84,6 +86,43 @@ public class LikesController {
 	public ResponseEntity<List<Dislikes>> getDislikesUsuario(@RequestHeader("Authorization") String token) {
 		try {
 			return new ResponseEntity<List<Dislikes>>(likesService.getDislikesUsu(token), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("auth/like/campanha/remove/{id}")
+	public ResponseEntity<Likes> deleteLike(@RequestHeader("Authorization") String token, @PathVariable long id) {
+		try {
+			return new ResponseEntity<Likes>(likesService.deleteLike(id, token), HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("auth/dislike/campanha/remove/{id}")
+	public ResponseEntity<Dislikes> deleteDislike(@RequestHeader("Authorization") String token, @PathVariable long id) {
+		try {
+			return new ResponseEntity<Dislikes>(likesService.deleteDislike(id, token), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("auth/like/remove/{id}")
+	public ResponseEntity<Likes> deleteLikeById(@RequestHeader("Authorization") String token, @PathVariable long id) {
+		try {
+			return new ResponseEntity<Likes>(likesService.deleteLikeById(id, token), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping("auth/dislike/remove/{id}")
+	public ResponseEntity<Dislikes> deleteDislikeById(@RequestHeader("Authorization") String token, @PathVariable long id) {
+		try {
+			return new ResponseEntity<Dislikes>(likesService.deleteDislikebyId(id, token), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
