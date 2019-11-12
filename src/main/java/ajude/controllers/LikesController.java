@@ -74,7 +74,7 @@ public class LikesController {
 		}
 	}
 	
-	@GetMapping("likes/usuario")
+	@GetMapping("auth/likes/usuario")
 	public ResponseEntity<List<Likes>> getLikesUsuario(@RequestHeader("Authorization") String token) {
 		try {
 			return new ResponseEntity<List<Likes>>(likesService.getLikesUsu(token), HttpStatus.OK);
@@ -84,7 +84,7 @@ public class LikesController {
 		}
 	}
 
-	@GetMapping("dislikes/usuario")
+	@GetMapping("auth/dislikes/usuario")
 	public ResponseEntity<List<Dislikes>> getDislikesUsuario(@RequestHeader("Authorization") String token) {
 		try {
 			return new ResponseEntity<List<Dislikes>>(likesService.getDislikesUsu(token), HttpStatus.OK);
@@ -102,10 +102,10 @@ public class LikesController {
 		}
 	}
 	
-	@DeleteMapping("auth/dislike/campanha/remove/{id}")
-	public ResponseEntity<Dislikes> deleteDislike(@RequestHeader("Authorization") String token, @PathVariable long id) {
+	@DeleteMapping("auth/dislike/campanha/remove/{url}")
+	public ResponseEntity<Dislikes> deleteDislike(@RequestHeader("Authorization") String token, @PathVariable String url) {
 		try {
-			return new ResponseEntity<Dislikes>(likesService.deleteDislike(id, token), HttpStatus.OK);
+			return new ResponseEntity<Dislikes>(likesService.deleteDislike(url, token), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

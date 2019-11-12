@@ -29,4 +29,7 @@ public interface DislikesRepository<T, ID extends Serializable> extends JpaRepos
 	@Modifying
 	@Query("delete from Dislikes as d where d.email = ?1 and d.idCampanha = ?2")
 	public void deleteDislike(String email, long id);
+	
+	@Query("select d from Dislikes as d, Campanha as c where c.url = ?1 and c.id = d.idCampanha and d.email = ?2")
+	public List<Dislikes> usuarioDislikedByUrl(String url, String email);
 }

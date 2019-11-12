@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import ajude.entities.Dislikes;
 import ajude.entities.Likes;
 
 
@@ -28,4 +29,7 @@ public interface LikesRepository<T, ID extends Serializable> extends JpaReposito
 	@Modifying
 	@Query("delete from Likes as l where l.email = ?1 and l.idCampanha = ?2")
 	public void deleteLike(String email, long id);
+	
+	@Query("select l from Likes as l, Campanha as c where c.url = ?1 and c.id = l.idCampanha and l.email = ?2")
+	public List<Likes> usuarioLikedByUrl(String url, String email);
 }
