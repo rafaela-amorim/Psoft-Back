@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.classesAuxiliares.Data;
+import ajude.classesAuxiliares.Descricao;
 import ajude.classesAuxiliares.Meta;
+import ajude.classesAuxiliares.Substring;
 import ajude.entities.Campanha;
 import ajude.services.CampanhaService;
 import ajude.services.JWTService;
@@ -38,6 +40,8 @@ public class CampanhaController {
 	
 	@GetMapping("campanha/{url}")
 	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {
+		getStatus(url);
+		
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.getCampanha(url), HttpStatus.OK);
 		} catch (Exception e) {
@@ -46,13 +50,13 @@ public class CampanhaController {
 	}
 	
 	@GetMapping("campanha/find")
-	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody String substring) {
-		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
+	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody Substring substring) {
+		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring.getSubstring()), HttpStatus.OK);
 	}
 	
 	
 	@GetMapping("campanha/status/{url}")
-	public ResponseEntity<Campanha> getStatus(@PathVariable String url) {
+	private ResponseEntity<Campanha> getStatus(@PathVariable String url) {
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.verificaStatus(url), HttpStatus.OK);
 		} catch (Exception e) {
@@ -64,6 +68,7 @@ public class CampanhaController {
 	
 	@PutMapping("auth/campanha/encerrar/{url}")
 	public ResponseEntity<Campanha> encerraCampanha(@RequestHeader("Authorization") String token, @PathVariable String url) {
+		getStatus(url);
 		String email = jwtService.getEmailToken(token);
 		
 		try {
@@ -75,6 +80,7 @@ public class CampanhaController {
 	
 	@PutMapping("auth/campanha/deadline/{url}")
 	public ResponseEntity<Campanha> alterarDeadline(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Data novaData) throws Exception {
+		getStatus(url);
 		String email = jwtService.getEmailToken(token);
 		
 		try {
@@ -96,10 +102,10 @@ public class CampanhaController {
 	}
 	
 	@PutMapping("auth/campanha/descricao/{url}")
-	public ResponseEntity<Campanha> alteraDescricao(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody String novaDescr) {
+	public ResponseEntity<Campanha> alteraDescricao(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Descricao novaDescr) {
 		String email = jwtService.getEmailToken(token);
 		try {
-			return new ResponseEntity<Campanha>(campanhaService.alteraDescricao(url, email, novaDescr), HttpStatus.OK);
+			return new ResponseEntity<Campanha>(campanhaService.alteraDescricao(url, email, novaDescr.getDescricao()), HttpStatus.OK);
 		} catch (Exception e) {
 			if (e.getMessage().equals("campanha nao esta ativa"))
 				return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);

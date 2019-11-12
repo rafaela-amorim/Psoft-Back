@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ajude.classesAuxiliares.Senha;
 import ajude.entities.Usuario;
 import ajude.services.JWTService;
 import ajude.services.UsuarioService;
@@ -49,9 +50,9 @@ public class UsuarioController {
 	} 
 	
 	@PutMapping("usuarios/{email}")
-	public ResponseEntity<Usuario> mudarSenha(@RequestBody String senha, @PathVariable String email) {
+	public ResponseEntity<Usuario> mudarSenha(@RequestBody Senha senha, @PathVariable String email) {
 		try {
-			return new ResponseEntity<Usuario>(usuarioService.mudarSenha(email, senha), HttpStatus.OK);
+			return new ResponseEntity<Usuario>(usuarioService.mudarSenha(email, senha.getSenha()), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

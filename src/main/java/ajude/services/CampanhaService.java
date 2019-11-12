@@ -106,14 +106,14 @@ public class CampanhaService {
 		Campanha c = getCampanha(url);	// lança exceção se a campanha não existir
 		Date d = new Date();
 		
-		if (c.getDataLimite().after(d)) {
+		if (d.after(c.getDataLimite())) {			// Se hoje ja passou da data limite
 			if (c.getMeta() > c.getDoacoes())
 				c.setStatus(StatusCampanha.VENCIDA);
 			else
 				c.setStatus(StatusCampanha.CONCLUIDA);
-			
+		
 			campanhaRepo.save(c);
-		}
+		} 
 		
 		return c;
 	}
