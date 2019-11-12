@@ -50,9 +50,54 @@ PUT
 
 POST
 - v1/api/auth/comentario
-    adiciona um comentario a uma campanha
+    adiciona um comentario a uma campanha, usuario deve estar autenticado
+
+GET
+- v1/api/comentario/campanha/{id}
+    retorna a lista com todos os comentarios da campanha correspondente ao id da URI
+- v1/api/comentario/respostas/{id}
+    retorna a lista de todos os comentarios que referenciam ao comentário correspondente ao id da URI
+- v1/api/auth/comentario/usuario
+    retorna uma lista com todos os comentarios feitos pelo usuário autenticado que faz a requisição
+
+DELETE
+- v1/api/auth/comentario/deletar/{id}
+    deleta o comentario correspondente ao id na URI, o usuário que tenta apagar deve ser o mesmo usuário que criou o comentario e o deve estar autenticado. 
+    Todos os comentarios resposta deste comentario que esta sendo deletado devem ser deletados em cascata.
     
 
 <h3>Likes</h3>
 
+POST
+- v1/api/auth/like
+    usuário autenticado dá like em uma campanha
+
+GET
+- v1/api/likes/campanha/{id}
+    retorna uma lista com todos os likes que foram dados à campanha correspondente ao id passado na uri
+- v1/api/auth/likes/usuario
+    retorna uma lista com todos os likes dados pelo usuário autenticado que fez a requisição
+
+DELETE
+- v1/api/auth/like/campanha/remove/{id}
+    o usuário dono do like pode retirá-lo de uma campanha correspondente ao id na URI, usuário deve estar autenticado 
+- v1/api/auth/like/remove/{id}
+    usuário dono do like pode removê-lo através do id do like passado pela URI, usuário deve estar autenticado
+
 <h3>Dislikes</h3>
+
+POST
+- v1/api/auth/dislike
+    um usuário autenticado pode dar dislike em uma campanha
+
+GET
+- v1/api/dislikes/campanha/{id}
+    retorna uma lista com todos os dislikes da campanha correspondente ao id na URI
+- v1/api/auth/dislikes/usuario
+    retorna uma lista com todos os likes que foram dados pelo usuário autenticado que fez a requisição
+
+DELETE
+- v1/api/auth/dislike/campanha/remove/{id}
+    o usuário dono do dislike pode retirá-lo de uma campanha correspondente ao id na URI, usuário deve estar autenticado 
+- v1/api/auth/dislike/remove/{id}
+    usuário dono do dislike pode removê-lo através do id do dislike passado pela URI, usuário deve estar autenticado
