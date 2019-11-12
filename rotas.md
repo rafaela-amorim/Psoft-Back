@@ -51,6 +51,7 @@ PUT
 POST
 - v1/api/auth/comentario
     adiciona um comentario a uma campanha
+    
 
 <h3>Likes</h3>
 
