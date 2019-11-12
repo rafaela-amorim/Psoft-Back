@@ -1,7 +1,6 @@
 package ajude.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +11,9 @@ import ajude.entities.Dislikes;
 import ajude.entities.Likes;
 
 @Service
-public class LikesService {
-	
+public class DislikeService {
 
+	
 	@Autowired
 	private DislikesRepository<Dislikes,Long> dislikesRepo;
 	@Autowired
@@ -25,69 +24,67 @@ public class LikesService {
 	@Autowired
 	private CampanhaService campSer;
 	
-	public LikesService() {
+	public DislikeService() {
 		super();
 	}
 	
-	
-	public Likes addLike(Likes like, String token) throws Exception {
+	public Dislikes addDislike(Dislikes dislikes, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		
 		if(!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if(!campSer.campanhaExiste(like.getIdCampanha()))
+		if(!campSer.campanhaExiste(dislikes.getIdCampanha()))
 			throw new Exception("campanha nao existe");
-		if (usuarioAlreadyLikedById(email, like.getIdCampanha())) 
-			throw new Exception("usuario ja deu like");
+		if (usuarioAlreadyDislikedById(email, dislikes.getIdCampanha())) 
+			throw new Exception("usuario ja deu dislike");
 		
-		if (usuarioAlreadyDislikedById(email, like.getIdCampanha()))
-			dislikesRepo.deleteDislike(email, like.getIdCampanha());
-		
-		like.setEmail(email);
-		return likesRepo.save(like);
-	}
-	
-	
-	
-	public Likes deleteLike(String url, String token) throws Exception {
-		String email = jwtService.getEmailToken(token);
-		if (!jwtService.usuarioExiste(email))
-			throw new Exception("usuario nao existe");
-		if (!usuarioAlreadyLiked(email, url))
-			throw new Exception("tentou tirar like que não existe");
-		
-		Likes like = likesRepo.usuarioLikedByUrl(url, email).get(0);
-		likesRepo.deleteLike(email, like.getIdCampanha());
-		return like;
-	}
-	
-	public Likes deleteLikeById(long id, String token) throws Exception {
-		String email = jwtService.getEmailToken(token);
-		if (!jwtService.usuarioExiste(email))
-			throw new Exception("usuario nao existe");
-		if (!usuarioAlreadyLikedById(email, id))
-			throw new Exception("tentou tirar like que não existe");
-		
-		Likes like = likesRepo.usuarioLikedCampanha(email, id).get(0);
-		likesRepo.deleteLike(email, id);
-		return like;
+		if (usuarioAlreadyLikedById(email, dislikes.getIdCampanha()))
+			likesRepo.deleteLike(email, dislikes.getIdCampanha());
+			
+		dislikes.setEmail(email);
+		return dislikesRepo.save(dislikes);			
 	}
 	
 
-	public List<Likes> getLikesCamp(long id) throws Exception{
-		if(!campSer.campanhaExiste(id))
-			throw new Exception("campanha nao existe");
-		return likesRepo.getLikesCampanha(id);
+	public Dislikes deleteDislike(String url, String token) throws Exception {
+		String email = jwtService.getEmailToken(token);
+		if (!jwtService.usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		if (!usuarioAlreadyDisliked(email, url)) 
+			throw new Exception("tentou tirar dislike que não existe");
+		
+		List<Dislikes> l = dislikesRepo.usuarioDislikedByUrl(url, email);
+		
+		Dislikes dislike = l.get(0);
+		dislikesRepo.deleteDislike(email, dislike.getIdCampanha());
+		return dislike;
 	}
 	
-	public List<Likes> getLikesUsu(String token) throws Exception{
+	public Dislikes deleteDislikeById(long id, String token) throws Exception {
+		String email = jwtService.getEmailToken(token);
+		if (!jwtService.usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		if (!usuarioAlreadyDislikedById(email, id))
+			throw new Exception("tentou tirar dislike que não existe");
+		
+		Dislikes dislike = dislikesRepo.usuarioDislikedCampanha(email, id).get(0);
+		dislikesRepo.deleteDislike(email, id);
+		return dislike;
+	}
+	
+	public List<Dislikes> getDislikesCamp(long id) throws Exception{
+		if(!campSer.campanhaExiste(id))
+			throw new Exception("campanha nao existe");
+		return dislikesRepo.getDislikesCampanha(id);
+	}
+	
+	public List<Dislikes> getDislikesUsu(String token) throws Exception{
 		String email = jwtService.getEmailToken(token);
 		if(!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		return likesRepo.getLikesUsuario(email);
+		return dislikesRepo.getDislikesUsuario(email);
 	}
-	
-	
+
 	
 	public boolean usuarioAlreadyDisliked(String email, String url) {
 		return dislikesRepo.usuarioDislikedByUrl(email, url).size() > 0;
@@ -104,5 +101,6 @@ public class LikesService {
 	public boolean usuarioAlreadyLikedById(String email, long id) {
 		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
 	}
+	
 	
 }
