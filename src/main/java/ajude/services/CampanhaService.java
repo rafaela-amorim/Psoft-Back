@@ -15,13 +15,14 @@ import ajude.enums.StatusCampanha;
 @Service
 public class CampanhaService {
 
+	private UsuarioService usuarioService;
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
 	
-	public CampanhaService(UsuarioRepository<Usuario, String> usuariosRepo, CampanhaRepository<Campanha, Long> campanhaRepo) {
+	public CampanhaService(UsuarioService usuarioService, CampanhaRepository<Campanha, Long> campanhaRepo) {
 		super();
 		this.campanhaRepo = campanhaRepo;
-		this.usuariosRepo = usuariosRepo;
+		this.usuarioService = usuarioService;
 	}
 	
 	// ------------------------------
@@ -34,7 +35,7 @@ public class CampanhaService {
 		user.adicionaCampanha(campanha);
 		campanha.setUrl(url);
 		
-		usuariosRepo.save(user);
+		usuarioService.saveUsuario(user);
 		return campanhaRepo.save(campanha);
 	}
 	
@@ -45,22 +46,26 @@ public class CampanhaService {
 	public Campanha encerraCampanha(String url, String email) throws Exception {
 		Campanha c = getCampanha(url);
 		
-		if (verificaDono(url, email)) {
-			c.setStatus(StatusCampanha.ENCERRADA);
-			campanhaRepo.save(c);
-		}
+		if (!verificaDono(url, email))
+			throw new Exception("usuario nao e o dono");
+
+		c.setStatus(StatusCampanha.ENCERRADA);
+		campanhaRepo.save(c);
 		
 		return c;
 	}
 	
-	public Campanha alterarDeadline(String url, String userEmail, Date novaData) throws Exception {
+	public Campanha alterarDeadline(String url, String email, Date novaData) throws Exception {
 		Campanha c = getCampanha(url);
 		Date data = new Date();
 		
-		if (verificaDono(url, userEmail) && data.before(novaData)) {
-			c.setDataLimite(novaData);
-			campanhaRepo.save(c);
-		}
+		if (!verificaDono(url, email))
+			throw new Exception("usuario nao e o dono");
+		if (!data.before(novaData))
+			throw new Exception("a nova data nao esta no futuro");
+
+		c.setDataLimite(novaData);
+		campanhaRepo.save(c);
 		
 		return c;
 	}
@@ -68,10 +73,27 @@ public class CampanhaService {
 	public Campanha alterarMeta(String url, String email, double novaMeta) throws Exception {
 		Campanha c = getCampanha(url);
 		
-		if (c.estaAtiva() && verificaDono(url, email)) {
-			c.setMeta(novaMeta);
-			campanhaRepo.save(c);
-		}
+		if (!c.estaAtiva())
+			throw new Exception("campanha nao esta ativa");
+		if (!verificaDono(url, email))
+			throw new Exception("usuario nao e o dono");
+		
+		c.setMeta(novaMeta);
+		campanhaRepo.save(c);
+		
+		return c;
+	}
+	
+	public Campanha alteraDescricao(String url, String email, String novaDescr) throws Exception {
+		Campanha c = getCampanha(url);	// lança excecao se a campanha nao existe
+		
+		if (!c.estaAtiva())
+			throw new Exception("campanha nao esta ativa");
+		if (!verificaDono(url, email))
+			throw new Exception("usuario nao e o dono");
+		
+		c.setDescricao(novaDescr);
+		campanhaRepo.save(c);
 		
 		return c;
 	}
@@ -81,7 +103,7 @@ public class CampanhaService {
 	}
 	
 	public Campanha verificaStatus(String url) throws Exception {
-		Campanha c = getCampanha(url);
+		Campanha c = getCampanha(url);	// lança exceção se a campanha não existir
 		Date d = new Date();
 		
 		if (c.getDataLimite().after(d)) {
@@ -97,8 +119,11 @@ public class CampanhaService {
 	}
 	
 	public boolean verificaDono(String url, String userEmail) throws Exception {
-		Usuario user = usuariosRepo.findById(userEmail).get();
-		Campanha camp = getCampanha(url);
+		if (!usuarioService.usuarioExiste(userEmail))
+			throw new Exception("usuario nao existe");
+		
+		Usuario user = usuarioService.getUsuario(userEmail);
+		Campanha camp = getCampanha(url); 				 // lança exceção se a campanha não existir
 		
 		return user.equals(camp.getDono());
 	}

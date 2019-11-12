@@ -19,8 +19,14 @@ public class UsuarioService {
 
 	// ----------------------
 	
-	// antes de criar um novo usuario, verifica se o email já nao existia antes no banco de dados
-	public Usuario addUsuario(Usuario usuario) {
+	public Usuario addUsuario(Usuario user) throws Exception {
+		if (usuarioExiste(user.getEmail()))
+			throw new Exception("usuario ja existe");
+		
+		return saveUsuario(user);
+	}
+	
+	public Usuario saveUsuario(Usuario usuario) {
 		return usuariosRepo.save(usuario);
 	}
 	
@@ -33,7 +39,7 @@ public class UsuarioService {
 	}
 	
 	// verifica se o usuario existe no controller
-	public Usuario mudarSenha(String email, String novaSenha) {
+	public Usuario mudarSenha(String email, String novaSenha) throws Exception {
 		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
 		addUsuario(u);

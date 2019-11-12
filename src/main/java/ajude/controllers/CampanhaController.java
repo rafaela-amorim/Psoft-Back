@@ -45,9 +45,19 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("campanha/find/{substring}")
-	public ResponseEntity<List<Campanha>> findBySubstring(@PathVariable String substring) {
+	@GetMapping("campanha/find")
+	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody String substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("campanha/status/{url}")
+	public ResponseEntity<Campanha> getStatus(@PathVariable String url) {
+		try {
+			return new ResponseEntity<Campanha>(campanhaService.verificaStatus(url), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Campanha>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	// -----------------------------------
@@ -85,4 +95,28 @@ public class CampanhaController {
 		}
 	}
 	
+	@PutMapping("auth/campanha/descricao/{url}")
+	public ResponseEntity<Campanha> alteraDescricao(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody String novaDescr) {
+		String email = jwtService.getEmailToken(token);
+		try {
+			return new ResponseEntity<Campanha>(campanhaService.alteraDescricao(url, email, novaDescr), HttpStatus.OK);
+		} catch (Exception e) {
+			if (e.getMessage().equals("campanha nao esta ativa"))
+				return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+			if (e.getMessage().equals("usuario nao e o dono"))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+				
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+

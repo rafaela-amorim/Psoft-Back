@@ -25,12 +25,13 @@ public class UsuarioController {
 		this.usuarioService = usuarioService;
 	}
 	
-	// ajeitar o retorno do erro
 	@PostMapping("usuarios")
 	public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
-		if (!usuarioService.usuarioExiste(usuario.getEmail()))
+		try {
 			return new ResponseEntity<Usuario>(usuarioService.addUsuario(usuario), HttpStatus.OK);
-		return new ResponseEntity<Usuario>(HttpStatus.BAD_REQUEST);
+		} catch (Exception e) {
+			return new ResponseEntity<Usuario>(HttpStatus.CONFLICT);
+		}
 	
 		//enviar email de boas vindas e url para o sistema
 	}
@@ -49,7 +50,11 @@ public class UsuarioController {
 	
 	@PutMapping("usuarios/{email}")
 	public ResponseEntity<Usuario> mudarSenha(@RequestBody String senha, @PathVariable String email) {
-		return new ResponseEntity<Usuario>(usuarioService.mudarSenha(email, senha), HttpStatus.OK);
+		try {
+			return new ResponseEntity<Usuario>(usuarioService.mudarSenha(email, senha), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 }
