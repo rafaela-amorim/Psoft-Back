@@ -35,10 +35,10 @@ public class LikesService {
 			throw new Exception("usuario nao existe");
 		if(!campSer.campanhaExiste(like.getIdCampanha()))
 			throw new Exception("campanha nao existe");
-		if (usuarioAlreadyLiked(email, like.getIdCampanha())) 
+		if (usuarioAlreadyLikedById(email, like.getIdCampanha())) 
 			throw new Exception("usuario ja deu like");
 		
-		if (usuarioAlreadyDisliked(email, like.getIdCampanha()))
+		if (usuarioAlreadyDislikedById(email, like.getIdCampanha()))
 			deleteDislike(like.getIdCampanha(), token);
 		
 		like.setEmail(email);
@@ -52,49 +52,21 @@ public class LikesService {
 			throw new Exception("usuario nao existe");
 		if(!campSer.campanhaExiste(dislikes.getIdCampanha()))
 			throw new Exception("campanha nao existe");
-		if (usuarioAlreadyDisliked(email, dislikes.getIdCampanha())) 
+		if (usuarioAlreadyDislikedById(email, dislikes.getIdCampanha())) 
 			throw new Exception("usuario ja deu dislike");
 		
-		if (usuarioAlreadyLiked(email, dislikes.getIdCampanha())) 
+		if (usuarioAlreadyLikedById(email, dislikes.getIdCampanha())) 
 			deleteLike(dislikes.getIdCampanha(), token);
 			
 		dislikes.setEmail(email);
 		return dislikesRepo.save(dislikes);			
 	}
 	
-	public Likes deleteLikeById(long id, String token) throws Exception {
+	public Likes deleteLike(String url, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		
-		Optional<Likes> likeOpt = likesRepo.findById(id);
-		if (likeOpt.isPresent()) 
-			throw new Exception("tentou tirar like que não existe");
-		
-		Likes like = likeOpt.get();
-		likesRepo.delete(like);
-		return like;
-	}
-	
-	public Dislikes deleteDislikebyId(long id, String token) throws Exception {
-		String email = jwtService.getEmailToken(token);
-		if (!jwtService.usuarioExiste(email))
-			throw new Exception("usuario nao existe");
-		
-		Optional<Dislikes> dislikeOpt = dislikesRepo.findById(id);
-		if (dislikeOpt.isPresent()) 
-			throw new Exception("tentou tirar dislike que não existe");
-		
-		Dislikes dislike = dislikeOpt.get();
-		dislikesRepo.delete(dislike);
-		return dislike;
-	}
-	
-	public Likes deleteLike(long idCampanha, String token) throws Exception {
-		String email = jwtService.getEmailToken(token);
-		if (!jwtService.usuarioExiste(email))
-			throw new Exception("usuario nao existe");
-		if (!usuarioAlreadyLiked(email, idCampanha))
+		if (!usuarioAlreadyLiked(email, url))
 			throw new Exception("tentou tirar like que não existe");
 		
 		Likes like = likesRepo.usuarioLikedCampanha(email, idCampanha).get(0);
@@ -103,15 +75,17 @@ public class LikesService {
 	}
 	
 
-	public Dislikes deleteDislike(long idCampanha, String token) throws Exception {
+	public Dislikes deleteDislike(String url, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if (!usuarioAlreadyDisliked(email, idCampanha)) 
+		if (!usuarioAlreadyDisliked(email, url)) 
 			throw new Exception("tentou tirar dislike que não existe");
 		
-		Dislikes dislike = dislikesRepo.usuarioDislikedCampanha(email, idCampanha).get(0);
-		dislikesRepo.deleteDislike(email, idCampanha);
+		List<Dislikes> l = dislikesRepo.usuarioDislikedByUrl(url, email);
+		
+		Dislikes dislike = l.get(0);
+		dislikesRepo.deleteDislike(email, dislike.getIdCampanha());
 		return dislike;
 	}
 	
@@ -141,11 +115,20 @@ public class LikesService {
 		return dislikesRepo.getDislikesUsuario(email);
 	}
 	
-	public boolean usuarioAlreadyLiked(String email, long id) {
+	public boolean usuarioAlreadyLiked(String email, String url) {
+		return likesRepo.usuarioLikedByUrl(email, url).size() > 0;
+	}
+	
+	public boolean usuarioAlreadyDisliked(String email, String url) {
+		return dislikesRepo.usuarioDislikedByUrl(email, url).size() > 0;
+	}
+	
+	public boolean usuarioAlreadyLikedById(String email, long id) {
 		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
 	}
 	
-	public boolean usuarioAlreadyDisliked(String email, long id) {
+	public boolean usuarioAlreadyDislikedById(String email, long id) {
 		return dislikesRepo.usuarioDislikedCampanha(email, id).size() > 0;
 	}
+		
 }
