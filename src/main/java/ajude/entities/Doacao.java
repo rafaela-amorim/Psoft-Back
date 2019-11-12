@@ -12,29 +12,29 @@ public class Doacao {
 	@Id
 	@GeneratedValue
 	private long id;
-	private String idDoador;
+	private String emailDoador;
 	private double quantia;
 	private Date data;
-	private long idCampanha;
+	private String urlCampanha;
 
-	public Doacao(String idDoador, double quantia, Date data, long idCampanha) {
+	public Doacao(String idDoador, double quantia, String urlCampanha) {
 		super();
-		this.idDoador = idDoador;
+		this.emailDoador = idDoador;
 		this.quantia = quantia;
-		this.data = data;
-		this.idCampanha = idCampanha;
+		this.data = new Date();
+		this.urlCampanha = urlCampanha;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public String getIdDoador() {
-		return idDoador;
+	public String getEmailDoador() {
+		return emailDoador;
 	}
 
-	public void setIdDoador(String idDoador) {
-		this.idDoador = idDoador;
+	public void setEmailDoador(String idDoador) {
+		this.emailDoador = idDoador;
 	}
 
 	public double getQuantia() {
@@ -53,12 +53,12 @@ public class Doacao {
 		this.data = data;
 	}
 
-	public long getIdCampanha() {
-		return idCampanha;
+	public String getUrlCampanha() {
+		return urlCampanha;
 	}
 
-	public void setIdCampanha(long idCampanha) {
-		this.idCampanha = idCampanha;
+	public void setUrlCampanha(String urlCampanha) {
+		this.urlCampanha = urlCampanha;
 	}
 	
 }

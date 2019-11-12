@@ -55,6 +55,12 @@ public class Campanha {
 	}
 
 	// ----------------------------
+	
+	public double fazDoacao(double quantia) {
+		this.doacoes += quantia;
+		this.meta = Math.max(0,this.getMeta() - quantia);
+		return this.getMeta();
+	}
 
 	public boolean estaAtiva() {
 		return this.status == StatusCampanha.ATIVA;

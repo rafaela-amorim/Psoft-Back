@@ -18,10 +18,12 @@ public class JWTService {
 	private final int TOKEN_INDEX = 7;
 
 	private UsuarioService usuarioService;
+	private CampanhaService campanhaService;
 
-	public JWTService(UsuarioService usuarioService) {
+	public JWTService(UsuarioService usuarioService,CampanhaService campanhaService) {
 		super();
 		this.usuarioService = usuarioService;
+		this.campanhaService = campanhaService;
 	}
 
 	public LoginResponse geraToken(String email) {
@@ -48,5 +50,9 @@ public class JWTService {
 	
 	public boolean usuarioExiste(String email) {
 		return usuarioService.usuarioExiste(email);
+	}
+	
+	public boolean campanhaExiste(Long id) {
+		return campanhaService.campanhaExiste(id);
 	}
 }

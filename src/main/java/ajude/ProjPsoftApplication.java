@@ -15,6 +15,11 @@ import ajude.filter.Filter;
 @SpringBootApplication
 public class ProjPsoftApplication {
 	
+	
+	/**
+	 * método para habilitar cross origin 
+	 * @return
+	 */
 	@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
