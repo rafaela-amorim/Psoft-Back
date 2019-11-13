@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ajude.DAOs.DislikesRepository;
 import ajude.DAOs.LikesRepository;
+import ajude.entities.Campanha;
 import ajude.entities.Dislikes;
 import ajude.entities.Likes;
 
@@ -72,10 +73,9 @@ public class DislikeService {
 		return dislike;
 	}
 	
-	public List<Dislikes> getDislikesCamp(long id) throws Exception{
-		if(!campSer.campanhaExiste(id))
-			throw new Exception("campanha nao existe");
-		return dislikesRepo.getDislikesCampanha(id);
+	public List<Dislikes> getDislikesCamp(String url) throws Exception{
+		Campanha c = campSer.getCampanha(url);
+		return dislikesRepo.getDislikesCampanha(c.getId());
 	}
 	
 	public List<Dislikes> getDislikesUsu(String token) throws Exception{

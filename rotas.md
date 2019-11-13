@@ -73,16 +73,16 @@ POST
     usuário autenticado dá like em uma campanha
 
 GET
-- v1/api/likes/campanha/{id}
-    retorna uma lista com todos os likes que foram dados à campanha correspondente ao id passado na uri
+- v1/api/likes/campanha/{url}
+    retorna uma lista com todos os likes que foram dados à campanha correspondente à url passado na uri
 - v1/api/auth/likes/usuario
     retorna uma lista com todos os likes dados pelo usuário autenticado que fez a requisição
 
 DELETE
+- v1/api/auth/like/campanha/remove/{url}
+    o usuário dono do like pode retirá-lo de uma campanha correspondente à url na URI, usuário deve estar autenticado 
 - v1/api/auth/like/campanha/remove/{id}
-    o usuário dono do like pode retirá-lo de uma campanha correspondente ao id na URI, usuário deve estar autenticado 
-- v1/api/auth/like/remove/{id}
-    usuário dono do like pode removê-lo através do id do like passado pela URI, usuário deve estar autenticado
+    usuário dono do like pode removê-lo através do id da campanha  passado pela URI, usuário deve estar autenticado
 
 <h3>Dislikes</h3>
 
@@ -91,13 +91,13 @@ POST
     um usuário autenticado pode dar dislike em uma campanha
 
 GET
-- v1/api/dislikes/campanha/{id}
-    retorna uma lista com todos os dislikes da campanha correspondente ao id na URI
+- v1/api/dislikes/campanha/{url}
+    retorna uma lista com todos os dislikes da campanha correspondente à url na URI
 - v1/api/auth/dislikes/usuario
     retorna uma lista com todos os likes que foram dados pelo usuário autenticado que fez a requisição
 
 DELETE
+- v1/api/auth/dislike/campanha/remove/{url}
+    o usuário dono do dislike pode retirá-lo de uma campanha correspondente à url na URI, usuário deve estar autenticado 
 - v1/api/auth/dislike/campanha/remove/{id}
-    o usuário dono do dislike pode retirá-lo de uma campanha correspondente ao id na URI, usuário deve estar autenticado 
-- v1/api/auth/dislike/remove/{id}
-    usuário dono do dislike pode removê-lo através do id do dislike passado pela URI, usuário deve estar autenticado
+    usuário dono do dislike pode removê-lo através do id da campanha passado pela URI, usuário deve estar autenticado

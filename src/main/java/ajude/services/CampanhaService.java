@@ -137,7 +137,11 @@ public class CampanhaService {
 	}
 	
 	public Campanha getCampanha(String url) throws Exception {
-		return campanhaRepo.findByUrl(url).get();
+		try {
+			return campanhaRepo.findByUrl(url).get();
+		} catch (Exception e) {
+			throw new Exception("campanha nao existe");
+		}
 	}
 
 	public boolean campanhaExiste(String url) {
