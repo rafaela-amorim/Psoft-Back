@@ -3,6 +3,7 @@ package ajude.services;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
@@ -15,19 +16,29 @@ import ajude.enums.StatusCampanha;
 @Service
 public class CampanhaService {
 
+	@Autowired
 	private UsuarioService usuarioService;
+	@Autowired
 	private UsuarioRepository<Usuario, String> usuariosRepo;
+	@Autowired
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
+	@Autowired
+	private JWTService jwtService;
 	
-	public CampanhaService(UsuarioService usuarioService, CampanhaRepository<Campanha, Long> campanhaRepo) {
+	public CampanhaService() {
 		super();
-		this.campanhaRepo = campanhaRepo;
-		this.usuarioService = usuarioService;
 	}
 	
 	// ------------------------------
 	
-	public Campanha addCampanha(Campanha campanha, Usuario user) {
+	public Campanha addCampanha(Campanha campanha, String token) throws Exception {
+		String email = jwtService.getEmailToken(token);
+		
+		if (!usuarioService.usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		
+		Usuario user = usuarioService.getUsuario(email);
+		
 		campanha.setDono(user);
 		String url = FormataURL.formataURL(campanha.getNome());
 		url += countAll();

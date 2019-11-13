@@ -19,13 +19,12 @@ import ajude.services.ComentarioService;
 @RestController
 public class ComentarioController {
 	
-//	@Autowired
+	@Autowired
 	private ComentarioService comentarioService;
 	
-	public ComentarioController(ComentarioService com) {
-		this.comentarioService = com;
+	public ComentarioController() {
+		super();
 	}
-	
 	
 	@PostMapping("auth/comentario")
 	public ResponseEntity<Comentario> addComentario(@RequestBody Comentario comentario, @RequestHeader("Authorization") String token) throws Exception {
@@ -33,18 +32,27 @@ public class ComentarioController {
 		try {
 			return new ResponseEntity<Comentario>(comentarioService.addComentario(comentario, token), HttpStatus.CREATED);
 		} catch(Exception e) {
-			return new ResponseEntity<Comentario>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Comentario>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
-	@GetMapping("comentario/campanha/{id}")
-	public ResponseEntity<List<Comentario>> getComentarioCampanha(@PathVariable long id) {
-		return new ResponseEntity<List<Comentario>>(comentarioService.getComentariosCamp(id), HttpStatus.OK);
+	@GetMapping("comentario/campanha/{url}")
+	public ResponseEntity<List<Comentario>> getComentarioCampanha(@PathVariable String url) {
+		try {
+			return new ResponseEntity<List<Comentario>>(comentarioService.getComentariosCamp(url), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
 	}
 	
 	@GetMapping("comentario/respostas/{id}")
 	public ResponseEntity<List<Comentario>> getComentarioResp(@PathVariable long id) {
-		return new ResponseEntity<List<Comentario>>(comentarioService.getComentariosResp(id), HttpStatus.OK);
+		try {
+			return new ResponseEntity<List<Comentario>>(comentarioService.getComentariosResp(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@GetMapping("auth/comentario/usuario")
@@ -52,7 +60,7 @@ public class ComentarioController {
 		try {
 			return new ResponseEntity<List<Comentario>>(comentarioService.getComentariosDono(token), HttpStatus.OK);
 		} catch(Exception e) {
-			return new ResponseEntity<List<Comentario>>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<List<Comentario>>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
@@ -61,7 +69,10 @@ public class ComentarioController {
 		try {
 			return new ResponseEntity<Comentario>(comentarioService.deletarComentario(id, token), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			if (e.getMessage().equals("usuário não é o dono"))
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 }

@@ -2,6 +2,7 @@ package ajude.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,25 +24,28 @@ import ajude.services.JWTService;
 @RestController
 public class CampanhaController {
 
+	@Autowired
 	private CampanhaService campanhaService;
+	@Autowired
 	private JWTService jwtService;
 	
-	public CampanhaController(CampanhaService campanhaService, JWTService jwtService) {
+	public CampanhaController() {
 		super();
-		this.campanhaService = campanhaService;
-		this.jwtService = jwtService;
 	}
 	
 	@PostMapping("auth/campanha")
 	public ResponseEntity<Campanha> addCampanha(@RequestBody Campanha campanha, @RequestHeader("Authorization") String token) {
-		Campanha c = campanhaService.addCampanha(campanha, jwtService.getUsuario(token));
-		return new ResponseEntity<Campanha>(c, HttpStatus.CREATED);
+		Campanha c;
+		try {
+			c = campanhaService.addCampanha(campanha, token);
+			return new ResponseEntity<Campanha>(c, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@GetMapping("campanha/{url}")
-	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {
-		getStatus(url);
-		
+	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {		
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.getCampanha(url), HttpStatus.OK);
 		} catch (Exception e) {
@@ -53,7 +57,6 @@ public class CampanhaController {
 	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody Substring substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring.getSubstring()), HttpStatus.OK);
 	}
-	
 	
 	@GetMapping("campanha/status/{url}")
 	private ResponseEntity<Campanha> getStatus(@PathVariable String url) {
@@ -68,7 +71,6 @@ public class CampanhaController {
 	
 	@PutMapping("auth/campanha/encerrar/{url}")
 	public ResponseEntity<Campanha> encerraCampanha(@RequestHeader("Authorization") String token, @PathVariable String url) {
-		getStatus(url);
 		String email = jwtService.getEmailToken(token);
 		
 		try {
@@ -80,7 +82,6 @@ public class CampanhaController {
 	
 	@PutMapping("auth/campanha/deadline/{url}")
 	public ResponseEntity<Campanha> alterarDeadline(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Data novaData) throws Exception {
-		getStatus(url);
 		String email = jwtService.getEmailToken(token);
 		
 		try {
@@ -104,6 +105,7 @@ public class CampanhaController {
 	@PutMapping("auth/campanha/descricao/{url}")
 	public ResponseEntity<Campanha> alteraDescricao(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Descricao novaDescr) {
 		String email = jwtService.getEmailToken(token);
+		
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.alteraDescricao(url, email, novaDescr.getDescricao()), HttpStatus.OK);
 		} catch (Exception e) {

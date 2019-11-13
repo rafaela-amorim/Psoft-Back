@@ -15,6 +15,7 @@ public class ComentarioService {
 	
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
 	private ComentarioRepository<Comentario,Long> comentarioRepo;
+	private CampanhaService campanhaService;
 	private JWTService jwtService;
 
 	public ComentarioService(CampanhaRepository<Campanha, Long> campanhaRepo,ComentarioRepository<Comentario,Long> comentarioRepo,JWTService jwtService) {
@@ -25,14 +26,6 @@ public class ComentarioService {
 	}
 	
 	public Comentario addComentario(Comentario comentario, String token) throws Exception {
-//		Optional<Campanha> c = campanhaRepo.findById(comentario.getIdCampanha());
-//		if (!c.isPresent())
-//			throw new Exception();
-		
-		
-//		c.get().addComentario(comentario);
-//		campanhaRepo.save(c.get());
-		
 		long idcomen = comentario.getIdComentario();
 		long idcamp = comentario.getIdCampanha();
 		if(!comentarioRepo.findById(idcomen).isPresent() && !campanhaRepo.findById(idcamp).isPresent())
@@ -53,13 +46,15 @@ public class ComentarioService {
 		return comentarioRepo.findById(id);
 	}
 	
-	public List<Comentario> getComentariosResp(long id) {
-		System.out.println("bvbbbbbvbvvbbvvb");
+	public List<Comentario> getComentariosResp(long id) throws Exception {
+		if (!comentarioRepo.findById(id).isPresent())
+			throw new Exception("comentario nao existe");
 		return comentarioRepo.pegaIdComen(id);
 	}
 	
-	public List<Comentario> getComentariosCamp(long id) {
-		return comentarioRepo.pegaIdCampanha(id);
+	public List<Comentario> getComentariosCamp(String url) throws Exception {
+		Campanha c = campanhaService.getCampanha(url);
+		return comentarioRepo.pegaIdCampanha(c.getId());
 	}
 	
 	public List<Comentario> getComentariosDono(String token) throws Exception {
@@ -74,11 +69,14 @@ public class ComentarioService {
 		String email = jwtService.getEmailToken(token);
 		Optional<Comentario> c = getComentario(id);
 		
+		if (!jwtService.usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		
 		if (c.get().getCommentOwner().equals(email)) {
 			if (c.isPresent())
 				c.get().setApagado(true);
 		} else {
-			throw new Exception("usuário não é o dono.");
+			throw new Exception("usuário não é o dono");
 		}
 		
 		comentarioRepo.save(c.get());

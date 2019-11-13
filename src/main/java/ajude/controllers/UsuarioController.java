@@ -44,9 +44,11 @@ public class UsuarioController {
 	
 	@GetMapping("usuarios/{email}")
 	public ResponseEntity<Usuario> getUsuario(@PathVariable String email) {
-		if (!usuarioService.usuarioExiste(email))
+		try {
+			return new ResponseEntity<Usuario>(usuarioService.getUsuario(email), HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		return new ResponseEntity<Usuario>(usuarioService.getUsuario(email), HttpStatus.OK);
+		}
 	} 
 	
 	@PutMapping("usuarios/{email}")

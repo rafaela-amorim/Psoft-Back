@@ -30,7 +30,9 @@ public class UsuarioService {
 		return usuariosRepo.save(usuario);
 	}
 	
-	public Usuario getUsuario(String email) {
+	public Usuario getUsuario(String email) throws Exception {
+		if (!usuarioExiste(email))
+			throw new Exception("usuario nao existe");
 		return usuariosRepo.findById(email).get();
 	}
 	
@@ -38,22 +40,29 @@ public class UsuarioService {
 		return usuariosRepo.findAll();
 	}
 	
-	// verifica se o usuario existe no controller
 	public Usuario mudarSenha(String email, String novaSenha) throws Exception {
+		if (!usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		
 		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
-		addUsuario(u);
+		
+		usuariosRepo.save(u);
 		return u;
 	}
 	
-	public boolean senhaIgual(String email, String senha) {
-		if(usuarioExiste(email))
-			return getUsuario(email).verificaSenha(senha);
-		return false;
+	public boolean senhaIgual(String email, String senha) throws Exception {
+		if(!usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		
+		return usuariosRepo.findById(email).get().verificaSenha(senha);
 	}
 	
-	public Usuario removeUsuario(String email) {
-		Usuario u = getUsuario(email);
+	public Usuario removeUsuario(String email) throws Exception {
+		if(!usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		
+		Usuario u = usuariosRepo.findById(email).get();
 		usuariosRepo.delete(u);
 		return u;
 	}
