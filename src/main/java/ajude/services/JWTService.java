@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 
 import org.springframework.stereotype.Service;
 
+import ajude.DAOs.UsuarioRepository;
 import ajude.classesAuxiliares.LoginResponse;
 import ajude.entities.Usuario;
 import io.jsonwebtoken.Jwts;
@@ -18,6 +19,7 @@ public class JWTService {
 	private final int TOKEN_INDEX = 7;
 
 	private UsuarioService usuarioService;
+	private UsuarioRepository<Usuario, String> userRep;
 	private CampanhaService campanhaService;
 
 	public JWTService(UsuarioService usuarioService,CampanhaService campanhaService) {
@@ -31,8 +33,11 @@ public class JWTService {
 				.setExpiration(new Date(System.currentTimeMillis() + 1 * 60 * 7000)).compact());
 	}
 
-	public LoginResponse authenticate(Usuario usuario) throws ServletException {
-		Usuario authUser = usuarioService.getUsuario(usuario.getEmail());
+	public LoginResponse authenticate(Usuario usuario) throws Exception {
+		if (!usuarioExiste(usuario.getEmail()))
+			throw new Exception("usuario nao existe");
+		
+		Usuario authUser = userRep.findById(usuario.getEmail()).get();
 
 		if (authUser.verificaSenha(usuario.getSenha()))
 			return this.geraToken(authUser.getEmail());
@@ -45,7 +50,7 @@ public class JWTService {
 	}
 
 	public Usuario getUsuario(String token) {
-		return usuarioService.getUsuario(getEmailToken(token));
+		return userRep.findById(getEmailToken(token)).get();
 	}
 	
 	public boolean usuarioExiste(String email) {

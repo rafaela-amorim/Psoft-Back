@@ -1,7 +1,5 @@
 package ajude.controllers;
 
-import javax.servlet.ServletException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +31,10 @@ public class LoginController {
 		try {
 			LoginResponse token = jwtService.authenticate(user);
 			return new ResponseEntity<LoginResponse>(token, HttpStatus.OK);
-		} catch (ServletException e) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			if (e.getMessage().equals("Senha invalida!"))
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 }
