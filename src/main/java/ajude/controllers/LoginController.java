@@ -1,5 +1,6 @@
 package ajude.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,21 +15,15 @@ import ajude.services.UsuarioService;
 @RestController
 public class LoginController {
 
-	private UsuarioService usuarioService;
+	@Autowired
 	private JWTService jwtService;
 
-	public LoginController(UsuarioService usuarioService, JWTService jwtService) {
+	public LoginController() {
 		super();
-		this.usuarioService = usuarioService;
-		this.jwtService = jwtService;
 	}
 
 	@PostMapping("login/usuarios")
 	public ResponseEntity<LoginResponse> authenticate(@RequestBody Usuario user) {
-
-		if (!usuarioService.usuarioExiste(user.getEmail()))
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		System.out.println(user.getSenha());
 		try {
 			LoginResponse token = jwtService.authenticate(user);
 			return new ResponseEntity<LoginResponse>(token, HttpStatus.OK);
