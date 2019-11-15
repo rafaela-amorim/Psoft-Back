@@ -34,10 +34,8 @@ public class JWTService {
 	}
 
 	public LoginResponse authenticate(Usuario usuario) throws Exception {
-		if (!usuarioExiste(usuario.getEmail()))
-			throw new Exception("usuario nao existe");
 		
-		Usuario authUser = userRep.findById(usuario.getEmail()).get();
+		Usuario authUser = usuarioService.getUsuario(usuario.getEmail());
 
 		if (authUser.verificaSenha(usuario.getSenha()))
 			return this.geraToken(authUser.getEmail());
@@ -49,8 +47,8 @@ public class JWTService {
 		return Jwts.parser().setSigningKey(TOKEN).parseClaimsJws(Token).getBody().getSubject();
 	}
 
-	public Usuario getUsuario(String token) {
-		return userRep.findById(getEmailToken(token)).get();
+	public Usuario getUsuario(String token) throws Exception {
+		return usuarioService.getUsuario(this.getEmailToken(token));
 	}
 	
 	public boolean usuarioExiste(String email) {

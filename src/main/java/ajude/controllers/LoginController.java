@@ -25,9 +25,10 @@ public class LoginController {
 
 	@PostMapping("login/usuarios")
 	public ResponseEntity<LoginResponse> authenticate(@RequestBody Usuario user) {
+
 		if (!usuarioService.usuarioExiste(user.getEmail()))
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+		System.out.println(user.getSenha());
 		try {
 			LoginResponse token = jwtService.authenticate(user);
 			return new ResponseEntity<LoginResponse>(token, HttpStatus.OK);
