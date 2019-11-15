@@ -35,6 +35,9 @@ public class JWTService {
 
 	public LoginResponse authenticate(Usuario usuario) throws Exception {
 		
+		if (!usuarioExiste(usuario.getEmail()))
+			throw new Exception("usuario nao existe");
+		
 		Usuario authUser = usuarioService.getUsuario(usuario.getEmail());
 
 		if (authUser.verificaSenha(usuario.getSenha()))
