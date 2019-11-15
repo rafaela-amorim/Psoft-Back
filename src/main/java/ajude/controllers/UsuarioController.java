@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.classesAuxiliares.Senha;
+import ajude.entities.Campanha;
 import ajude.entities.Usuario;
 import ajude.services.JWTService;
 import ajude.services.UsuarioService;
@@ -60,4 +61,28 @@ public class UsuarioController {
 		}
 	}
 	
+	@GetMapping("usuarios/campanhas/{email}")
+	public ResponseEntity<List<Campanha>> getCampanhas(@PathVariable String email){
+		try {
+			return new ResponseEntity<List<Campanha>>(usuarioService.getCampanhasDono(email),HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<List<Campanha>>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

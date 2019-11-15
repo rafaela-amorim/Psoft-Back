@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.UsuarioRepository;
+import ajude.entities.Campanha;
 import ajude.entities.Usuario;
 
 @Service
@@ -69,5 +70,11 @@ public class UsuarioService {
 	
 	public boolean usuarioExiste(String email) {
 		return usuariosRepo.findById(email).isPresent();
+	}
+	
+	public List<Campanha> getCampanhasDono(String email) throws Exception{
+		if(!usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		return usuariosRepo.findById(email).get().getCampanhas();
 	}
 }
