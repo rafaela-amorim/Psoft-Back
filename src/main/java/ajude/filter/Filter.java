@@ -28,6 +28,7 @@ public class Filter extends GenericFilterBean {
 		HttpServletRequest req = (HttpServletRequest) request;
 		
 		String header = req.getHeader("Authorization");
+		System.out.println(header);
 		
 		if (header == null || !header.startsWith("Bearer "))
 			throw new ServletException("Token inexistente ou mal formatado!");

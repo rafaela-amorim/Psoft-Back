@@ -16,6 +16,10 @@ public class Doacao {
 	private double quantia;
 	private Date data;
 	private String urlCampanha;
+	
+	public Doacao() {
+		super();
+	}
 
 	public Doacao(String idDoador, double quantia, String urlCampanha) {
 		super();

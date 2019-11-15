@@ -162,4 +162,12 @@ public class CampanhaService {
 	public boolean campanhaExiste(long id) {
 		return campanhaRepo.findById(id).isPresent();
 	}
+	
+	
+	public List<Campanha> campanhasDoacao(String token) throws Exception{
+		String email = jwtService.getEmailToken(token);
+		if(!usuarioService.usuarioExiste(email))
+			throw new Exception("usuario nao existe");
+		return campanhaRepo.campanhasDoador(email);
+	}
 }

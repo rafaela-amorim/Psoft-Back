@@ -19,4 +19,5 @@ public interface DoacaoRepository<T, ID extends Serializable> extends JpaReposit
 	
 	@Query("select d from Doacao as d where d.urlCampanha = ?1")
 	public List<Doacao> getDoacoesCampanha(String id);
+	
 }

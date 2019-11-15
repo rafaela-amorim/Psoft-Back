@@ -48,12 +48,12 @@ public class DoacaoController {
 	}
 	
 	@GetMapping("/auth/doacoes/usuario")
-	public ResponseEntity<List<Doacao>> getDoacoesUsuario(@RequestHeader("Authorization") String token){
-		try {
+	public ResponseEntity<List<Doacao>> getDoacoesUsuario(@RequestHeader("Authorization") String token) throws Exception{
+//		try {
 			return new ResponseEntity<List<Doacao>>(doaSer.getDoacoesUsuario(token),HttpStatus.OK);
-		}catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} 
+//		}catch (Exception e) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		} 
 	}
 }
 

@@ -19,4 +19,7 @@ public interface CampanhaRepository<T, ID extends Serializable> extends JpaRepos
 	
 	@Query("select c from Campanha as c")
 	List<Campanha> countAll();
+	
+	@Query("select c from Campanha as c, Doacao as d where c.url = d.urlCampanha AND d.emailDoador = ?1")
+	List<Campanha> campanhasDoador(String email);
 }

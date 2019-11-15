@@ -117,6 +117,15 @@ public class CampanhaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@GetMapping("auth/campanha/doacao")
+	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token){
+		try {
+			return new ResponseEntity<List<Campanha>>(campanhaService.campanhasDoacao(token),HttpStatus.OK);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }
 
 
