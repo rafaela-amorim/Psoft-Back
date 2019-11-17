@@ -3,6 +3,7 @@ package ajude.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
@@ -13,16 +14,17 @@ import ajude.entities.Comentario;
 @Service
 public class ComentarioService {
 	
+	@Autowired
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
+	@Autowired
 	private ComentarioRepository<Comentario,Long> comentarioRepo;
+	@Autowired
 	private CampanhaService campanhaService;
+	@Autowired
 	private JWTService jwtService;
 
-	public ComentarioService(CampanhaRepository<Campanha, Long> campanhaRepo,ComentarioRepository<Comentario,Long> comentarioRepo,JWTService jwtService) {
+	public ComentarioService() {
 		super();
-		this.campanhaRepo = campanhaRepo;
-		this.comentarioRepo = comentarioRepo;
-		this.jwtService = jwtService;
 	}
 	
 	public Comentario addComentario(Comentario comentario, String token) throws Exception {

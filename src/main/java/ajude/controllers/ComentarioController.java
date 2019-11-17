@@ -37,13 +37,12 @@ public class ComentarioController {
 	}
 	
 	@GetMapping("comentario/campanha/{url}")
-	public ResponseEntity<List<Comentario>> getComentarioCampanha(@PathVariable String url) {
+	public ResponseEntity<List<Comentario>> getComentarioCampanha(@PathVariable String url) throws Exception {
 		try {
 			return new ResponseEntity<List<Comentario>>(comentarioService.getComentariosCamp(url), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
 	}
 	
 	@GetMapping("comentario/respostas/{id}")

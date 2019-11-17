@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.CampanhaRepository;
-import ajude.DAOs.UsuarioRepository;
 import ajude.classesAuxiliares.FormataURL;
 import ajude.entities.Campanha;
 import ajude.entities.Usuario;
@@ -18,8 +17,6 @@ public class CampanhaService {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	@Autowired
-	private UsuarioRepository<Usuario, String> usuariosRepo;
 	@Autowired
 	private CampanhaRepository<Campanha, Long> campanhaRepo;
 	@Autowired
@@ -43,8 +40,8 @@ public class CampanhaService {
 		String url = FormataURL.formataURL(campanha.getNome());
 		url += countAll();
 				
-		user.adicionaCampanha(campanha);
 		campanha.setUrl(url);
+		user.adicionaCampanha(campanha);
 		
 		usuarioService.saveUsuario(user);
 		return campanhaRepo.save(campanha);
@@ -148,11 +145,9 @@ public class CampanhaService {
 	}
 	
 	public Campanha getCampanha(String url) throws Exception {
-		try {
-			return campanhaRepo.findByUrl(url).get();
-		} catch (Exception e) {
+		if (!campanhaExiste(url))
 			throw new Exception("campanha nao existe");
-		}
+		return campanhaRepo.findByUrl(url).get();
 	}
 
 	public boolean campanhaExiste(String url) {
