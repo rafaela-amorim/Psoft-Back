@@ -46,6 +46,10 @@ public class CampanhaService {
 		return campanhaRepo.findBySubstring(substring.toLowerCase());
 	}
 	
+	public List<Campanha> findByDescrSubstring(String substring) {
+		return campanhaRepo.findByDescrSubstr(substring.toLowerCase());
+	}
+	
 	public Campanha encerraCampanha(String url, String email) throws Exception {
 		Campanha c = getCampanha(url);
 		
