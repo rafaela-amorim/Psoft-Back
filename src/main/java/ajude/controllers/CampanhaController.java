@@ -41,12 +41,12 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("auth/campanhas")
+	@GetMapping("campanhas")
 	public ResponseEntity<List<Campanha>> getCampanhas() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.getCampanhas(), HttpStatus.OK);
 	}
 	
-	@GetMapping("auth/campanha/{url}")
+	@GetMapping("campanha/{url}")
 	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {		
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.getCampanha(url), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("auth/campanha/find") 
+	@GetMapping("campanha/find") 
 	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody Substring substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring.getSubstring()), HttpStatus.OK);
 	}

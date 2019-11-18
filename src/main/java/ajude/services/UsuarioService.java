@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.UsuarioRepository;
+import ajude.classesAuxiliares.JavaMail;
 import ajude.entities.Campanha;
 import ajude.entities.Usuario;
 
@@ -19,7 +20,9 @@ public class UsuarioService {
 	public Usuario addUsuario(Usuario user) throws Exception {
 		if (usuarioExiste(user.getEmail()))
 			throw new Exception("usuario ja existe");
-		
+		String subj = "Welcome to AJuDE!";
+		String txt = "O link de acesso para o sistema é https://google.com";
+		JavaMail.enviar(subj, txt, user.getEmail());
 		return saveUsuario(user);
 	}
 	
@@ -41,6 +44,10 @@ public class UsuarioService {
 		if (!usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
+		String subj = "Change your password";
+		String txt = "Para modificar a senha acesse o link abaixo: ";
+		JavaMail.enviar(subj, txt, email);
+
 		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
 		
