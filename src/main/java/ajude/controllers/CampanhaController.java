@@ -29,6 +29,9 @@ public class CampanhaController {
 	@Autowired
 	private JWTService jwtService;
 	
+	public CampanhaController() {
+		super();
+	}	
 	
 	@PostMapping("auth/campanha")
 	public ResponseEntity<Campanha> addCampanha(@RequestBody Campanha campanha, @RequestHeader("Authorization") String token) {
@@ -41,12 +44,14 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("auth/campanhas")
+	// --------------------------
+	
+	@GetMapping("campanhas")
 	public ResponseEntity<List<Campanha>> getCampanhas() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.getCampanhas(), HttpStatus.OK);
 	}
 	
-	@GetMapping("auth/campanha/{url}")
+	@GetMapping("campanha/{url}")
 	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {		
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.getCampanha(url), HttpStatus.OK);
@@ -55,18 +60,14 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("auth/campanha/find") 
+	@GetMapping("campanha/find") 
 	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody Substring substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring.getSubstring()), HttpStatus.OK);
 	}
 	
-	@GetMapping("campanha/status/{url}")
-	private ResponseEntity<Campanha> getStatus(@PathVariable String url) {
-		try {
-			return new ResponseEntity<Campanha>(campanhaService.verificaStatus(url), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<Campanha>(HttpStatus.NOT_FOUND);
-		}
+	@GetMapping("campanha/find/descr")
+	public ResponseEntity<List<Campanha>> findByDescrSubstr(@RequestBody Substring substring) {
+		return new ResponseEntity<List<Campanha>>(campanhaService.findByDescrSubstring(substring.getSubstring()), HttpStatus.OK);
 	}
 	
 	// -----------------------------------
@@ -119,6 +120,8 @@ public class CampanhaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	// ---------------------------
 	
 	@GetMapping("auth/campanha/doacao")
 	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token) {
