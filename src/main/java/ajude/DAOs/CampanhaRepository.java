@@ -20,7 +20,7 @@ public interface CampanhaRepository<T, ID extends Serializable> extends JpaRepos
 	@Query("select c from Campanha as c")
 	List<Campanha> countAll();
 	
-	@Query("select c from Campanha as c, Doacao as d where c.url = d.urlCampanha AND d.emailDoador = ?1")
+	@Query("select distinct c from Campanha as c, Doacao as d where c.url = d.urlCampanha AND d.emailDoador = ?1")
 	List<Campanha> campanhasDoador(String email);
 	
 	@Query("select c from Campanha as c where lower(c.nome) like %?1% or lower(c.descricao) like %?1%")

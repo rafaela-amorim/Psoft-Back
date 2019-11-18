@@ -135,6 +135,29 @@ public class CampanhaService {
 		return user.equals(camp.getDono());
 	}
 	
+	public void alteraLike(long id, boolean incrementa) throws Exception {
+		if (!campanhaExiste(id))
+			throw new Exception("campanha nao existe");
+		Campanha c = getCampanha(id);
+		if (incrementa)
+			c.incrementaLike();
+		else
+			c.decrementaLike();
+		
+		campanhaRepo.save(c);
+	}
+	
+	public void alteraDislikes(long id, boolean incrementa) throws Exception {
+		if (!campanhaExiste(id))
+			throw new Exception("campanha nao existe");
+		Campanha c = getCampanha(id);
+		if (incrementa)
+			c.incrementaDislike();
+		else
+			c.decrementaDislike();
+		campanhaRepo.save(c);
+	}
+	
 	public List<Campanha> getCampanhas() {
 		return campanhaRepo.findAll();
 	}
@@ -164,4 +187,30 @@ public class CampanhaService {
 			throw new Exception("usuario nao existe");
 		return campanhaRepo.campanhasDoador(email);
 	}
+	
+//	public fazer metodos para comparators
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

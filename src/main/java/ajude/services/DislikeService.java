@@ -34,8 +34,12 @@ public class DislikeService {
 		if (usuarioAlreadyDislikedById(email, dislikes.getIdCampanha())) 
 			throw new Exception("usuario ja deu dislike");
 		
-		if (usuarioAlreadyLikedById(email, dislikes.getIdCampanha()))
+		if (usuarioAlreadyLikedById(email, dislikes.getIdCampanha())) {
 			likesRepo.deleteLike(email, dislikes.getIdCampanha());
+			campSer.alteraLike(dislikes.getIdCampanha(), false);
+		}
+		
+		campSer.alteraDislikes(dislikes.getIdCampanha(), true);
 			
 		dislikes.setEmail(email);
 		return dislikesRepo.save(dislikes);			

@@ -30,6 +30,9 @@ public class Campanha {
 	@ManyToOne(cascade = CascadeType.DETACH)
 	private Usuario dono;
 	
+	private int likes;
+	private int dislikes;
+	
 //	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //	@JoinColumn(name = "campanha_id", referencedColumnName = "id")
 //	private List<Comentario> comentarios;
@@ -38,6 +41,8 @@ public class Campanha {
 	public Campanha() {
 		super();
 		this.doacoes = 0;
+		this.likes = 0;
+		this.dislikes = 0;
 		this.dataLimite = new Date();
 		this.status = StatusCampanha.ATIVA;
 	}
@@ -49,7 +54,10 @@ public class Campanha {
 		this.descricao = descricao;
 		this.meta = meta;
 		this.dono = null;
+		
 		this.doacoes = 0;
+		this.likes = 0;
+		this.dislikes = 0;
 		this.dataLimite = new Date(data);
 		this.status = StatusCampanha.ATIVA;
 	}
@@ -134,7 +142,38 @@ public class Campanha {
 		return id;
 	}
 
+	public int getDislikes() {
+		return dislikes;
+	}
+	
+	public int getLikes() {
+		return likes;
+	}
+	
+	public void setDislikes(int dislikes) {
+		this.dislikes = dislikes;
+	}
+	
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
 
+	public void incrementaLike() {
+		this.likes++;
+	}
+
+	public void incrementaDislike() {
+		this.dislikes++;
+	}
+
+	public void decrementaLike() {
+		this.likes--;		
+	}
+
+	public void decrementaDislike() {
+		this.dislikes--;
+	}
+	
 //	public List<Comentario> getComentarios() {
 //		return comentarios;
 //	}
