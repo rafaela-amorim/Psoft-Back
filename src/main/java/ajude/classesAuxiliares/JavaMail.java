@@ -12,46 +12,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class JavaMail {
-	public static void main(String[] args) {
-		JavaMail.enviar();
-	}
-	
-	private String destinatario;
-	private String assunto;
-	private String msg;
-	
+
 	public JavaMail(String destinatario, String assunto, String msg) {
 		super();
-		this.destinatario = destinatario;
-		this.assunto = assunto;
-		this.msg = msg;
 	}
 
-	public String getDestinatario() {
-		return destinatario;
-	}
-
-	public void setDestinatario(String destinatario) {
-		this.destinatario = destinatario;
-	}
-
-	public String getAssunto() {
-		return assunto;
-	}
-
-	public void setAssunto(String assunto) {
-		this.assunto = assunto;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public static boolean enviar() {
+	public static boolean enviar(String msg, String txt, String email) {
 		boolean retorno = false;
 		
 		Properties props = new Properties();
@@ -66,7 +32,7 @@ public class JavaMail {
 	      new javax.mail.Authenticator() {
 	           protected PasswordAuthentication getPasswordAuthentication() 
 	           {
-	                 return new PasswordAuthentication("ajude.projsoft@gmail.com", 
+	                 return new PasswordAuthentication("ajude.projsw@gmail.com", 
 	                 "ajudeproj");
 	           }
 	      });
@@ -76,14 +42,14 @@ public class JavaMail {
 	    try {
 	 
 	      Message message = new MimeMessage(session);
-	      message.setFrom(new InternetAddress("ajude.projsoft@gmail.com")); 
+	      message.setFrom(new InternetAddress("ajude.projsw@gmail.com")); 
 	 
-	      Address[] toUser = InternetAddress //Destinatário(s)
-	                 .parse("ajude.projsoft@gmail.com");  
+	      Address[] toUser = InternetAddress //Destinatário
+	                 .parse(email);  
 	 
 	      message.setRecipients(Message.RecipientType.TO, toUser);
-	      message.setSubject("Enviando email com JavaMail");//Assunto
-	      message.setText("teste javamail");
+	      message.setSubject(msg); //Assunto
+	      message.setText(txt);
 	      /**Método para enviar a mensagem criada*/
 	      Transport.send(message);
 	 
@@ -94,7 +60,5 @@ public class JavaMail {
 	    }
 	    
 	    return retorno;
-	 
 	}
-	
 }

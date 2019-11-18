@@ -43,9 +43,9 @@ public class CampanhaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	// --------------------------
-	
+
 	@GetMapping("campanhas")
 	public ResponseEntity<List<Campanha>> getCampanhas() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.getCampanhas(), HttpStatus.OK);
