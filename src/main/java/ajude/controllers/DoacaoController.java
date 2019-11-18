@@ -18,57 +18,35 @@ import ajude.services.DoacaoService;
 
 @RestController
 public class DoacaoController {
-
 	
 	@Autowired
-	private DoacaoService doaSer;
+	private DoacaoService doacaoService;
 	
-	
-	public DoacaoController() {
-		super();
-	}
-
 	
 	@PostMapping("/auth/doacao")
-	public ResponseEntity<Quantia> addDoacao(@RequestBody Doacao doa,@RequestHeader("Authorization") String token){
+	public ResponseEntity<Quantia> addDoacao(@RequestBody Doacao doacao, @RequestHeader("Authorization") String token) {
 		try {
-			return new ResponseEntity<Quantia>(doaSer.addDoacao(doa, token),HttpStatus.OK);
-		}catch (Exception e) {
+			return new ResponseEntity<Quantia>(doacaoService.addDoacao(doacao, token), HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<Quantia>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@GetMapping("/doacoes/campanha/{url}")
-	public ResponseEntity<List<Doacao>> getDoacoesCampanha(@PathVariable String url){
+	public ResponseEntity<List<Doacao>> getDoacoesCampanha(@PathVariable String url) {
 		try {
-			return new ResponseEntity<List<Doacao>>(doaSer.getDoacoesCampanha(url),HttpStatus.OK);
-		}catch (Exception e) {
+			return new ResponseEntity<List<Doacao>>(doacaoService.getDoacoesCampanha(url), HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
 	@GetMapping("/auth/doacoes/usuario")
-	public ResponseEntity<List<Doacao>> getDoacoesUsuario(@RequestHeader("Authorization") String token) throws Exception{
+	public ResponseEntity<List<Doacao>> getDoacoesUsuario(@RequestHeader("Authorization") String token) throws Exception {
 //		try {
-			return new ResponseEntity<List<Doacao>>(doaSer.getDoacoesUsuario(token),HttpStatus.OK);
-//		}catch (Exception e) {
+			return new ResponseEntity<List<Doacao>>(doacaoService.getDoacoesUsuario(token), HttpStatus.OK);
+//		} catch (Exception e) {
 //			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //		} 
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

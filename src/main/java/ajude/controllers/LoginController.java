@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ajude.classesAuxiliares.LoginResponse;
 import ajude.entities.Usuario;
 import ajude.services.JWTService;
-import ajude.services.UsuarioService;
 
 @RestController
 public class LoginController {
@@ -18,10 +17,7 @@ public class LoginController {
 	@Autowired
 	private JWTService jwtService;
 
-	public LoginController() {
-		super();
-	}
-
+	
 	@PostMapping("login/usuarios")
 	public ResponseEntity<LoginResponse> authenticate(@RequestBody Usuario user) {
 		try {

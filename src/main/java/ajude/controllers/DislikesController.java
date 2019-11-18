@@ -1,4 +1,4 @@
-package ajude.services;
+package ajude.controllers;
 
 import java.util.List;
 
@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import ajude.entities.Dislikes;
+import ajude.services.DislikeService;
 
 @RestController
 public class DislikesController {
 
 	@Autowired
 	private DislikeService dislikeService;
-	
-	public DislikesController() {
-		super();
-	}
+
 	
 	@PostMapping("auth/dislike")
 	public ResponseEntity<Dislikes> addDislike(@RequestBody Dislikes dislikes, @RequestHeader("Authorization") String token) {
@@ -73,5 +71,4 @@ public class DislikesController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
 }

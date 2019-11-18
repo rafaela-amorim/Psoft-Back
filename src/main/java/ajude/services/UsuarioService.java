@@ -2,6 +2,7 @@ package ajude.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.UsuarioRepository;
@@ -11,14 +12,9 @@ import ajude.entities.Usuario;
 @Service
 public class UsuarioService {
 	
+	@Autowired
 	private UsuarioRepository<Usuario, String> usuariosRepo;
 	
-	public UsuarioService(UsuarioRepository<Usuario, String> usuariosRepo) {
-		super();
-		this.usuariosRepo = usuariosRepo;
-	}
-
-	// ----------------------
 	
 	public Usuario addUsuario(Usuario user) throws Exception {
 		if (usuarioExiste(user.getEmail()))

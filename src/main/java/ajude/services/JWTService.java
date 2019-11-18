@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.servlet.ServletException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ajude.DAOs.UsuarioRepository;
@@ -18,15 +19,13 @@ public class JWTService {
 	private final String TOKEN = "omae wa mou shindeiru.";
 	private final int TOKEN_INDEX = 7;
 
+	@Autowired
 	private UsuarioService usuarioService;
+	@Autowired
 	private UsuarioRepository<Usuario, String> userRep;
+	@Autowired
 	private CampanhaService campanhaService;
 
-	public JWTService(UsuarioService usuarioService,CampanhaService campanhaService) {
-		super();
-		this.usuarioService = usuarioService;
-		this.campanhaService = campanhaService;
-	}
 
 	public LoginResponse geraToken(String email) {
 		return new LoginResponse(Jwts.builder().setSubject(email).signWith(SignatureAlgorithm.HS512, TOKEN)

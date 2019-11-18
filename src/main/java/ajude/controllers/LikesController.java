@@ -19,13 +19,9 @@ import ajude.services.LikesService;
 @RestController
 public class LikesController {
 
-
 	@Autowired
 	private LikesService likesService;
-	
-	public LikesController() {
-		super();
-	}
+
 	
 	@PostMapping("auth/like")
 	public ResponseEntity<Likes> addLike(@RequestBody Likes like, @RequestHeader("Authorization") String token) {
@@ -82,15 +78,3 @@ public class LikesController {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

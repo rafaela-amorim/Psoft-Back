@@ -37,6 +37,4 @@ public class Likes {
 	public void setIdCampanha(long idCampanha) {
 		this.idCampanha = idCampanha;
 	}
-	
-	
 }

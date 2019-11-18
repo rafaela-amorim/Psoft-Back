@@ -13,28 +13,23 @@ import ajude.entities.Likes;
 
 @Service
 public class DislikeService {
-
 	
 	@Autowired
 	private DislikesRepository<Dislikes,Long> dislikesRepo;
 	@Autowired
 	private LikesRepository<Likes,Long> likesRepo;
-	
 	@Autowired
 	private JWTService jwtService;
 	@Autowired
 	private CampanhaService campSer;
 	
-	public DislikeService() {
-		super();
-	}
 	
 	public Dislikes addDislike(Dislikes dislikes, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		
-		if(!jwtService.usuarioExiste(email))
+		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if(!campSer.campanhaExiste(dislikes.getIdCampanha()))
+		if (!campSer.campanhaExiste(dislikes.getIdCampanha()))
 			throw new Exception("campanha nao existe");
 		if (usuarioAlreadyDislikedById(email, dislikes.getIdCampanha())) 
 			throw new Exception("usuario ja deu dislike");
@@ -46,7 +41,6 @@ public class DislikeService {
 		return dislikesRepo.save(dislikes);			
 	}
 	
-
 	public Dislikes deleteDislike(String url, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		if (!jwtService.usuarioExiste(email))
@@ -73,18 +67,19 @@ public class DislikeService {
 		return dislike;
 	}
 	
-	public List<Dislikes> getDislikesCamp(String url) throws Exception{
+	public List<Dislikes> getDislikesCamp(String url) throws Exception {
 		Campanha c = campSer.getCampanha(url);
 		return dislikesRepo.getDislikesCampanha(c.getId());
 	}
 	
 	public List<Dislikes> getDislikesUsu(String token) throws Exception{
 		String email = jwtService.getEmailToken(token);
-		if(!jwtService.usuarioExiste(email))
+		
+		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
+		
 		return dislikesRepo.getDislikesUsuario(email);
 	}
-
 	
 	public boolean usuarioAlreadyDisliked(String email, String url) {
 		return dislikesRepo.usuarioDislikedByUrl(email, url).size() > 0;
@@ -101,6 +96,4 @@ public class DislikeService {
 	public boolean usuarioAlreadyLikedById(String email, long id) {
 		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
 	}
-	
-	
 }

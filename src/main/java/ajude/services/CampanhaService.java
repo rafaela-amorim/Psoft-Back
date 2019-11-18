@@ -22,11 +22,6 @@ public class CampanhaService {
 	@Autowired
 	private JWTService jwtService;
 	
-	public CampanhaService() {
-		super();
-	}
-	
-	// ------------------------------
 	
 	public Campanha addCampanha(Campanha campanha, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);

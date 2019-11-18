@@ -21,14 +21,10 @@ public class ComentarioController {
 	
 	@Autowired
 	private ComentarioService comentarioService;
-	
-	public ComentarioController() {
-		super();
-	}
+
 	
 	@PostMapping("auth/comentario")
 	public ResponseEntity<Comentario> addComentario(@RequestBody Comentario comentario, @RequestHeader("Authorization") String token) throws Exception {
-		
 		try {
 			return new ResponseEntity<Comentario>(comentarioService.addComentario(comentario, token), HttpStatus.CREATED);
 		} catch(Exception e) {

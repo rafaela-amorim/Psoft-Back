@@ -30,7 +30,7 @@ public class Comentario {
 		super();
 		this.apagado = false;
 	}
-	
+
 	public Comentario(String comentario, long idCampanha, long idComentario) {
 		this.comentario = comentario;
 		this.idCampanha = idCampanha;

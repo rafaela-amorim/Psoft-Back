@@ -29,9 +29,6 @@ public class CampanhaController {
 	@Autowired
 	private JWTService jwtService;
 	
-	public CampanhaController() {
-		super();
-	}
 	
 	@PostMapping("auth/campanha")
 	public ResponseEntity<Campanha> addCampanha(@RequestBody Campanha campanha, @RequestHeader("Authorization") String token) {
@@ -44,7 +41,12 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("campanha/{url}")
+	@GetMapping("auth/campanhas")
+	public ResponseEntity<List<Campanha>> getCampanhas() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.getCampanhas(), HttpStatus.OK);
+	}
+	
+	@GetMapping("auth/campanha/{url}")
 	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {		
 		try {
 			return new ResponseEntity<Campanha>(campanhaService.getCampanha(url), HttpStatus.OK);
@@ -53,7 +55,7 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("campanha/find")
+	@GetMapping("auth/campanha/find") 
 	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody Substring substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring.getSubstring()), HttpStatus.OK);
 	}
@@ -119,21 +121,11 @@ public class CampanhaController {
 	}
 	
 	@GetMapping("auth/campanha/doacao")
-	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token){
+	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token) {
 		try {
-			return new ResponseEntity<List<Campanha>>(campanhaService.campanhasDoacao(token),HttpStatus.OK);
-		}catch(Exception e) {
+			return new ResponseEntity<List<Campanha>>(campanhaService.campanhasDoacao(token), HttpStatus.OK);
+		} catch(Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-

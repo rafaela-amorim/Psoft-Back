@@ -23,14 +23,11 @@ public class ComentarioService {
 	@Autowired
 	private JWTService jwtService;
 
-	public ComentarioService() {
-		super();
-	}
 	
 	public Comentario addComentario(Comentario comentario, String token) throws Exception {
 		long idcomen = comentario.getIdComentario();
 		long idcamp = comentario.getIdCampanha();
-		if(!comentarioRepo.findById(idcomen).isPresent() && !campanhaRepo.findById(idcamp).isPresent())
+		if (!comentarioRepo.findById(idcomen).isPresent() && !campanhaRepo.findById(idcamp).isPresent())
 			throw new Exception("nao existe comentario ou campanha com esse id");
 		
 		String email = jwtService.getEmailToken(token);
@@ -39,7 +36,6 @@ public class ComentarioService {
 		
 		comentario.setCommentOwner(email);
 		comentarioRepo.save(comentario);
-		
 		
 		return comentario;
 	}

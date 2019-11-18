@@ -1,7 +1,6 @@
 package ajude.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,28 +14,22 @@ import ajude.entities.Likes;
 @Service
 public class LikesService {
 	
-
 	@Autowired
 	private DislikesRepository<Dislikes,Long> dislikesRepo;
 	@Autowired
 	private LikesRepository<Likes,Long> likesRepo;
-	
 	@Autowired
 	private JWTService jwtService;
 	@Autowired
 	private CampanhaService campSer;
 	
-	public LikesService() {
-		super();
-	}
-	
 	
 	public Likes addLike(Likes like, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		
-		if(!jwtService.usuarioExiste(email))
+		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if(!campSer.campanhaExiste(like.getIdCampanha()))
+		if (!campSer.campanhaExiste(like.getIdCampanha()))
 			throw new Exception("campanha nao existe");
 		if (usuarioAlreadyLikedById(email, like.getIdCampanha())) 
 			throw new Exception("usuario ja deu like");
@@ -47,8 +40,6 @@ public class LikesService {
 		like.setEmail(email);
 		return likesRepo.save(like);
 	}
-	
-	
 	
 	public Likes deleteLike(String url, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
@@ -79,14 +70,12 @@ public class LikesService {
 		return likesRepo.getLikesCampanha(c.getId());
 	}
 	
-	public List<Likes> getLikesUsu(String token) throws Exception{
+	public List<Likes> getLikesUsu(String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
-		if(!jwtService.usuarioExiste(email))
+		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		return likesRepo.getLikesUsuario(email);
 	}
-	
-	
 	
 	public boolean usuarioAlreadyDisliked(String email, String url) {
 		return dislikesRepo.usuarioDislikedByUrl(email, url).size() > 0;
@@ -103,5 +92,4 @@ public class LikesService {
 	public boolean usuarioAlreadyLikedById(String email, long id) {
 		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
 	}
-	
 }
