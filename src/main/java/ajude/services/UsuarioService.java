@@ -20,11 +20,13 @@ public class UsuarioService {
 	public Usuario addUsuario(Usuario user) throws Exception {
 		if (usuarioExiste(user.getEmail()))
 			throw new Exception("usuario ja existe");
-		
 		String subj = "Welcome to AJuDE!";
 		String txt = "O link de acesso para o sistema é https://google.com";
-		
-		JavaMail.enviar(subj, txt, user.getEmail());
+		try {
+			JavaMail.enviar(subj, txt, user.getEmail());
+		}catch(Exception e) {
+			
+		}
 		return saveUsuario(user);
 	}
 	
@@ -48,8 +50,11 @@ public class UsuarioService {
 		
 		String subj = "Change your password";
 		String txt = "Para modificar a senha acesse o link abaixo: ";
-		JavaMail.enviar(subj, txt, email);
-
+		try {
+			JavaMail.enviar(subj, txt, email);
+		}catch(Exception e) {
+			
+		}
 
 		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
