@@ -1,11 +1,15 @@
 package ajude.services;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import Comparators.DataComparator;
+import Comparators.LikesComparator;
+import Comparators.MetaComparator;
 import ajude.DAOs.CampanhaRepository;
 import ajude.classesAuxiliares.FormataURL;
 import ajude.entities.Campanha;
@@ -188,8 +192,29 @@ public class CampanhaService {
 		return campanhaRepo.campanhasDoador(email);
 	}
 	
-//	public fazer metodos para comparators
+	public List<Campanha> sortCampanhasByMeta() {
+		List<Campanha> lista = getCampanhas();
+		MetaComparator mc = new MetaComparator();
+		Collections.sort(lista, mc);
+		
+		return lista;
+	}
 	
+	public List<Campanha> sortCampanhasByData() {
+		List<Campanha> lista = getCampanhas();
+		DataComparator dc = new DataComparator();
+		Collections.sort(lista, dc);
+		
+		return lista;
+	}
+	
+	public List<Campanha> sortCampanhasByLikes() {
+		List<Campanha> lista = getCampanhas();
+		LikesComparator lc = new LikesComparator();
+		Collections.sort(lista, lc);
+		
+		return lista;
+	}
 }
 
 

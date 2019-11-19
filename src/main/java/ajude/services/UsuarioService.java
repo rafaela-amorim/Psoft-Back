@@ -20,8 +20,10 @@ public class UsuarioService {
 	public Usuario addUsuario(Usuario user) throws Exception {
 		if (usuarioExiste(user.getEmail()))
 			throw new Exception("usuario ja existe");
+		
 		String subj = "Welcome to AJuDE!";
 		String txt = "O link de acesso para o sistema é https://google.com";
+		
 		JavaMail.enviar(subj, txt, user.getEmail());
 		return saveUsuario(user);
 	}
