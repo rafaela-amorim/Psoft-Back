@@ -131,4 +131,31 @@ public class CampanhaController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("campanha/sort/meta")
+	public ResponseEntity<List<Campanha>> getCampanhasByMeta() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByMeta(), HttpStatus.OK);
+	}
+	
+	@GetMapping("campanha/sort/data")
+	public ResponseEntity<List<Campanha>> getCampanhasByData() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByData(), HttpStatus.OK);
+	}
+	
+	@GetMapping("campanha/sort/likes")
+	public ResponseEntity<List<Campanha>> getCampanhasByLikes() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByLikes(), HttpStatus.OK);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

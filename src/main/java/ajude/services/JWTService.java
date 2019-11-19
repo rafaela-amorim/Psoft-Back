@@ -22,8 +22,6 @@ public class JWTService {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
-	private UsuarioRepository<Usuario, String> userRep;
-	@Autowired
 	private CampanhaService campanhaService;
 
 
