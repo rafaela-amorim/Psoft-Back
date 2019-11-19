@@ -22,6 +22,7 @@ public class UsuarioService {
 			throw new Exception("usuario ja existe");
 		String subj = "Welcome to AJuDE!";
 		String txt = "O link de acesso para o sistema é https://google.com";
+		
 		JavaMail.enviar(subj, txt, user.getEmail());
 		return saveUsuario(user);
 	}
@@ -47,6 +48,7 @@ public class UsuarioService {
 		String subj = "Change your password";
 		String txt = "Para modificar a senha acesse o link abaixo: ";
 		JavaMail.enviar(subj, txt, email);
+
 
 		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
