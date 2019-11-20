@@ -29,17 +29,17 @@ public class DislikeService {
 		
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if (!campSer.campanhaExiste(dislikes.getIdCampanha()))
+		if (!campSer.campanhaExiste(dislikes.getUrlCampanha()))
 			throw new Exception("campanha nao existe");
-		if (usuarioAlreadyDislikedById(email, dislikes.getIdCampanha())) 
+		if (usuarioAlreadyDislikedByUrl(email, dislikes.getUrlCampanha())) 
 			throw new Exception("usuario ja deu dislike");
 		
-		if (usuarioAlreadyLikedById(email, dislikes.getIdCampanha())) {
-			likesRepo.deleteLike(email, dislikes.getIdCampanha());
-			campSer.alteraLike(dislikes.getIdCampanha(), false);
+		if (usuarioAlreadyLikedByUrl(email, dislikes.getUrlCampanha())) {
+			likesRepo.deleteLike(email, dislikes.getUrlCampanha());
+			campSer.alteraLike(dislikes.getUrlCampanha(), false);
 		}
 		
-		campSer.alteraDislikes(dislikes.getIdCampanha(), true);
+		campSer.alteraDislikes(dislikes.getUrlCampanha(), true);
 			
 		dislikes.setEmail(email);
 		return dislikesRepo.save(dislikes);			
@@ -52,28 +52,26 @@ public class DislikeService {
 		if (!usuarioAlreadyDisliked(email, url)) 
 			throw new Exception("tentou tirar dislike que não existe");
 		
-		List<Dislikes> l = dislikesRepo.usuarioDislikedByUrl(url, email);
-		
+		List<Dislikes> l = dislikesRepo.usuarioDislikedCampanha(email, url);
 		Dislikes dislike = l.get(0);
-		dislikesRepo.deleteDislike(email, dislike.getIdCampanha());
+		dislikesRepo.deleteDislike(email, dislike.getUrlCampanha());
 		return dislike;
 	}
 	
-	public Dislikes deleteDislikeById(long id, String token) throws Exception {
+	public Dislikes deleteDislikeByUrl(String url, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if (!usuarioAlreadyDislikedById(email, id))
+		if (!usuarioAlreadyDislikedByUrl(email, url))
 			throw new Exception("tentou tirar dislike que não existe");
 		
-		Dislikes dislike = dislikesRepo.usuarioDislikedCampanha(email, id).get(0);
-		dislikesRepo.deleteDislike(email, id);
+		Dislikes dislike = dislikesRepo.usuarioDislikedCampanha(email, url).get(0);
+		dislikesRepo.deleteDislike(email, url);
 		return dislike;
 	}
 	
 	public List<Dislikes> getDislikesCamp(String url) throws Exception {
-		Campanha c = campSer.getCampanha(url);
-		return dislikesRepo.getDislikesCampanha(c.getId());
+		return dislikesRepo.getDislikesCampanha(url);
 	}
 	
 	public List<Dislikes> getDislikesUsu(String token) throws Exception{
@@ -86,18 +84,18 @@ public class DislikeService {
 	}
 	
 	public boolean usuarioAlreadyDisliked(String email, String url) {
-		return dislikesRepo.usuarioDislikedByUrl(email, url).size() > 0;
+		return dislikesRepo.usuarioDislikedCampanha(email, url).size() > 0;
 	}
 	
-	public boolean usuarioAlreadyDislikedById(String email, long id) {
-		return dislikesRepo.usuarioDislikedCampanha(email, id).size() > 0;
+	public boolean usuarioAlreadyDislikedByUrl(String email, String url) {
+		return dislikesRepo.usuarioDislikedCampanha(email, url).size() > 0;
 	}
 	
 	public boolean usuarioAlreadyLiked(String email, String url) {
-		return likesRepo.usuarioLikedByUrl(email, url).size() > 0;
+		return likesRepo.usuarioLikedCampanha(email, url).size() > 0;
 	}
 	
-	public boolean usuarioAlreadyLikedById(String email, long id) {
-		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
+	public boolean usuarioAlreadyLikedByUrl(String email, String url) {
+		return likesRepo.usuarioLikedCampanha(email, url).size() > 0;
 	}
 }

@@ -29,17 +29,17 @@ public class LikesService {
 		
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if (!campSer.campanhaExiste(like.getIdCampanha()))
+		if (!campSer.campanhaExiste(like.getUrlCampanha()))
 			throw new Exception("campanha nao existe");
-		if (usuarioAlreadyLikedById(email, like.getIdCampanha())) 
+		if (usuarioAlreadyLikedByUrl(email, like.getUrlCampanha())) 
 			throw new Exception("usuario ja deu like");
 		
-		if (usuarioAlreadyDislikedById(email, like.getIdCampanha())) {
-			dislikesRepo.deleteDislike(email, like.getIdCampanha());
-			campSer.alteraDislikes(like.getIdCampanha(), false);
+		if (usuarioAlreadyDislikedByUrl(email, like.getUrlCampanha())) {
+			dislikesRepo.deleteDislike(email, like.getUrlCampanha());
+			campSer.alteraDislikes(like.getUrlCampanha(), false);
 		}
 		
-		campSer.alteraLike(like.getIdCampanha(), true);
+		campSer.alteraLike(like.getUrlCampanha(), true);
 		
 		like.setEmail(email);
 		return likesRepo.save(like);
@@ -49,29 +49,33 @@ public class LikesService {
 		String email = jwtService.getEmailToken(token);
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
+		
 		if (!usuarioAlreadyLiked(email, url))
 			throw new Exception("tentou tirar like que não existe");
-		
-		Likes like = likesRepo.usuarioLikedByUrl(url, email).get(0);
-		likesRepo.deleteLike(email, like.getIdCampanha());
+		System.out.println("ASDFASDFASDFASDFASD");
+		Likes like = likesRepo.usuarioLikedCampanha(url, email).get(0);
+		likesRepo.deleteLike(email, like.getUrlCampanha());
 		return like;
 	}
 	
-	public Likes deleteLikeById(long id, String token) throws Exception {
+	public Likes deleteLikeByUrl(String url, String token) throws Exception {
+		
 		String email = jwtService.getEmailToken(token);
+		
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
-		if (!usuarioAlreadyLikedById(email, id))
+		
+		if (!usuarioAlreadyLikedByUrl(email, url))
 			throw new Exception("tentou tirar like que não existe");
 		
-		Likes like = likesRepo.usuarioLikedCampanha(email, id).get(0);
-		likesRepo.deleteLike(email, id);
+		Likes like = likesRepo.usuarioLikedCampanha(email, url).get(0);
+		
+		likesRepo.deleteLike(email, url);
 		return like;
 	}
 	
 	public List<Likes> getLikesCamp(String url) throws Exception {
-		Campanha c = campSer.getCampanha(url);
-		return likesRepo.getLikesCampanha(c.getId());
+		return likesRepo.getLikesCampanha(url);
 	}
 	
 	public List<Likes> getLikesUsu(String token) throws Exception {
@@ -82,18 +86,18 @@ public class LikesService {
 	}
 	
 	public boolean usuarioAlreadyDisliked(String email, String url) {
-		return dislikesRepo.usuarioDislikedByUrl(email, url).size() > 0;
+		return dislikesRepo.usuarioDislikedCampanha(email, url).size() > 0;
 	}
 	
-	public boolean usuarioAlreadyDislikedById(String email, long id) {
-		return dislikesRepo.usuarioDislikedCampanha(email, id).size() > 0;
+	public boolean usuarioAlreadyDislikedByUrl(String email, String url) {
+		return dislikesRepo.usuarioDislikedCampanha(email, url).size() > 0;
 	}
 	
 	public boolean usuarioAlreadyLiked(String email, String url) {
-		return likesRepo.usuarioLikedByUrl(email, url).size() > 0;
+		return likesRepo.usuarioLikedCampanha(email, url).size() > 0;
 	}
 	
-	public boolean usuarioAlreadyLikedById(String email, long id) {
-		return likesRepo.usuarioLikedCampanha(email, id).size() > 0;
+	public boolean usuarioAlreadyLikedByUrl(String email, String url) {
+		return likesRepo.usuarioLikedCampanha(email, url).size() > 0;
 	}
 }

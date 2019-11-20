@@ -139,10 +139,10 @@ public class CampanhaService {
 		return user.equals(camp.getDono());
 	}
 	
-	public void alteraLike(long id, boolean incrementa) throws Exception {
-		if (!campanhaExiste(id))
+	public void alteraLike(String url, boolean incrementa) throws Exception {
+		if (!campanhaExiste(url))
 			throw new Exception("campanha nao existe");
-		Campanha c = getCampanha(id);
+		Campanha c = getCampanha(url);
 		if (incrementa)
 			c.incrementaLike();
 		else
@@ -151,10 +151,10 @@ public class CampanhaService {
 		campanhaRepo.save(c);
 	}
 	
-	public void alteraDislikes(long id, boolean incrementa) throws Exception {
-		if (!campanhaExiste(id))
+	public void alteraDislikes(String url, boolean incrementa) throws Exception {
+		if (!campanhaExiste(url))
 			throw new Exception("campanha nao existe");
-		Campanha c = getCampanha(id);
+		Campanha c = getCampanha(url);
 		if (incrementa)
 			c.incrementaDislike();
 		else

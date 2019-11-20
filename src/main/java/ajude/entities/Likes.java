@@ -11,15 +11,15 @@ public class Likes {
 	@GeneratedValue
 	private long id;
 	private String email;
-	private long idCampanha;
+	private String urlCampanha;
 	
 	public Likes() {
 		super();
 	}
 	
-	public Likes(String email, long idCam) {
+	public Likes(String email, String urlCam) {
 		this.email = email;
-		this.idCampanha = idCam;
+		this.urlCampanha = urlCam;
 	}
 
 	public String getEmail() {
@@ -30,11 +30,19 @@ public class Likes {
 		this.email = email;
 	}
 
-	public long getIdCampanha() {
-		return idCampanha;
+	public String getUrlCampanha() {
+		return urlCampanha;
 	}
 
-	public void setIdCampanha(long idCampanha) {
-		this.idCampanha = idCampanha;
+	public void setUrlCampanha(String urlCampanha) {
+		this.urlCampanha = urlCampanha;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 }

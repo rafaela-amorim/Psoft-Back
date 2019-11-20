@@ -62,13 +62,13 @@ public class DislikesController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	@DeleteMapping("auth/dislike/campanha/remove/{id}")
-	public ResponseEntity<Dislikes> deleteDislikeById(@RequestHeader("Authorization") String token, @PathVariable long id) {
-		try {
-			return new ResponseEntity<Dislikes>(dislikeService.deleteDislikeById(id, token), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
+//	
+//	@DeleteMapping("auth/dislike/campanha/remove/{url}")
+//	public ResponseEntity<Dislikes> deleteDislikeById(@RequestHeader("Authorization") String token, @PathVariable String url) {
+//		try {
+//			return new ResponseEntity<Dislikes>(dislikeService.deleteDislikeByUrl(url, token), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//	}
 }
