@@ -31,8 +31,10 @@ POST
 GET
 - v1/api/campanha/{url}
     retorna a campanha correspondente à url na URI, caso a campanha exista
-- v1/api/campanha/find
-    retorna uma lista com todas as campanhas que contenham a substring do paramentro
+- v1/api/campanha/find/busca=?{substring}
+    retorna uma lista com todas as campanhas que contenham a string como substring no título
+- v1/api/campanha/find/descr/busca=?{substring}
+    retorna uma lista com todas as campanhas que contenham a string recebida como substring no título OU na descrição    
 - v1/api/campanha/status/{url}
     retorna o status atual da campanha correspondente à url na URI
 

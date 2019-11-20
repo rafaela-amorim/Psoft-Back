@@ -31,8 +31,6 @@ public class UsuarioController {
 		} catch (Exception e) {
 			return new ResponseEntity<Usuario>(HttpStatus.CONFLICT);
 		}
-	
-		//enviar email de boas vindas e url para o sistema
 	}
 	
 	@GetMapping("usuarios")

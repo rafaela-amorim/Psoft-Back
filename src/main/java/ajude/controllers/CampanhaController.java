@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ajude.classesAuxiliares.Data;
 import ajude.classesAuxiliares.Descricao;
 import ajude.classesAuxiliares.Meta;
-import ajude.classesAuxiliares.Substring;
 import ajude.entities.Campanha;
 import ajude.services.CampanhaService;
 import ajude.services.JWTService;
@@ -60,14 +59,14 @@ public class CampanhaController {
 		}
 	}
 	
-	@GetMapping("campanha/find") 
-	public ResponseEntity<List<Campanha>> findBySubstring(@RequestBody Substring substring) {
-		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring.getSubstring()), HttpStatus.OK);
+	@GetMapping("campanha/find/busca={substring}") 
+	public ResponseEntity<List<Campanha>> findBySubstring(@PathVariable String substring) {
+		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
 	}
 	
-	@GetMapping("campanha/find/descr")
-	public ResponseEntity<List<Campanha>> findByDescrSubstr(@RequestBody Substring substring) {
-		return new ResponseEntity<List<Campanha>>(campanhaService.findByDescrSubstring(substring.getSubstring()), HttpStatus.OK);
+	@GetMapping("campanha/find/descr/busca={substring}")
+	public ResponseEntity<List<Campanha>> findByDescrSubstr(@PathVariable String substring) {
+		return new ResponseEntity<List<Campanha>>(campanhaService.findByDescrSubstring(substring), HttpStatus.OK);
 	}
 	
 	// -----------------------------------
