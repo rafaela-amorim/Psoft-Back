@@ -60,6 +60,7 @@ public class LikesController {
 	@DeleteMapping("auth/like/campanha/remove/{url}")
 	public ResponseEntity<Likes> deleteLike(@RequestHeader("Authorization") String token, @PathVariable String url) {
 		try {
+			
 			return new ResponseEntity<Likes>(likesService.deleteLike(url, token), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,14 +68,14 @@ public class LikesController {
 	}
 	
 
-	
-	@DeleteMapping("auth/like/campanha/remove/{id}")
-	public ResponseEntity<Likes> deleteLikeById(@RequestHeader("Authorization") String token, @PathVariable long id) {
-		try {
-			return new ResponseEntity<Likes>(likesService.deleteLikeById(id, token), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
+//	
+//	@DeleteMapping("auth/like/campanha/remove/{id}")
+//	public ResponseEntity<Likes> deleteLikeById(@RequestHeader("Authorization") String token, @PathVariable String url) {
+//		try {
+//			return new ResponseEntity<Likes>(likesService.deleteLikeByUrl(url, token), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//	}
 
 }

@@ -8,7 +8,7 @@ public class LikesComparator implements Comparator<Campanha> {
 
 	@Override
 	public int compare(Campanha camp1, Campanha camp2) {
-		return camp1.getLikes() - camp2.getLikes();
+		return camp2.getLikes() - camp1.getLikes();
 	}
 
 }

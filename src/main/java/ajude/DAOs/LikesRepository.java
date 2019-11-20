@@ -16,20 +16,18 @@ import ajude.entities.Likes;
 public interface LikesRepository<T, ID extends Serializable> extends JpaRepository<Likes, Long> {
 
 	
-	@Query("select l from Likes as l where l.idCampanha = ?1")
-	public List<Likes> getLikesCampanha(long id);
+	@Query("select l from Likes as l where l.urlCampanha = ?1")
+	public List<Likes> getLikesCampanha(String id);
 	
 	@Query("select l from Likes as l where l.email = ?1")
 	public List<Likes> getLikesUsuario(String email);
 	
-	@Query("select l from Likes as l where l.email = ?1 and l.idCampanha = ?2")
-	public List<Likes> usuarioLikedCampanha(String email, long id);
+	@Query("select l from Likes as l where l.email = ?1 and l.urlCampanha = ?2")
+	public List<Likes> usuarioLikedCampanha(String email, String url);
 	
 	@Transactional
 	@Modifying
-	@Query("delete from Likes as l where l.email = ?1 and l.idCampanha = ?2")
-	public void deleteLike(String email, long id);
+	@Query("delete from Likes as l where l.email = ?1 and l.urlCampanha = ?2")
+	public void deleteLike(String email, String url);
 	
-	@Query("select l from Likes as l, Campanha as c where c.url = ?1 and c.id = l.idCampanha and l.email = ?2")
-	public List<Likes> usuarioLikedByUrl(String url, String email);
 }
