@@ -63,6 +63,16 @@ public class ComentarioService {
 		return comentarioRepo.pegaComentDono(email);
 	}
 	
+	public void apagaFilhos(Comentario c) throws Exception {
+		List<Comentario> lis = getComentariosResp(c.getId());
+		 
+		for(Comentario comen: lis) {
+			comen.setApagado(true);
+			comentarioRepo.save(comen);
+			apagaFilhos(comen);
+		}
+	}
+	
 	public Comentario deletarComentario(Long id, String token) throws Exception {
 		String email = jwtService.getEmailToken(token);
 		Optional<Comentario> c = getComentario(id);
@@ -70,9 +80,14 @@ public class ComentarioService {
 		if (!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
+		if(!c.isPresent())
+			throw new Exception("comentario nao existe");
+		
 		if (c.get().getCommentOwner().equals(email)) {
-			if (c.isPresent())
+			if (c.isPresent()) {
 				c.get().setApagado(true);
+				apagaFilhos(c.get());
+			}
 		} else {
 			throw new Exception("usuário não é o dono");
 		}
