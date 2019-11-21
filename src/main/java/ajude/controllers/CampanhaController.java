@@ -69,6 +69,31 @@ public class CampanhaController {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findByDescrSubstring(substring), HttpStatus.OK);
 	}
 	
+	
+	@GetMapping("auth/campanha/doacao")
+	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token) {
+		try {
+			return new ResponseEntity<List<Campanha>>(campanhaService.campanhasDoacao(token), HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("campanha/sort/meta")
+	public ResponseEntity<List<Campanha>> getCampanhasByMeta() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByMeta(), HttpStatus.OK);
+	}
+	
+	@GetMapping("campanha/sort/data")
+	public ResponseEntity<List<Campanha>> getCampanhasByData() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByData(), HttpStatus.OK);
+	}
+	
+	@GetMapping("campanha/sort/likes")
+	public ResponseEntity<List<Campanha>> getCampanhasByLikes() {
+		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByLikes(), HttpStatus.OK);
+	}
+	
 	// -----------------------------------
 	
 	@PutMapping("auth/campanha/encerrar/{url}")
@@ -122,29 +147,7 @@ public class CampanhaController {
 	
 	// ---------------------------
 	
-	@GetMapping("auth/campanha/doacao")
-	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token) {
-		try {
-			return new ResponseEntity<List<Campanha>>(campanhaService.campanhasDoacao(token), HttpStatus.OK);
-		} catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
 	
-	@GetMapping("campanha/sort/meta")
-	public ResponseEntity<List<Campanha>> getCampanhasByMeta() {
-		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByMeta(), HttpStatus.OK);
-	}
-	
-	@GetMapping("campanha/sort/data")
-	public ResponseEntity<List<Campanha>> getCampanhasByData() {
-		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByData(), HttpStatus.OK);
-	}
-	
-	@GetMapping("campanha/sort/likes")
-	public ResponseEntity<List<Campanha>> getCampanhasByLikes() {
-		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByLikes(), HttpStatus.OK);
-	}
 }
 
 
