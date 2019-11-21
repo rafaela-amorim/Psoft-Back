@@ -52,8 +52,8 @@ public class LikesService {
 		
 		if (!usuarioAlreadyLiked(email, url))
 			throw new Exception("tentou tirar like que não existe");
-		System.out.println("ASDFASDFASDFASDFASD");
-		Likes like = likesRepo.usuarioLikedCampanha(url, email).get(0);
+
+		Likes like = likesRepo.usuarioLikedCampanha(email, url).get(0);
 		likesRepo.deleteLike(email, like.getUrlCampanha());
 		return like;
 	}
