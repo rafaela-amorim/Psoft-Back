@@ -35,7 +35,8 @@ public class Filter extends GenericFilterBean {
 		String token = header.substring(TOKEN_INDEX);
 		
 		try {
-			Jwts.parser().setSigningKey(TOKEN).parseClaimsJws(token).getBody();
+			String email = Jwts.parser().setSigningKey(TOKEN).parseClaimsJws(token).getBody().getSubject();
+			request.setAttribute("email", email);
 		} catch(SignatureException | ExpiredJwtException | MalformedJwtException | PrematureJwtException | UnsupportedJwtException | IllegalArgumentException e) {
 			((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
 			return;

@@ -2,6 +2,8 @@ package ajude.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.sun.mail.iap.Response;
 
 import ajude.classesAuxiliares.Senha;
 import ajude.entities.Campanha;
@@ -47,9 +51,20 @@ public class UsuarioController {
 		}
 	} 
 	
-	@PutMapping("usuarios/{email}")
-	public ResponseEntity<Usuario> mudarSenha(@RequestBody Senha senha, @PathVariable String email) {
+	@PostMapping("usuarios/mudarSenha/{email}")
+	public ResponseEntity<Usuario> emailMudarSenha(@PathVariable String email) {
 		try {
+			return new ResponseEntity<Usuario>(usuarioService.emailMudarSenha(email), HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping("auth/usuarios")
+	public ResponseEntity<Usuario> mudarSenha(HttpServletRequest request, @RequestBody Senha senha) {
+		try {
+			String email = (String) request.getAttribute("email");
 			return new ResponseEntity<Usuario>(usuarioService.mudarSenha(email, senha.getSenha()), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

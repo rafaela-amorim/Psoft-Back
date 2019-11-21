@@ -58,4 +58,9 @@ public class JWTService {
 	public boolean campanhaExiste(Long id) {
 		return campanhaService.campanhaExiste(id);
 	}
+	
+	public LoginResponse geraTokenMudarSenha(String email) {
+		return new LoginResponse(Jwts.builder().setSubject(email).signWith(SignatureAlgorithm.HS512, TOKEN)
+				.setExpiration(new Date(System.currentTimeMillis() + 1 * 60 * 1000)).compact());
+	}
 }
