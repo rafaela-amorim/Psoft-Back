@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ajude.DAOs.UsuarioRepository;
 import ajude.classesAuxiliares.JavaMail;
+import ajude.classesAuxiliares.LoginResponse;
 import ajude.entities.Campanha;
 import ajude.entities.Usuario;
 
@@ -15,6 +16,8 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository<Usuario, String> usuariosRepo;
+	@Autowired
+	private JWTService jwtService;
 	
 	
 	public Usuario addUsuario(Usuario user) throws Exception {
@@ -44,21 +47,26 @@ public class UsuarioService {
 		return usuariosRepo.findAll();
 	}
 	
-	public Usuario mudarSenha(String email, String novaSenha) throws Exception {
+	public Usuario emailMudarSenha(String email) throws Exception {
 		if (!usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
+		LoginResponse lr = jwtService.geraTokenMudarSenha(email);
 		String subj = "Change your password";
-		String txt = "Para modificar a senha acesse o link abaixo: ";
+		String txt = "Para modificar a senha acesse o link abaixo: http://127.0.0.1:5500/mudarSenha/" + lr.getToken();
+		
 		try {
 			JavaMail.enviar(subj, txt, email);
 		}catch(Exception e) {
-			
+			throw new Exception("erro ao enviar o email");
 		}
-
+		
+		return getUsuario(email);
+	}
+	
+	public Usuario mudarSenha(String email, String novaSenha) throws Exception {
 		Usuario u = getUsuario(email);
 		u.setSenha(novaSenha);
-		
 		usuariosRepo.save(u);
 		return u;
 	}
