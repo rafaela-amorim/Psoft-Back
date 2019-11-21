@@ -5,6 +5,8 @@
 POST
 - v1/api/usuarios
     adiciona um usuário novo, depois de verificar que o email ja nao existia no sistema
+    
+    body da requisição:
     ```json
     {
     	"nome":"nome-do-usuario",
@@ -14,58 +16,235 @@ POST
     	"senha":"senha-do-usuario"
     }
     ```
+    
+    retorna
+    
+    - 200, se o usuario for criado
+    
+    - 409, se ja existir um usuario com aquele email
 
 GET
 - v1/api/usuarios
     retorna uma lista com todos os usuarios
-- v1/api/usuari/{email}
+    - 200, se ocorrer tudo bem
+    
+- v1/api/usuarios/{email}
     retorna o usuario do email na URI, caso exista.
+    
+    - 200, se o usuario existir
+    
+    - 404, se o usuario nao existir
+    
+- v1/api/usuarios/campanhas/{email}
+	retorna a lista de campanhas que o usuario é dono
+	
+	- 200, se ocorrer tudo bem
+	
+	- 400, se o usuario não existir
 
 PUT
 - v1/api/usuarios/{email}
     muda a senha do usuario do email na URI, caso exista, e retorna o usuario
-
+    
+    body da requisição:
+    ```json
+    {
+    	"senha":"nova-senha-do-usuario"
+    }
+    ```
+    
+    retorna
+    
+    - 200, se ocorer tudo bem
+    
+    - 404, se o usuario não existir
+    
 <h3>Login</h3>
 
 POST
 - v1/api/login/usuarios
     faz login de um usuario (autentica), caso o usuario exista
-
+    
+    body da requisição:
+    ```json
+    {
+    	"email":"email-do-usuario",
+    	"senha":"senha-do-usuario"
+    }
+    ```
+    
+    retorna
+    
+    - 200, se o usuario conseguir se logar e o json com o token
+    
+     ```json
+    {
+    	"token":"token-retornado-pelo-servidor"
+    }
+    ```
+    - 401, se a senha for inválida
+    
+    - 404, se o email não existir
+    
 <h3>Campanha</h3>
 
 POST
 - v1/api/auth/campanha 
     adiciona uma nova campanha ao sistema
+    
+    body da requisição:
+    ```json
+    {
+    	"nome":"nome-da-campanha",
+    	"descricao":"descricao-da-campanha",
+    	"dataLimite":"YYYY-MM-DD",
+    	"meta": meta-da-campanha
+    }
+    ```
+    
+    retorna 
+    
+    - 201, se a campanha for cadastrada com sucesso
+    
+    - 404, se houver algum erro
 
 GET
 - v1/api/campanha/{url}
     retorna a campanha correspondente à url na URI, caso a campanha exista
+    
+    retorna 
+    
+    - 200, se a campanha existir
+    
+    - 400, se a campanha não existir
+    
 - v1/api/campanha/find/busca=?{substring}
     retorna uma lista com todas as campanhas que contenham a string como substring no título
+    
+    retorna
+    
+    - 200, se ocorrer tudo bem
+    
 - v1/api/campanha/find/descr/busca=?{substring}
-    retorna uma lista com todas as campanhas que contenham a string recebida como substring no título OU na descrição    
-- v1/api/campanha/status/{url}
-    retorna o status atual da campanha correspondente à url na URI
+    retorna uma lista com todas as campanhas que contenham a string recebida como substring no título OU na descrição
+    
+    return 
+    
+    200, se ocorrer tudo bem
+        
+- auth/campanha/doacao
+	retorna todas as campanhas que um usuario doou
+	
+	retorna
+	
+	- 200, se o usuario existir
+	
+	- 400, se o usuario não existir
+	
+    
 
 PUT
 - v1/api/auth/campanha/encerrar/{url}
     o usuario que for dono da campanha corresponde à url na URI pode encerrá-la
+    
+    retorna
+    
+    - 200, se ocorrer tudo bem
+    
+    - 400, se a campanha não existir
+    
 - v1/api/auth/campanha/deadline/{url}
     o usuario que for dono da campanha corresponde à url na URI pode mudar a data que ela vence
+    
+    body da requisição:
+    ```json
+    {
+    	"data":"YYYY-MM-DD"
+    }
+    ```
+    
+    retorna
+    
+    - 200, se ocorrer tudo bem
+    
+    - 400, se houver algum erro
+    
+    
+    
 - v1/api/auth/campanha/meta/{url}
     o usuario que for dono da campanha corresponde à url na URI pode alterar a meta de doações
+    
+    body da requisição:
+    ```json
+    {
+    	"meta": nova-meta-da-campanha
+    }
+    ```
+    
+    retorna
+    
+    - 200, se ocorrer tudo bem
+    
+    - 400, se houver algum erro
+    
 - v1/api/auth/campanha/descricao/{url}
     o usuario que for dono da campanha corresponde à url na URI pode alterar a descrição
+    
+    body da requisição:
+    ```json
+    {
+    	"descricao": "nova-descricao-da-campanha"
+    }
+    ```
+    
+    retorna
+    
+    - 200, se ocorrer tudo bem
+    
+    - 412, se a campanha não estiver ativa
+    
+    - 403, se o usuario não for dono
+    
+    - 404, se a campanha não existir 
 
 <h3>Comentario</h3>
 
 POST
 - v1/api/auth/comentario
     adiciona um comentario a uma campanha, usuario deve estar autenticado
+    
+    body da requisição, caso seja um comentario a uma campanha:
+    ```json
+    {
+    	"comentario":"comentario-do-usuario",
+    	"idCampanha": id-da-campanha-a-ser-adicionado-o-comentario
+    }
+    ```
+    
+    body da requisição, caso seja uma resposta a um comentario:
+   	```json
+   	{
+   		"comentario":"comentario-do-usuario"
+   		"idComentario": id-do-comentario-a-ser-respondido
+   	}
+   	```
+   	
+   	retorna
+   	
+   	- 200, se o comentario for adicionado
+   	
+   	- 404, se a campanha ou o comentario não exitir
 
 GET
-- v1/api/comentario/campanha/{id}
+- v1/api/comentario/campanha/{url}
     retorna a lista com todos os comentarios da campanha correspondente ao id da URI
+    
+    retorna
+    
+    - 200, se ocorrer tudo certo
+    
+    - 404, se a campanha não existir
+    
 - v1/api/comentario/respostas/{id}
     retorna a lista de todos os comentarios que referenciam ao comentário correspondente ao id da URI
 - v1/api/auth/comentario/usuario
