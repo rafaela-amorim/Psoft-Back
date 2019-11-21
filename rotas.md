@@ -5,6 +5,15 @@
 POST
 - v1/api/usuarios
     adiciona um usuário novo, depois de verificar que o email ja nao existia no sistema
+    ```json
+    {
+    	"nome":"nome-do-usuario",
+    	"ultimoNome":"ultimo-nome-do-usuario",
+    	"email":"email-do-usuario",
+    	"cartaoDeCredito":"cartao-de-credito",
+    	"senha":"senha-do-usuario"
+    }
+    ```
 
 GET
 - v1/api/usuarios
