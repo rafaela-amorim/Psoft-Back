@@ -247,13 +247,35 @@ GET
     
 - v1/api/comentario/respostas/{id}
     retorna a lista de todos os comentarios que referenciam ao comentário correspondente ao id da URI
+    
+    retorna
+    
+    - 200, se correu tudo bem
+    
+    - 400, se o comentario não existe
+    
 - v1/api/auth/comentario/usuario
     retorna uma lista com todos os comentarios feitos pelo usuário autenticado que faz a requisição
+    
+    retorna
+    
+    - 200, se tudo correu bem
+    
+    - 400, se o usuario não foi encontrado
+    
 
 DELETE
 - v1/api/auth/comentario/deletar/{id}
     deleta o comentario correspondente ao id na URI, o usuário que tenta apagar deve ser o mesmo usuário que criou o comentario e o deve estar autenticado. 
     Todos os comentarios resposta deste comentario que esta sendo deletado devem ser deletados em cascata.
+    
+    retorna
+    
+    - 200, se tudo correu bem
+    
+    - 403, se usuario não é o dono
+    
+    - 404, se algo deu errado
     
 
 <h3>Likes</h3>
@@ -261,33 +283,143 @@ DELETE
 POST
 - v1/api/auth/like
     usuário autenticado dá like em uma campanha
+    
+    body da requisição:
+    ```json
+    {
+    	"email":"email-de-quem-faz-a-doacao",
+    	"urlCampanha":"url-da-campanha-a-fazer-a-doacao"
+    }
+    ```
+    
+    retorna
+    
+    - 201, se ocorreu tudo bem
+    
+    - 409, se esse usuario ja deu like
+    
+    - 404, se não existe usuario ou campanha
 
 GET
 - v1/api/likes/campanha/{url}
     retorna uma lista com todos os likes que foram dados à campanha correspondente à url passado na uri
+    
+    retorna
+    
+    - 200, se tudo correu bem
+    
+    - 400, se não foi encontrada uma campanha com aquela url
+    
 - v1/api/auth/likes/usuario
     retorna uma lista com todos os likes dados pelo usuário autenticado que fez a requisição
+    
+    retorna
+    
+    - 200, se tudo correu bem
+    
+    - 400, se o usuario não existe
 
 DELETE
 - v1/api/auth/like/campanha/remove/{url}
     o usuário dono do like pode retirá-lo de uma campanha correspondente à url na URI, usuário deve estar autenticado 
-- v1/api/auth/like/campanha/remove/{id}
-    usuário dono do like pode removê-lo através do id da campanha  passado pela URI, usuário deve estar autenticado
+    
+    retorna
+    
+    - 200, se tudo correu bem
+    
+    - 400, se a url da campanha ou o usuario não existe
+
 
 <h3>Dislikes</h3>
 
 POST
 - v1/api/auth/dislike
     um usuário autenticado pode dar dislike em uma campanha
+    
+	body da requisição:
+	```json
+	{
+		"email":"email-do-usuario-que-deseja-dar-dislike",
+		"urlCampanha":"url-da-campanha"
+	}
+	```
+	
+	retorna
+	
+	- 201, se correu tudo bem
+	
+	- 409, se o usuario já deu dislike
+	
+	- 404, se o usuario ou a campanha não existe
 
 GET
 - v1/api/dislikes/campanha/{url}
     retorna uma lista com todos os dislikes da campanha correspondente à url na URI
+    
+    retorna
+    
+    - 200, se correu tudo bem
+    
+    - 400, se a campanha não existe
+    
 - v1/api/auth/dislikes/usuario
     retorna uma lista com todos os likes que foram dados pelo usuário autenticado que fez a requisição
+    
+    retorna
+    
+    - 200, se correu tudo bem
+    
+    - 400, se o usuario não existe
 
 DELETE
 - v1/api/auth/dislike/campanha/remove/{url}
     o usuário dono do dislike pode retirá-lo de uma campanha correspondente à url na URI, usuário deve estar autenticado 
-- v1/api/auth/dislike/campanha/remove/{id}
-    usuário dono do dislike pode removê-lo através do id da campanha passado pela URI, usuário deve estar autenticado
+    
+    retorna
+    
+    - 200, se correu tudo bem
+    
+    - 400, se a campanha não existe
+    
+    
+<h3>Doacao</h3>
+
+POST
+- v1/api/auth/doacao
+	adiciona uma doação a uma capanha, o usuario tem que estar autenticado para realizar a doação
+	
+	body da requisição:
+	```json
+	{
+		"emailDoador":"email-de-quem-doou",
+		"quantida":quantida-doada,]
+		"urlCampanha":"url-da-campanha-que-vai-receber"
+	}
+	```
+	
+	retorna
+	
+	- 200, se tudo correu bem
+	
+	- 400, se o usuario ou a campanha não existe
+	
+	
+GET
+	
+- v1/api/doacoes/campanha/{url}
+	retorna todas as doações realizadas a uma campanha
+	
+	retorna
+	
+	- 200, se tudo correu bem
+	
+	- 400, se a campanha não foi encontrada
+	
+- v1/api/auth/doacoes/usuario
+	retorna todas as doações feitas por um usuario
+	
+	retorna
+	
+	- 200, se tudo correu bem
+	
+	- 400, se o usuario não existe
