@@ -392,7 +392,7 @@ POST
 	```json
 	{
 		"emailDoador":"email-de-quem-doou",
-		"quantida":quantida-doada,]
+		"quantida":quantida-doada,
 		"urlCampanha":"url-da-campanha-que-vai-receber"
 	}
 	```
