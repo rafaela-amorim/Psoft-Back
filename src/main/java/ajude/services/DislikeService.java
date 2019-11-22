@@ -55,6 +55,9 @@ public class DislikeService {
 		List<Dislikes> l = dislikesRepo.usuarioDislikedCampanha(email, url);
 		Dislikes dislike = l.get(0);
 		dislikesRepo.deleteDislike(email, dislike.getUrlCampanha());
+		
+		campSer.alteraDislikes(url, false);
+		
 		return dislike;
 	}
 	
@@ -67,6 +70,9 @@ public class DislikeService {
 		
 		Dislikes dislike = dislikesRepo.usuarioDislikedCampanha(email, url).get(0);
 		dislikesRepo.deleteDislike(email, url);
+		
+		campSer.alteraDislikes(url, false);
+		
 		return dislike;
 	}
 	

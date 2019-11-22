@@ -55,6 +55,9 @@ public class LikesService {
 
 		Likes like = likesRepo.usuarioLikedCampanha(email, url).get(0);
 		likesRepo.deleteLike(email, like.getUrlCampanha());
+		
+		campSer.alteraLike(url, false);
+		
 		return like;
 	}
 	
@@ -71,6 +74,9 @@ public class LikesService {
 		Likes like = likesRepo.usuarioLikedCampanha(email, url).get(0);
 		
 		likesRepo.deleteLike(email, url);
+		
+		campSer.alteraLike(url, false);
+		
 		return like;
 	}
 	
