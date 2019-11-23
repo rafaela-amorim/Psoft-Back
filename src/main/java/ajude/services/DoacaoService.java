@@ -10,6 +10,7 @@ import ajude.DAOs.DoacaoRepository;
 import ajude.classesAuxiliares.Quantia;
 import ajude.entities.Campanha;
 import ajude.entities.Doacao;
+import ajude.enums.StatusCampanha;
 
 @Service
 public class DoacaoService {
@@ -31,9 +32,15 @@ public class DoacaoService {
 		else if(!jwtService.usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
+		Campanha camp = campService.getCampanha(doacao.getUrlCampanha());
+		
+		if(camp.getStatus() == StatusCampanha.ENCERRADA)
+			throw new Exception("nao é possivel fazer doação a uma campanha encerrada");
+		
+		
 		doacao.setEmailDoador(email);
 		doacaoRepo.save(doacao);
-		Campanha camp = campService.getCampanha(doacao.getUrlCampanha());
+		
 		
 		camp.fazDoacao(doacao.getQuantia());
 		
