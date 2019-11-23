@@ -84,10 +84,16 @@ public class CampanhaService {
 	public Campanha alterarMeta(String url, String email, double novaMeta) throws Exception {
 		Campanha c = getCampanha(url);
 		
+		System.out.println("KKKKKKKKKKKKKKKK");
+		
 		if (!c.estaAtiva())
 			throw new Exception("campanha nao esta ativa");
+		
+		
 		if (!verificaDono(url, email))
 			throw new Exception("usuario nao e o dono");
+		
+		
 		
 		c.setMeta(novaMeta);
 		campanhaRepo.save(c);
