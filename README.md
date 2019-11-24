@@ -316,7 +316,6 @@ Lista de rotas disponíveis pela nossa API. rotas que contém /auth/ devem ser a
     body da requisição:
     ```json
     {
-    	"email":"email-de-quem-faz-a-doacao",
     	"urlCampanha":"url-da-campanha-a-fazer-a-doacao"
     }
     ```
@@ -368,7 +367,6 @@ Lista de rotas disponíveis pela nossa API. rotas que contém /auth/ devem ser a
 	body da requisição:
 	```json
 	{
-		"email":"email-do-usuario-que-deseja-dar-dislike",
 		"urlCampanha":"url-da-campanha"
 	}
 	```
@@ -420,8 +418,7 @@ Lista de rotas disponíveis pela nossa API. rotas que contém /auth/ devem ser a
 	body da requisição:
 	```json
 	{
-		"emailDoador":"email-de-quem-doou",
-		"quantida":quantida-doada,
+		"quantia":quantia-doada,
 		"urlCampanha":"url-da-campanha-que-vai-receber"
 	}
 	```
