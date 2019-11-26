@@ -20,7 +20,7 @@ Escolhemos um tempo de expiração de 7 (sete) minutos para o token, por julgarm
 Segue o link video que explica nossa aplicação
 
 ```
-    *inserir video aqui*
+    https://youtu.be/anUGGr_G6zE
 ```
 
 
