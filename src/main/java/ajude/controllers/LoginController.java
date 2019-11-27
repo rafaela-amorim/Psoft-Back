@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ajude.classesAuxiliares.LoginResponse;
 import ajude.entities.Usuario;
 import ajude.services.JWTService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class LoginController {
@@ -17,7 +20,12 @@ public class LoginController {
 	@Autowired
 	private JWTService jwtService;
 
-	
+	@ApiOperation(value = "Faz login de um usuario (autentica), caso o usuario exista")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Se o usuário existir"),
+	    @ApiResponse(code = 401, message = "Se a senha for inválida"),
+	    @ApiResponse(code = 404, message = "Se o email não existir")
+	})
 	@PostMapping("login/usuarios")
 	public ResponseEntity<LoginResponse> authenticate(@RequestBody Usuario user) {
 		try {

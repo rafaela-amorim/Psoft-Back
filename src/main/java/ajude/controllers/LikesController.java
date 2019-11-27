@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ajude.entities.Likes;
 import ajude.services.LikesService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class LikesController {
@@ -22,7 +25,12 @@ public class LikesController {
 	@Autowired
 	private LikesService likesService;
 
-	
+	@ApiOperation(value = "Um usuário autenticado pode dar like em uma campanha")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 201, message = "Se correu tudo bem"),
+	    @ApiResponse(code = 404, message = "Se o usuario ou a campanha não existe"),
+	    @ApiResponse(code = 409, message = "Se o usuário já deu like")
+	})
 	@PostMapping("auth/like")
 	public ResponseEntity<Likes> addLike(@RequestBody Likes like, @RequestHeader("Authorization") String token) {
 		try {
@@ -36,6 +44,11 @@ public class LikesController {
 		}		
 	}
 	
+	@ApiOperation(value = "Retorna uma lista com todos os likes da campanha correspondente à url na URI")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se correu tudo bem"),
+	    @ApiResponse(code = 400, message = "Se a campanha não existe")
+	})
 	@GetMapping("likes/campanha/{url}")
 	public ResponseEntity<List<Likes>> getLikesCampanha(@PathVariable String url) {
 		try {
@@ -45,7 +58,11 @@ public class LikesController {
 		}
 	}
 	
-	
+	@ApiOperation(value = "Retorna uma lista com todos os likes que foram dados pelo usuário autenticado que fez a requisição")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se correu tudo bem"),
+	    @ApiResponse(code = 400, message = "Se o usuário não existe")
+	})
 	@GetMapping("auth/likes/usuario")
 	public ResponseEntity<List<Likes>> getLikesUsuario(@RequestHeader("Authorization") String token) {
 		try {
@@ -56,7 +73,11 @@ public class LikesController {
 		}
 	}
 
-	
+	@ApiOperation(value = "O usuário dono do like pode retirá-lo de uma campanha correspondente à url na URI, usuário deve estar autenticado")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se correu tudo bem"),
+	    @ApiResponse(code = 400, message = "Se o usuário não existe")
+	})
 	@DeleteMapping("auth/like/campanha/remove/{url}")
 	public ResponseEntity<Likes> deleteLike(@RequestHeader("Authorization") String token, @PathVariable String url) {
 		try {
@@ -66,16 +87,4 @@ public class LikesController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-
-//	
-//	@DeleteMapping("auth/like/campanha/remove/{id}")
-//	public ResponseEntity<Likes> deleteLikeById(@RequestHeader("Authorization") String token, @PathVariable String url) {
-//		try {
-//			return new ResponseEntity<Likes>(likesService.deleteLikeByUrl(url, token), HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//	}
-
 }

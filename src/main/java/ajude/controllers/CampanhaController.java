@@ -19,6 +19,9 @@ import ajude.classesAuxiliares.Meta;
 import ajude.entities.Campanha;
 import ajude.services.CampanhaService;
 import ajude.services.JWTService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class CampanhaController {
@@ -28,10 +31,13 @@ public class CampanhaController {
 	@Autowired
 	private JWTService jwtService;
 	
-	public CampanhaController() {
-		super();
-	}	
+	public CampanhaController() {}	
 	
+	@ApiOperation(value = "Adiciona uma nova campanha ao sistema")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 201, message = "Se a campanha for cadastrada com sucesso"),
+	    @ApiResponse(code = 404, message = "Se houver algum erro")
+	})
 	@PostMapping("auth/campanha")
 	public ResponseEntity<Campanha> addCampanha(@RequestBody Campanha campanha, @RequestHeader("Authorization") String token) {
 		Campanha c;
@@ -42,14 +48,18 @@ public class CampanhaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
-	// --------------------------
-
+	
+	@ApiOperation(value = "Retorna uma lista com todas as campanhas")
 	@GetMapping("campanhas")
 	public ResponseEntity<List<Campanha>> getCampanhas() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.getCampanhas(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "Retorna a campanha correspondente à url na URI, caso a campanha exista")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se a campanha existir"),
+	    @ApiResponse(code = 400, message = "Se a campanha não existir")
+	})
 	@GetMapping("campanha/{url}")
 	public ResponseEntity<Campanha> getCampanha(@PathVariable String url) {		
 		try {
@@ -59,17 +69,29 @@ public class CampanhaController {
 		}
 	}
 	
+	@ApiOperation(value = "Retorna uma lista com todas as campanhas que contenham a string como substring no título")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se ocorrer tudo bem")
+	})
 	@GetMapping("campanha/find/busca={substring}") 
 	public ResponseEntity<List<Campanha>> findBySubstring(@PathVariable String substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findBySubstring(substring), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "Retorna uma lista com todas as campanhas que contenham a string recebida como substring no título OU na descrição")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se ocorrer tudo bem")
+	})
 	@GetMapping("campanha/find/descr/busca={substring}")
 	public ResponseEntity<List<Campanha>> findByDescrSubstr(@PathVariable String substring) {
 		return new ResponseEntity<List<Campanha>>(campanhaService.findByDescrSubstring(substring), HttpStatus.OK);
 	}
 	
-	
+	@ApiOperation(value = "Retorna todas as campanhas que um usuario doou")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se o usuario existir"),
+	    @ApiResponse(code = 400, message = "Se o usuario não existir")
+	})
 	@GetMapping("auth/campanha/doacao")
 	public ResponseEntity<List<Campanha>> campanhasDoacao(@RequestHeader("Authorization") String token) {
 		try {
@@ -79,23 +101,29 @@ public class CampanhaController {
 		}
 	}
 	
+	@ApiOperation(value = "Retorna todas as campanhas ordenadas por meta")
 	@GetMapping("campanha/sort/meta")
 	public ResponseEntity<List<Campanha>> getCampanhasByMeta() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByMeta(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "Retorna todas as campanhas em ordem cronológica")
 	@GetMapping("campanha/sort/data")
 	public ResponseEntity<List<Campanha>> getCampanhasByData() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByData(), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "Retorna todas as campanhas em ordem de mais likes para menos likes")
 	@GetMapping("campanha/sort/likes")
 	public ResponseEntity<List<Campanha>> getCampanhasByLikes() {
 		return new ResponseEntity<List<Campanha>>(campanhaService.sortCampanhasByLikes(), HttpStatus.OK);
 	}
 	
-	// -----------------------------------
-	
+	@ApiOperation(value = "O usuario que for dono da campanha corresponde à url na URI pode encerrá-la")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se ocorrer tudo bem"),
+	    @ApiResponse(code = 400, message = "Se a campanha não existir")
+	})	
 	@PutMapping("auth/campanha/encerrar/{url}")
 	public ResponseEntity<Campanha> encerraCampanha(@RequestHeader("Authorization") String token, @PathVariable String url) {
 		String email = jwtService.getEmailToken(token);
@@ -107,6 +135,11 @@ public class CampanhaController {
 		}
 	}
 	
+	@ApiOperation(value = "O usuario que for dono da campanha corresponde à url na URI pode mudar a data que ela vence")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se ocorrer tudo bem"),
+	    @ApiResponse(code = 400, message = "Se houver algum erro")
+	})
 	@PutMapping("auth/campanha/deadline/{url}")
 	public ResponseEntity<Campanha> alterarDeadline(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Data novaData) throws Exception {
 		String email = jwtService.getEmailToken(token);
@@ -118,6 +151,11 @@ public class CampanhaController {
 		}
 	}
 	
+	@ApiOperation(value = "O usuario que for dono da campanha corresponde à url na URI pode alterar a meta de doações")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se ocorrer tudo bem"),
+	    @ApiResponse(code = 400, message = "Se houver algum erro")
+	})
 	@PutMapping("auth/campanha/meta/{url}")
 	public ResponseEntity<Campanha> alterarMeta(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Meta novaMeta) {
 		String email = jwtService.getEmailToken(token);
@@ -129,6 +167,14 @@ public class CampanhaController {
 		}
 	}
 	
+	@ApiOperation(value = "O usuario que for dono da campanha corresponde à url na URI pode alterar a descrição")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se ocorrer tudo bem"),
+	    @ApiResponse(code = 403, message = "Se o usuario não for dono"),
+	   	@ApiResponse(code = 404, message = "Se a campanha não existir"),
+	    @ApiResponse(code = 412, message = "Se a campanha não estiver ativa")
+	    
+	})
 	@PutMapping("auth/campanha/descricao/{url}")
 	public ResponseEntity<Campanha> alteraDescricao(@RequestHeader("Authorization") String token, @PathVariable String url, @RequestBody Descricao novaDescr) {
 		String email = jwtService.getEmailToken(token);
@@ -144,20 +190,4 @@ public class CampanhaController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	// ---------------------------
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-

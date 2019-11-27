@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import ajude.classesAuxiliares.Quantia;
 import ajude.entities.Doacao;
 import ajude.services.DoacaoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 public class DoacaoController {
@@ -22,7 +25,11 @@ public class DoacaoController {
 	@Autowired
 	private DoacaoService doacaoService;
 	
-	
+	@ApiOperation(value = "Adiciona uma doação a uma capanha, o usuario tem que estar autenticado para realizar a doação")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se tudo correu bem"),
+	    @ApiResponse(code = 400, message = "Se o usuario ou a campanha não existe")
+	})
 	@PostMapping("/auth/doacao")
 	public ResponseEntity<Quantia> addDoacao(@RequestBody Doacao doacao, @RequestHeader("Authorization") String token) {
 		try {
@@ -32,6 +39,11 @@ public class DoacaoController {
 		}
 	}
 	
+	@ApiOperation(value = "Retorna todas as doações realizadas a uma campanha")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Se tudo correu bem"),
+	    @ApiResponse(code = 400, message = "Se a campanha não foi encontrada")
+	})
 	@GetMapping("/doacoes/campanha/{url}")
 	public ResponseEntity<List<Doacao>> getDoacoesCampanha(@PathVariable String url) {
 		try {
@@ -41,6 +53,11 @@ public class DoacaoController {
 		}
 	}
 	
+	@ApiOperation(value = "Retorna todas as doações feitas por um usuario")
+	@ApiResponses(value = {
+	    @ApiResponse(code = 200, message = "Se tudo correu bem"),
+	    @ApiResponse(code = 400, message = "Se o usuario não existe")
+	})
 	@GetMapping("/auth/doacoes/usuario")
 	public ResponseEntity<List<Doacao>> getDoacoesUsuario(@RequestHeader("Authorization") String token) throws Exception {
 		try {
