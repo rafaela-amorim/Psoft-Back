@@ -24,6 +24,18 @@ Segue o link video que explica nossa aplicação
 ```
 
 
+### Dos usuários previmente cadastrados
+
+```
+    email: admin@gmail.com
+    senha: admin
+
+    email: admin1@gmail.com
+    senha: admin1
+```
+
+
+
 ### Das rotas
 
 Lista de rotas disponíveis pela nossa API. rotas que contém /auth/ devem ser autenticadas por meio da rota de login.
