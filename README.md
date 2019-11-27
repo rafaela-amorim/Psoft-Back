@@ -10,6 +10,14 @@ O deploy da nossa api está disponível em:
     https://projsoftajude.herokuapp.com/v1/api
 ```
 
+### Da documentação swagger
+
+Nossa documentação gerada pelo swagger está disponível em
+
+```
+    http://projsoftajude.herokuapp.com/v1/api/swagger-ui.html#/
+```
+
 ### Do token
 
 Escolhemos um tempo de expiração de 7 (sete) minutos para o token, por julgarmos que seria o tempo adequado para um usuario doar para uma campanha, e por se tratar de um sistema que envolve dinheiro, a escolha de um tempo menor aumentaria a segurança dos dados do usuário.
@@ -22,7 +30,6 @@ Segue o link video que explica nossa aplicação
 ```
     https://youtu.be/KYBx7qAAUcc
 ```
-
 
 ### Dos usuários previmente cadastrados
 
