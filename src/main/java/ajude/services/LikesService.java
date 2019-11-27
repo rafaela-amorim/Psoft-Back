@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import ajude.DAOs.DislikesRepository;
 import ajude.DAOs.LikesRepository;
-import ajude.entities.Campanha;
 import ajude.entities.Dislikes;
 import ajude.entities.Likes;
 

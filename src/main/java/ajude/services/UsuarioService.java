@@ -23,13 +23,11 @@ public class UsuarioService {
 	public Usuario addUsuario(Usuario user) throws Exception {
 		if (usuarioExiste(user.getEmail()))
 			throw new Exception("usuario ja existe");
-		String subj = "Welcome to AJuDE!";
-		String txt = "O link de acesso para o sistema é https://google.com";
+		String subj = "Welcome to AJuDE, " + user.getNome() + "!";
+		String txt = "O link de acesso para o sistema é https://wineone.github.io/";
 		try {
 			JavaMail.enviar(subj, txt, user.getEmail());
-		}catch(Exception e) {
-			
-		}
+		} catch(Exception e) {}
 		return saveUsuario(user);
 	}
 	
@@ -57,7 +55,7 @@ public class UsuarioService {
 		
 		try {
 			JavaMail.enviar(subj, txt, email);
-		}catch(Exception e) {
+		} catch(Exception e) {
 			throw new Exception("erro ao enviar o email");
 		}
 		
@@ -72,14 +70,14 @@ public class UsuarioService {
 	}
 	
 	public boolean senhaIgual(String email, String senha) throws Exception {
-		if(!usuarioExiste(email))
+		if (!usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
 		return usuariosRepo.findById(email).get().verificaSenha(senha);
 	}
 	
 	public Usuario removeUsuario(String email) throws Exception {
-		if(!usuarioExiste(email))
+		if (!usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		
 		Usuario u = usuariosRepo.findById(email).get();
@@ -91,8 +89,8 @@ public class UsuarioService {
 		return usuariosRepo.findById(email).isPresent();
 	}
 	
-	public List<Campanha> getCampanhasDono(String email) throws Exception{
-		if(!usuarioExiste(email))
+	public List<Campanha> getCampanhasDono(String email) throws Exception {
+		if (!usuarioExiste(email))
 			throw new Exception("usuario nao existe");
 		return usuariosRepo.findById(email).get().getCampanhas();
 	}
